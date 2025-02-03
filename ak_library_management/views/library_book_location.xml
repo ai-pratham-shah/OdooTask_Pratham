@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_library_book_location_form" model="ir.ui.view">
+        <field name="name">library.book.location.form</field>
+        <field name="model">library.book.location</field>
+        <field name="arch" type="xml">
+            <form string="Book">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="location"/>
+                        <field name="capacity"/>
+                        <field name="notes"/>
+                    </group>
+                    <!-- Notebook tab for Books -->
+                    <notebook>
+                        <page string="Books">
+                            <field name="book_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Library location-->
+    <record id="action_library_books_location" model="ir.actions.act_window">
+        <field name="name">Book Location</field>
+        <field name="res_model">library.book.location</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_library_book_location_form"/>
+    </record>
+
+    <menuitem id="menu_library_book_location" name="Library" parent="menu_library_management" action="action_library_books_location"/>
+</odoo>
+
+
+
+
+
+
