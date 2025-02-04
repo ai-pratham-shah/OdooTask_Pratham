@@ -1,0 +1,53 @@
+<odoo>
+
+    <!-- List View for Members -->
+    <record id="view_library_member_list" model="ir.ui.view">
+        <field name="name">library.member.list</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <list string="Members">
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="membership_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Members -->
+    <record id="view_library_member_form" model="ir.ui.view">
+        <field name="name">library.member.form</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <form string="Member">
+                <sheet>
+                    <group name="col2">
+                        <group>
+                            <field name="name"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="phone"/>
+                            <field name="membership_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+      <!-- Action for Members List View -->
+    <record id="action_library_members" model="ir.actions.act_window">
+        <field name="name">Members</field>
+        <field name="res_model">library.member</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_library_member_list"/>
+    </record>
+
+    <!-- Submenu for Members -->
+    <menuitem id="menu_library_members" name="Member" parent="menu_library_management"/>
+
+      <!-- Submenu for Library management-->
+    <menuitem id="menu_library_member_child" name="Members" parent="menu_library_members" action="action_library_members"/>
+
+</odoo>
