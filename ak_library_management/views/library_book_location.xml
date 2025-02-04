@@ -7,7 +7,7 @@
             <form string="Book">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" required="1"/>
                         <field name="location"/>
                         <field name="capacity"/>
                         <field name="notes"/>
@@ -31,6 +31,7 @@
         <field name="view_id" ref="view_library_book_location_form"/>
     </record>
 
+     <!-- Submenu for Library management -->
     <menuitem id="menu_library_book_location" name="Library" parent="menu_library_management" action="action_library_books_location"/>
 </odoo>
 

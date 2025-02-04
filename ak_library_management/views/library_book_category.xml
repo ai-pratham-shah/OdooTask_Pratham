@@ -25,7 +25,7 @@
             </form>
         </field>
     </record>
-
+    <!-- Action for Books List View -->
     <record id="action_library_books_category" model="ir.actions.act_window">
         <field name="name">Book category</field>
         <field name="res_model">library.book.category</field>
@@ -33,6 +33,6 @@
         <field name="view_id" ref="view_library_book_category_list"/>
     </record>
 
+    <!-- Submenu for Configuration -->
     <menuitem id="menu_library_books_category_child" name="Book category" parent="menu_library_books_tag" action="action_library_books_category"/>
-
 </odoo>

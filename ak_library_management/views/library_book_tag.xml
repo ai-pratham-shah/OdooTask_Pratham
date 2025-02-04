@@ -33,9 +33,9 @@
         <field name="view_id" ref="view_library_book_tag_list"/>
     </record>
 
+    <!-- Submenu for Library management -->
     <menuitem id="menu_library_books_tag" name="Configuration" parent="menu_library_management"/>
+
+    <!-- Submenu for Configuration -->
     <menuitem id="menu_library_books_tag_child" name="Book tag" parent="menu_library_books_tag" action="action_library_books_tags"/>
-
-
-
 </odoo>

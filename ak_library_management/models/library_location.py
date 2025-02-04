@@ -5,7 +5,9 @@ from odoo import models,fields
 class LibraryBookLocation(models.Model):
     _name = 'library.book.location'
     _description = 'Book Location'
+    _rec_name = 'name'
 
+    # field's name
     name = fields.Char(string='Book Name')
     location = fields.Char(string='Location')
     capacity = fields.Integer(string='Capacity')

@@ -58,7 +58,7 @@
     <!-- Library home Menu -->
     <menuitem id="menu_library_management" name="Library management"/>
 
-    <!-- Submenu for Library -->
+    <!-- Submenu for Library management -->
     <menuitem id="menu_library_books" name="Books" parent="menu_library_management"/>
 
     <!-- Submenu for Library management-->

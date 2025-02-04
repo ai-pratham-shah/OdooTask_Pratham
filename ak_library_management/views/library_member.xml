@@ -1,5 +1,4 @@
 <odoo>
-
     <!-- List View for Members -->
     <record id="view_library_member_list" model="ir.ui.view">
         <field name="name">library.member.list</field>
@@ -44,10 +43,9 @@
         <field name="view_id" ref="view_library_member_list"/>
     </record>
 
-    <!-- Submenu for Members -->
+     <!-- Submenu for Members -->
     <menuitem id="menu_library_members" name="Member" parent="menu_library_management"/>
 
-      <!-- Submenu for Library management-->
+     <!-- Submenu for Library management-->
     <menuitem id="menu_library_member_child" name="Members" parent="menu_library_members" action="action_library_members"/>
-
 </odoo>

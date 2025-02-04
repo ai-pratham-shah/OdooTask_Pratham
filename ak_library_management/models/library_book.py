@@ -6,9 +6,10 @@ from odoo import models, fields
 class LibraryBook(models.Model):
     _name = "library.book"
     _description = "Stores book-related details"
+    _rec_name = "name"
 
-    '''field's name'''
-    name = fields.Char(string='Book Title')
+    # field's name
+    name = fields.Char(string='Book Title', required=True)
     author = fields.Char(string='Author Name')
     isbn = fields.Char(string='ISBN Number')
     publication_date = fields.Date(string='Date of Publication')
