@@ -25,7 +25,7 @@
         <field name="arch" type="xml">
             <form string="Book">
                  <header>
-                     <field name="state" widget="statusbar" statusbar_visible="available,borrowed"  options="{'clickable': '1'}"/>
+                     <field name="state" widget="statusbar" statusbar_visible="available,borrowed"  options="{'clickable': '1'}" tracking="True"/>
                  </header>
                 <sheet>
                     <group name="col2">
@@ -62,5 +62,5 @@
     <menuitem id="menu_library_books" name="Books" parent="menu_library_management"/>
 
     <!-- Submenu for Library management-->
-    <menuitem id="menu_library_books_child" name="books" parent="menu_library_books" action="action_library_books"/>
+    <menuitem id="menu_library_books_child" name="Books" parent="menu_library_books" action="action_library_books"/>
 </odoo>

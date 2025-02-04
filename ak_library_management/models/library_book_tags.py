@@ -7,4 +7,4 @@ class LibraryBookTags(models.Model):
     _name = 'library.book.tags'
     _description = 'Book tag'
 
-    name = fields.Char(string='Book tag', require=True)
+    name = fields.Char(string='Book tag', required=True)

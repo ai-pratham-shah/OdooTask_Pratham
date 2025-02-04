@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pkg_resources import require
 
 from odoo import models, fields
 
@@ -7,12 +8,13 @@ class LibraryBook(models.Model):
     _description = "Stores book-related details"
 
     '''field's name'''
-    name = fields.Char(string='Book Title', required=True)
+    name = fields.Char(string='Book Title')
     author = fields.Char(string='Author Name')
     isbn = fields.Char(string='ISBN Number')
     publication_date = fields.Date(string='Date of Publication')
     category_id = fields.Many2one(comodel_name='library.book.category',string='Book category')
     tags_ids = fields.Many2many(comodel_name='library.book.tags', string='Tags', related='category_id.tag_ids')
-    state = fields.Selection([('available', 'Available'), ('borrowed', 'Borrowed')], string='Book Availability',tracking=True)
+    state = fields.Selection([('available', 'Available'), ('borrowed', 'Borrowed')],
+                             string='Book Availability')
     description = fields.Text(string='BookSummary')
     library_id = fields.Many2one('library.book.location', string='Book Location')
