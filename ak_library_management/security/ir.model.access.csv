@@ -1,8 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-ak_library_management.access_library_book,access_library_book,ak_library_management.model_library_book,base.group_user,1,1,1,1
-ak_library_management.access_library_member,access_library_member,ak_library_management.model_library_member,base.group_user,1,1,1,1
-ak_library_management.access_library_book_tags,access_library_book_tags,ak_library_management.model_library_book_tags,base.group_user,1,1,1,1
-ak_library_management.access_library_book_category,access_library_book_category,ak_library_management.model_library_book_category,base.group_user,1,1,1,1
-ak_library_management.access_library_book_location,access_library_book_location,ak_library_management.model_library_book_location,base.group_user,1,1,1,1
-
-
