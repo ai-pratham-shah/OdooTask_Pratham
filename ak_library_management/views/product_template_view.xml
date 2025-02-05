@@ -1,0 +1,63 @@
+<odoo>
+     <!-- list View for inherited product template -->
+    <record id="view_product_template_inherit_list" model="ir.ui.view">
+        <field name="name">product.template.list.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_variant_count']" position="before">
+                <field name="is_library_book"/>
+                <field name="author"/>
+            </xpath>
+        </field>
+    </record>
+
+     <!-- form View for inherited product template -->
+    <record id="view_product_template_inherit_form" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+              <xpath expr="//page[@name='inventory']" position="after">
+                    <page string="Book Details">
+                        <group>
+                            <field name="is_library_book"/>
+                            <field name="author"/>
+                            <field name="publisher"/>
+                            <field name="edition"/>
+                            <field name="published_date"/>
+                            <field name="pages"/>
+                            <field name="available"/>
+                            <field name="barcode"/>
+                        </group>
+                    </page>
+              </xpath>
+        </field>
+    </record>
+
+    <!-- Action for Library location-->
+    <record id="product_template_inherit_action" model="ir.actions.act_window">
+        <field name="name">Product template</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_product_template_inherit_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new product
+            </p><p>
+                You must define a product for everything you sell or purchase,
+                whether it's a storable product, a consumable or a service.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_product_template" name="Product" parent="menu_library_management" action="product_template_inherit_action"/>
+     <!-- Submenu for Library management -->
+<!--    <menuitem id="menu_library_book_location" name="Library" parent="menu_library_management" action="action_library_books_location"/>-->
+</odoo>
+
+
+
+
+
+

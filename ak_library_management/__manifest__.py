@@ -20,6 +20,7 @@
         'views/library_book_tag.xml',
         'views/library_book_category.xml',
         'views/library_book_location.xml',
+        'views/product_template_view.xml',
     ],
     'installable': True,
     'application': True,
