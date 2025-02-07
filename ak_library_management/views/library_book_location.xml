@@ -13,12 +13,12 @@
         </field>
     </record>
 
-     <!-- form View for book location -->
+    <!-- form View for book location -->
     <record id="view_library_book_location_form" model="ir.ui.view">
         <field name="name">library.book.location.form</field>
         <field name="model">library.book.location</field>
         <field name="arch" type="xml">
-            <form string="Book">
+            <form string="Book" new="0">
                 <sheet>
                     <group>
                         <field name="name" required="1"/>
@@ -29,7 +29,7 @@
                     <!-- Notebook tab for Books -->
                     <notebook>
                         <page string="Books">
-                            <field name="book_ids"/>
+                            <field name="book_ids" options="{'create':false}"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -48,7 +48,6 @@
      <!-- Submenu for Library management -->
     <menuitem id="menu_library_book_location" name="Library" parent="menu_library_management" action="action_library_books_location"/>
 </odoo>
-
 
 
 

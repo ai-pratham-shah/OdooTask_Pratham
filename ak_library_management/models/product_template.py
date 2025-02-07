@@ -4,7 +4,9 @@ from odoo import models, fields
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
-
+    """
+    Inherit product template model from addons and add some custom fields.
+    """
     #fields
     is_library_book = fields.Boolean(string='Is library book')
     author = fields.Char(string='Author')
@@ -13,4 +15,8 @@ class ProductTemplate(models.Model):
     published_date = fields.Date(string='Published Date')
     pages = fields.Integer(string='Pages')
     available = fields.Boolean(string='Available')
-    barcode = fields.Char(string='Isbn')
+    barcode = fields.Char(string='Isbn Number')
+
+
+
+

@@ -11,7 +11,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'base', 'web'
+        'product', 'web'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -21,6 +21,7 @@
         'views/library_book_category.xml',
         'views/library_book_location.xml',
         'views/product_template_view.xml',
+        'views/product_template_barcode_view.xml'
     ],
     'installable': True,
     'application': True,
