@@ -18,7 +18,13 @@
         <field name="name">library.book.location.form</field>
         <field name="model">library.book.location</field>
         <field name="arch" type="xml">
-            <form string="Book" new="0">
+            <form string="Book">
+                <div class="oe_button_box" name="button_box">
+                    <button icon="fa-book" type="object"  name="action_view_borrowed_books">
+                        <field string="Book Borrowed" name="borrowed_books_count" widget="statinfo"/>
+                    </button>
+                </div>
+
                 <sheet>
                     <group>
                         <field name="name" required="1"/>
@@ -44,13 +50,7 @@
         <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_library_book_location_list"/>
     </record>
-
-     <!-- Submenu for Library management -->
+    <!-- Submenu for Library management -->
     <menuitem id="menu_library_book_location" name="Library" parent="menu_library_management" action="action_library_books_location"/>
 </odoo>
-
-
-
-
-
 

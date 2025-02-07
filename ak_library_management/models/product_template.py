@@ -16,6 +16,18 @@ class ProductTemplate(models.Model):
     pages = fields.Integer(string='Pages')
     available = fields.Boolean(string='Available')
     barcode = fields.Char(string='Isbn Number')
+    status = fields.Selection([
+        ('available', 'Available'),
+        ('borrowed', 'Borrowed'),
+        ('reserved', 'Reserved')
+    ], string='Status', default='available', tracking=True)
+
+    def action_mark_borrowed(self):
+        self.status = 'borrowed'
+
+    def action_mark_available(self):
+        self.status = 'available'
+
 
 
 
