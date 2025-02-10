@@ -3,6 +3,10 @@
 from odoo import models, fields
 
 class LibraryBookCategory(models.Model):
+    """
+    The LibraryBookCategory model is used to store detailed information about books categories and ids in the library
+    system.It includes information such as the Category name, Tags of the book.
+    """
     _name = 'library.book.category'
     _description = 'Book Category'
     _rec_name = 'name'

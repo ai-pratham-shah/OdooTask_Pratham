@@ -2,6 +2,10 @@
 from odoo import models,fields,api
 
 class LibraryBookLocation(models.Model):
+    """
+    The LibraryBookLocation model is used to store detailed information about book location in the library
+    system.It includes information such as the Book name, Location, Capacity, Notes,Books of the book.
+    """
     _name = 'library.book.location'
     _description = 'Book Location'
     _rec_name = 'name'
