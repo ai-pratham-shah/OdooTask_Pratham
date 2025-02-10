@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from pkg_resources import require
-
 from odoo import models,fields
 
 class LibraryBookTags(models.Model):

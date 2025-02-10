@@ -10,4 +10,3 @@ class LibraryBookCategory(models.Model):
     # field's name
     name = fields.Char(string='Category Name', required=True)
     tag_ids = fields.Many2many('library.book.tags', string='Tags')
-

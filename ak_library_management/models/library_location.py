@@ -11,8 +11,12 @@ class LibraryBookLocation(models.Model):
     location = fields.Char(string='Location')
     capacity = fields.Integer(string='Capacity')
     notes = fields.Char(string='Notes')
-    book_ids = fields.Many2many(comodel_name='product.template',domain=[('is_library_book', '=', True)] ,string='Books')
-    borrowed_books_count = fields.Integer(string="Borrowed Books Count", compute='_compute_borrowed_books')
+    book_ids = fields.Many2many(comodel_name='product.template',
+                                domain=[('is_library_book', '=', True)] ,
+                                string='Books')
+    borrowed_books_count = fields.Integer(string="Borrowed Books Count",
+                                          compute='_compute_borrowed_books',
+                                          store=False)
 
     @api.depends('book_ids')
     def _compute_borrowed_books(self):
@@ -20,7 +24,9 @@ class LibraryBookLocation(models.Model):
         This compute method is created for to count only borrowed books from library
         """
         for record in self:
-            record.borrowed_books_count = self.env['product.template'].search_count([('status', '=', 'borrowed')])
+            record.borrowed_books_count = (
+                self.env['product.template'].search_count([('status', '=', 'borrowed'), ('id', 'in', record.book_ids.ids)
+]))
 
     def action_view_borrowed_books(self):
         """
@@ -32,4 +38,5 @@ class LibraryBookLocation(models.Model):
             'view_mode': 'list,form',
             'res_model': 'product.template',
             'domain': [('status', '=', 'borrowed'),('id','in',self.book_ids.ids)],
+            'context': {'default_is_library_book': True},
         }
