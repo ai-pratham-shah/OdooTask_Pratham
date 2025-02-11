@@ -11,7 +11,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'product', 'web', 'sale'
+        'product', 'web', 'sale_management'
     ],
     'data': [
         'security/ir.model.access.csv',
