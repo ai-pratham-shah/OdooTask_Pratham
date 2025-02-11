@@ -17,6 +17,8 @@
             <form string="Bulk Upload Books">
                 <header>
                     <button name="create_product" type="object" string="Create products" class="oe_highlight"/>
+                    <button name="revert_changes" type="object" string="Revert products"
+                            class="oe_highlight" />
                 </header>
                 <group>
                     <field name="book_names"/>
