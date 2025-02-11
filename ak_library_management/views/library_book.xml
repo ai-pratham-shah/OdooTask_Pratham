@@ -59,8 +59,8 @@
     <menuitem id="menu_library_management" name="Library management"/>
 
     <!-- Submenu for Library management -->
-    <menuitem id="menu_library_books" name="Books" parent="menu_library_management"/>
+<!--    <menuitem id="menu_library_books" name="Books" parent="menu_library_management"/>-->
 
     <!-- Submenu for Library management-->
-    <menuitem id="menu_library_books_child" name="Books" parent="menu_library_books" action="action_library_books"/>
+<!--    <menuitem id="menu_library_books_child" name="Books" parent="menu_library_books" action="action_library_books"/>-->
 </odoo>

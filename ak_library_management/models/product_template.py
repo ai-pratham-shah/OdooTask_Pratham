@@ -23,9 +23,17 @@ class ProductTemplate(models.Model):
     ], string='Status', default='available', tracking=True)
 
     def action_mark_borrowed(self):
+        """
+        This method is created for marked book as borrowed
+        and this method is used in button in xml side
+        """
         self.status = 'borrowed'
 
     def action_mark_available(self):
+        """
+        This method is created for marked book as available
+        and this method is used in button in xml side
+        """
         self.status = 'available'
 
 

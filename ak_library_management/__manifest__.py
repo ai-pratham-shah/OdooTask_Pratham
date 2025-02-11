@@ -22,7 +22,8 @@
         'views/library_book_location.xml',
         'views/product_template_view.xml',
         'views/product_template_barcode_view.xml',
-        'views/product_variant_menu.xml'
+        'views/product_variant_menu.xml',
+        'views/bulk_book.xml',
     ],
     'installable': True,
     'application': True,

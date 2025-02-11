@@ -6,3 +6,4 @@ from . import library_book_tags
 from . import library_book_category
 from . import library_location
 from . import product_template
+from . import bulk_book

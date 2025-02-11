@@ -1,30 +1,16 @@
 <odoo>
-    <!-- list View for inherited product template -->
-    <record id="view_product_template_inherit_list" model="ir.ui.view">
-        <field name="name">product.template.list.inherit</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='product_variant_count']" position="before">
-                <field name="is_library_book"/>
-                <field name="author"/>
-                <field name="publisher"/>
-                <field name="barcode"/>
-                <field name="edition"/>
-                <field name="published_date"/>
-                <field name="pages"/>
-                <field name="available"/>
-                <field name="status"/>
-            </xpath>
-        </field>
-    </record>
-
     <!-- form View for inherited product template -->
     <record id="view_product_template_inherit_form" model="ir.ui.view">
         <field name="name">product.template.form.inherit</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_mark_borrowed" string="Mark as Borrowed" type="object"
+                invisible="status != 'available'"/>
+                <button name="action_mark_available" string="Mark as Available" type="object"
+                invisible="status != 'borrowed'"/>
+            </xpath>
              <header>
                  <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
                         options="{'clickable': '1'}" tracking="True"/>
@@ -54,7 +40,7 @@
     </record>
 
     <!-- Submenu for Library management -->
-    <menuitem id="menu_product_template" name="Product" parent="menu_library_management" action="product.product_template_action"/>
+    <menuitem id="menu_product_template" name="Books" parent="menu_library_management" action="product.product_template_action"/>
 </odoo>
 
 

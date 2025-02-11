@@ -3,12 +3,12 @@ from odoo import models,fields,api
 
 class LibraryBookLocation(models.Model):
     """
-    The LibraryBookLocation model is used to store detailed information about book location in the library
-    system.It includes information such as the Book name, Location, Capacity, Notes,Books of the book.
+    The LibraryBookLocation model is used to store detailed information
+    about book location in the library system.It includes information
+    such as the Book name, Location, Capacity, Notes,Books of the book.
     """
     _name = 'library.book.location'
     _description = 'Book Location'
-    _rec_name = 'name'
 
     # field's name
     name = fields.Char(string='Book Name')
@@ -29,7 +29,8 @@ class LibraryBookLocation(models.Model):
         """
         for record in self:
             record.borrowed_books_count = (
-                self.env['product.template'].search_count([('status', '=', 'borrowed'), ('id', 'in', record.book_ids.ids)
+                self.env['product.template'].search_count([('status', '=', 'borrowed'),
+                                                           ('id', 'in', record.book_ids.ids)
 ]))
 
     def action_view_borrowed_books(self):
