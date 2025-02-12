@@ -16,4 +16,4 @@ class LibraryMember(models.Model):
     email = fields.Char(string='Email ID')
     phone = fields.Char(string='Contact Number')
     membership_date = fields.Date(string='Membership Start Date')
-
+    membership_no = fields.Char(readonly=True)

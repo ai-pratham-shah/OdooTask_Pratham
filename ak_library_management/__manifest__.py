@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Ak library management',
+    'name': 'library management',
     'version': '18.0.1.0.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
@@ -24,6 +24,7 @@
         'views/product_template_barcode_view.xml',
         'views/product_variant_menu.xml',
         'views/bulk_book.xml',
+        'data/ir_sequence.xml',
     ],
     'installable': True,
     'application': True,

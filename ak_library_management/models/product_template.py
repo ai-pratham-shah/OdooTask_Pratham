@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models, fields,api
+
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -21,6 +22,13 @@ class ProductTemplate(models.Model):
         ('borrowed', 'Borrowed'),
         ('reserved', 'Reserved')
     ], string='Status', default='available', tracking=True)
+    reference = fields.Char(readonly=True)
+
+    @api.model_create_multi
+    def create(self, vals):
+        res = super().create(vals)
+        res.default_code = self.env['ir.sequence'].next_by_code('product.template')
+        return res
 
     def action_mark_borrowed(self):
         """
