@@ -9,7 +9,6 @@ class LibraryBookCategory(models.Model):
     """
     _name = 'library.book.category'
     _description = 'Book Category'
-    _rec_name = 'name'
 
     # field's name
     name = fields.Char(string='Category Name', required=True)

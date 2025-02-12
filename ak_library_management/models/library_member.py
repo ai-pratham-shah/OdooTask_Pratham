@@ -10,7 +10,6 @@ class LibraryMember(models.Model):
     """
     _name = "library.member"
     _description = "Stores library member details"
-    _rec_name = "name"
 
     # field's name
     name = fields.Char(string='Member name', required=True)
