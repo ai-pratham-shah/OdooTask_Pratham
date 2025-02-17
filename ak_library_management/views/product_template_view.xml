@@ -10,15 +10,13 @@
                 invisible="status != 'available'"/>
                 <button name="action_mark_available" string="Mark as Available" type="object"
                 invisible="status != 'borrowed'"/>
-            </xpath>
-             <header>
-                 <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
+                <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
                         options="{'clickable': '1'}" tracking="True"/>
-             </header>
-             <xpath expr="//field[@name='standard_price']" position="attributes">
+            </xpath>
+            <xpath expr="//field[@name='standard_price']" position="attributes">
                  <attribute name="readonly">sale_ok == True</attribute>
-             </xpath>
-             <xpath expr="//page[@name='inventory']" position="after">
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="after">
                     <page string="Book Details">
                         <group name="col2">
                              <group>
@@ -35,10 +33,15 @@
                              </group>
                          </group>
                     </page>
-             </xpath>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position="attributes">
+                <attribute name="string">Isbn</attribute>
+            </xpath>
+            <xpath expr="//field[@name='publisher']" position="after">
+                <field name="barcode"  position="move"/>
+            </xpath>
         </field>
     </record>
-
     <!-- Submenu for Library management -->
     <menuitem id="menu_product_template" name="Books" parent="menu_library_management" action="product.product_template_action"/>
 </odoo>

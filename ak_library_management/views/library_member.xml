@@ -22,6 +22,9 @@
                 <sheet>
                     <group name="col2">
                         <group>
+                            <h1>
+                            <field name="membership_no"/>
+                            </h1>
                             <field name="name"/>
                             <field name="email"/>
                         </group>

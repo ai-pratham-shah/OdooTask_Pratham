@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
 {
     'name': 'library management',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.1.1',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -21,12 +20,12 @@
         'views/library_book_category.xml',
         'views/library_book_location.xml',
         'views/product_template_view.xml',
-        'views/product_template_barcode_view.xml',
         'views/product_variant_menu.xml',
         'views/bulk_book.xml',
+        'views/res_user.xml',
+        'views/sale_order.xml',
         'data/ir_sequence.xml',
     ],
     'installable': True,
-    'application': True,
     'license': 'LGPL-3',
 }

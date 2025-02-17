@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields,api
-
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     """
@@ -16,7 +14,6 @@ class ProductTemplate(models.Model):
     published_date = fields.Date(string='Published Date')
     pages = fields.Integer(string='Pages')
     available = fields.Boolean(string='Available')
-    barcode = fields.Char(string='Isbn Number')
     status = fields.Selection([
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
@@ -26,8 +23,12 @@ class ProductTemplate(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
+        """
+        This method is overriding reference filed with sequence number
+        """
         res = super().create(vals)
         res.default_code = self.env['ir.sequence'].next_by_code('product.template')
+        print('This is default_code:',res.default_code)
         return res
 
     def action_mark_borrowed(self):
@@ -43,8 +44,3 @@ class ProductTemplate(models.Model):
         and this method is used in button in xml side
         """
         self.status = 'available'
-
-
-
-
-
