@@ -24,6 +24,7 @@
         'views/bulk_book.xml',
         'views/res_user.xml',
         'views/sale_order.xml',
+        'views/sale_order_wizard.xml',
         'data/ir_sequence.xml',
     ],
     'installable': True,
