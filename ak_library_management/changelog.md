@@ -6,3 +6,5 @@
 - Remove one product_template_barcode_view.xml file and
   add one xpath field to change label name for barcode and 
   add another xpath to move barcode field.
+
+

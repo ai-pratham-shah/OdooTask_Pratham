@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <list string="Bulk Upload Books">
                 <field name="book_names"/>
-                <field name="author"/>
+                <field name="author_id"/>
             </list>
         </field>
     </record>
@@ -18,22 +18,22 @@
             <form string="Bulk Upload Books">
                 <header>
                     <button name="create_product" type="object"
-                            string="Create products" class="oe_highlight"/>
-                    <button name="revert_changes" type="object" string="Revert products"
-                            invisible="check == False" class="oe_highlight"/>
+                            string="Create Products" class="oe_highlight"/>
+                    <button name="revert_changes" type="object" string="Revert Changes"
+                            invisible="product_count == 0" class="oe_highlight"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="get_product_count"
+                        <button name="get_product"
                                 type="object"
                                 class="oe_stat_button"
-                                icon="fa-book" invisible="product_count == False">
+                                icon="fa-book" invisible="product_count == 0">
                             <field name="product_count" widget="statinfo" string="Products"/>
                         </button>
                     </div>
                     <group>
                         <field name="book_names"/>
-                        <field name="author"/>
+                        <field name="author_id"/>
                     </group>
                 </sheet>
             </form>
