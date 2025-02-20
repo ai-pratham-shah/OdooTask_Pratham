@@ -11,4 +11,4 @@ class LibraryBookTags(models.Model):
     _description = 'Book tag'
 
     # field's name
-    name = fields.Char(string='Book tag', required=True)
+    name = fields.Char('Book tag', required=True)

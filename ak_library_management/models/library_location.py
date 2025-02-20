@@ -15,10 +15,10 @@ class LibraryBookLocation(models.Model):
     location = fields.Char(string='Location')
     capacity = fields.Integer(string='Capacity')
     notes = fields.Char(string='Notes')
-    book_ids = fields.Many2many(comodel_name='product.template',
+    book_ids = fields.Many2many('product.template',
                                 domain=[('is_library_book', '=', True)] ,
                                 string='Books')
-    borrowed_books_count = fields.Integer(string="Borrowed Books Count",
+    borrowed_books_count = fields.Integer("Borrowed Books Count",
                                           compute='_compute_borrowed_books',
                                           store=False)
 

@@ -18,7 +18,7 @@ class ProductTemplate(models.Model):
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
         ('reserved', 'Reserved')
-    ], string='Status', default='available', tracking=True)
+    ], 'Status', default='available', tracking=True)
     reference = fields.Char(readonly=True)
 
     @api.model_create_multi

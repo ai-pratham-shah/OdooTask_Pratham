@@ -11,5 +11,5 @@ class LibraryBookCategory(models.Model):
     _description = 'Book Category'
 
     # field's name
-    name = fields.Char(string='Category Name', required=True)
+    name = fields.Char('Category Name', required=True)
     tag_ids = fields.Many2many('library.book.tags', string='Tags')

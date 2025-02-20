@@ -13,7 +13,7 @@ class LibraryMember(models.Model):
     _description = "Stores library member details"
 
     # field's name
-    name = fields.Char(string='Member name', required=True)
+    name = fields.Char('Member name', required=True)
     email = fields.Char(string='Email ID')
     phone = fields.Char(string='Contact Number')
     membership_date = fields.Date(string='Membership Start Date')
