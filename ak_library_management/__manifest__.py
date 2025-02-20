@@ -26,6 +26,7 @@
         'views/sale_order.xml',
         'views/sale_order_wizard.xml',
         'views/borrow_transaction_history.xml',
+        'views/customer.xml',
         'data/ir_sequence.xml',
     ],
     'installable': True,

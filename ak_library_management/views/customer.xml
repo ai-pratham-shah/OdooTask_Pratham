@@ -1,0 +1,14 @@
+<odoo>
+    <!-- Inherit the existing res.partner form view to add the new fields -->
+    <record id="view_partner_form_inherit_custom_fields" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.custom.fields</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="not_trust_worthy"/>
+                <field name="is_member"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

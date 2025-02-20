@@ -11,3 +11,4 @@ from . import res_user
 from . import sale_order
 from . import sale_order_wizard
 from . import borrow_transaction_history
+from . import customer
