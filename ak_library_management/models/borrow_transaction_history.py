@@ -16,19 +16,21 @@ class BorrowTransactionHistory(models.Model):
                                         default=fields.Datetime.now, required=True)
     borrow_end_date = fields.Datetime("Borrow End Date",
                                       required=True)
-    deposit_amount = fields.Float("Deposit Amount",compute="_compute_deposit_amount",store=True)
-
-    @api.depends('customer_id.is_member')
-    def _compute_deposit_amount(self):
-        """
-        Conditional deposit amount based on whether the customer is a member or not.
-        If the customer is a member, no deposit is required.
-        """
-        for record in self:
-            if record.customer_id.is_member:
-                record.deposit_amount = 0.0
-            else:
-                record.deposit_amount = 100.0  # Example deposit amount for non-members
+    deposit_amount = fields.Float("Deposit Amount")
+    is_member = fields.Boolean(related="customer_id.is_member")
+    # deposit_amount = fields.Float("Deposit Amount", compute="_compute_deposit_amount", store=True)
+    # @api.depends('customer_id.is_member')
+    # def _compute_deposit_amount(self):
+    #     """
+    #     Conditional deposit amount based on whether the customer is a member or not.
+    #     If the customer is a member, no deposit is required.
+    #     """
+    #     for record in self:
+    #         # Only visible and required if customer is not a member
+    #         if not record.customer_id.is_member:
+    #             record.deposit_amount = 100.0  # Set a default deposit amount if not a member
+    #         else:
+    #             record.deposit_amount = 0.0  # No deposit required for members
 
     @api.constrains('borrow_end_date','borrow_start_date')
     def _check_borrow_end_date(self):

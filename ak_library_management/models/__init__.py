@@ -12,3 +12,4 @@ from . import sale_order
 from . import sale_order_wizard
 from . import borrow_transaction_history
 from . import customer
+from . import borrow_book_wizard

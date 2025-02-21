@@ -20,7 +20,6 @@
         <field name="arch" type="xml">
             <list>
                 <field name="customer_id"/>
-
                 <field name="borrow_start_date"/>
                 <field name="borrow_end_date"/>
                 <field name="deposit_amount"/>
@@ -40,7 +39,7 @@
                         <field name="books" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="borrow_start_date"/>
                         <field name="borrow_end_date"/>
-                        <field name="deposit_amount" readonly="1"/>
+                        <field name="deposit_amount" invisible="is_member == True"/>
                     </group>
                 </sheet>
             </form>

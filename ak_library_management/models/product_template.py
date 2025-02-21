@@ -44,3 +44,13 @@ class ProductTemplate(models.Model):
         and this method is used in button in xml side
         """
         self.status = 'available'
+
+    def action_borrow_books(self):
+        """Open the borrow books wizard"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Borrow Books',
+            'res_model': 'borrow.books.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+        }

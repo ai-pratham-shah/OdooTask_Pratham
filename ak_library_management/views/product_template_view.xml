@@ -10,6 +10,7 @@
                 invisible="status != 'available'"/>
                 <button name="action_mark_available" string="Mark as Available" type="object"
                 invisible="status != 'borrowed'"/>
+                <button name="action_borrow_books" string="Borrow Book" type="object"/>
                 <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
                         options="{'clickable': '1'}" tracking="True"/>
             </xpath>

@@ -11,7 +11,7 @@ class LibraryBookLocation(models.Model):
     _description = 'Book Location'
 
     # field's name
-    name = fields.Char(string='Book Name')
+    name = fields.Char(string='Library Name')
     location = fields.Char(string='Location')
     capacity = fields.Integer(string='Capacity')
     notes = fields.Char(string='Notes')
