@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields,api
 
+
 class LibraryBookLocation(models.Model):
     """
     The LibraryBookLocation model is used to store detailed information
@@ -21,6 +22,7 @@ class LibraryBookLocation(models.Model):
     borrowed_books_count = fields.Integer("Borrowed Books Count",
                                           compute='_compute_borrowed_books',
                                           store=False)
+    _sql_constraints = [('name_uniq', "unique(name)", "Library name already exists.")]
 
     @api.depends('book_ids')
     def _compute_borrowed_books(self):

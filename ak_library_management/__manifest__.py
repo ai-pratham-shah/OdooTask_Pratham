@@ -27,7 +27,7 @@
         'views/sale_order_wizard.xml',
         'views/borrow_transaction_history.xml',
         'views/customer.xml',
-        'views/borrow_book_wizard.xml',
+        'views/borrow_books_warning_wizard.xml',
         'data/ir_sequence.xml',
     ],
     'installable': True,

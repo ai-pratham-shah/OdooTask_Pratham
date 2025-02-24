@@ -50,7 +50,7 @@ class ProductTemplate(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Borrow Books',
-            'res_model': 'borrow.books.wizard',
+            'res_model': 'borrow.transaction.history',
             'view_mode': 'form',
             'target': 'new',
         }
