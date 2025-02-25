@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields,api
+
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
     """
@@ -17,7 +19,8 @@ class ProductTemplate(models.Model):
     status = fields.Selection([
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
-        ('reserved', 'Reserved')
+        ('reserved', 'Reserved'),
+        ('unavailable','Unavailable')
     ], 'Status', default='available', tracking=True)
     reference = fields.Char(readonly=True)
 
@@ -45,6 +48,29 @@ class ProductTemplate(models.Model):
         """
         self.status = 'available'
 
+    def _compute_display_name(self):
+        """
+        override compute display name and change book name format to
+        [author_name]book_name.
+        """
+        for record in self:
+            # Use f-string for better readability and performance
+            if self._context.get('add_author') and record.author:
+                record.display_name = f"[{record.author}] {record.name}"
+            else:
+                record.display_name = record.name
+    @api.model
+    @api.readonly
+    def name_search(self, name='', args=None, operator='ilike', limit=None):
+        """Override name_search method to search book by author name."""
+        # Ensure 'args' is a list if it is None
+        args = args or []
+        if name:
+            # Add condition to search by author
+            args.append(('author', operator, name))
+
+        # Call the parent method with updated arguments
+        return super().name_search(name='', args=args, operator=operator, limit=limit)
     def action_borrow_books(self):
         """Open the borrow books wizard"""
         return {
@@ -54,3 +80,4 @@ class ProductTemplate(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
+

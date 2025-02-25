@@ -10,11 +10,15 @@ class LibraryBookLocation(models.Model):
     """
     _name = 'library.book.location'
     _description = 'Book Location'
+    _inherit = 'mail.thread'
 
     # field's name
-    name = fields.Char(string='Library Name')
-    location = fields.Char(string='Location')
+    name = fields.Char(string='Library Name', tracking=True)
+    location = fields.Char(string='Location', tracking=True)
     capacity = fields.Integer(string='Capacity')
+    librarian = fields.Many2one('res.users',
+                                string="Librarian",
+                                tracking=True)
     notes = fields.Char(string='Notes')
     book_ids = fields.Many2many('product.template',
                                 domain=[('is_library_book', '=', True)] ,

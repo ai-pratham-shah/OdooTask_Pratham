@@ -36,7 +36,8 @@
                 <sheet>
                     <group>
                         <field name="customer_id"/>
-                        <field name="books_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="books_ids" widget="many2many_tags"
+                               options="{'color_field': 'color'}" context="{'add_author':True}"/>
                         <field name="borrow_start_date"/>
                         <field name="borrow_end_date"/>
                         <field name="deposit_amount" invisible="is_member == True"/>
@@ -64,4 +65,3 @@
 </odoo>
 
 
-<!--<filter string="Member" name="filter_member" domain="[('customer_id.is_member', '=', True)]"/>-->

@@ -16,7 +16,7 @@ class BorrowTransactionHistory(models.Model):
                                         default=fields.Datetime.now, required=True)
     borrow_end_date = fields.Datetime("Borrow End Date",
                                       required=True)
-    deposit_amount = fields.Float("Deposit Amount")
+    deposit_amount = fields.Float("Deposit Amount", required=True)
     is_member = fields.Boolean(related="customer_id.is_member")
 
     @api.constrains('borrow_end_date','borrow_start_date')
@@ -24,9 +24,8 @@ class BorrowTransactionHistory(models.Model):
         """
         Ensures that the borrow_end_date is greater than or equal to the borrow_start_date.
         """
-        for record in self:
-            if record.borrow_end_date < record.borrow_start_date:
-                raise ValidationError("Borrow End Date must be greater than or equal to Borrow Start Date.")
+        if self.borrow_end_date < self.borrow_start_date:
+             raise ValidationError("Borrow End Date must be greater than or equal to Borrow Start Date.")
 
     def action_confirm(self):
         """
@@ -34,8 +33,7 @@ class BorrowTransactionHistory(models.Model):
         - If any warning conditions are met, a warning wizard is shown.
         - If no warnings exist, it creates a borrow transaction and updates stock.
         """
-        # Check 1: Customer Trustworthiness
-        if self.customer_id.not_trust_worthy:
+        def show_warning_wizard(message):
             return {
                 'type': 'ir.actions.act_window',
                 'name': 'Warning',
@@ -44,24 +42,24 @@ class BorrowTransactionHistory(models.Model):
                 'target': 'new',
                 'context': {
                     'default_borrow_wizard_id': self.id,
-                    'default_message': '\n'"Customer is not trustworthy. Are you sure you want to continue?",
+                    'default_message': message,
                 }
             }
+
+        # Check 1: Customer Trustworthiness
+        if self.customer_id.not_trust_worthy:
+            return show_warning_wizard(
+                "Customer is not trustworthy. Are you sure you want to continue?"
+            )
+
         # Check 2: Product Availability
         out_of_stock_books = self.books_ids.filtered(lambda book: book.qty_available <= 0)
         if out_of_stock_books:
             out_of_stock_names = ', '.join(out_of_stock_books.mapped('name'))
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Warning',
-                'res_model': 'borrow.books.warning.wizard',
-                'view_mode': 'form',
-                'target': 'new',
-                'context': {
-                    # 'default_borrow_wizard_id': self.id,
-                    'default_message': '\n'f"The following books are out of stock: {out_of_stock_names}. Are you sure you want to continue?",
-                }
-            }
+            return show_warning_wizard(
+                f"The following books are out of stock: {out_of_stock_names}. Are you sure you want to continue?"
+            )
+
         # Check 3: Maximum Books Borrowed
         if len(self.books_ids) > 5:
             # Case A: Check for existing open borrow transactions
@@ -71,33 +69,16 @@ class BorrowTransactionHistory(models.Model):
             ])
 
             if open_borrow_transactions:
-                # Calculate total books in open borrow transactions
                 open_books_count = sum(len(transaction.books_ids) for transaction in open_borrow_transactions)
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Warning',
-                    'res_model': 'borrow.books.warning.wizard',
-                    'view_mode': 'form',
-                    'target': 'new',
-                    'context': {
-                        'default_message': '\n' f"Customer already has {len(open_borrow_transactions)} open borrow transactions with "
-                                            f"{open_books_count} books. Are you sure you want to borrow more books?",
-                        }
-                    }
-            else:
-                # Case B: No open borrow transactions exist
-                return {
-                    'type': 'ir.actions.act_window',
-                    'name': 'Warning',
-                    'res_model': 'borrow.books.warning.wizard',
-                    'view_mode': 'form',
-                    'target': 'new',
-                    'context': {
-                        'default_message': '\n' "Are you sure you want to allow borrowing more than 5 books for this customer?",
-                    }
-                }
-        for book in self.books_ids:
-            if book.qty_available > 0:  # Ensure stock is available
-                book.qty_available -= 1
-
-        return {'type': 'ir.actions.act_window_close'}
+                return show_warning_wizard(
+                    f"Customer already has {len(open_borrow_transactions)} open borrow transactions with "
+                    f"{open_books_count} books. Are you sure you want to borrow more books?"
+                )
+        else:
+            # Case B: No open borrow transactions exist
+            return show_warning_wizard(
+                "Are you sure you want to allow borrowing more than 5 books for this customer?"
+            )
+        for record in self.books_ids:
+            if record.qty_available:
+                record.qty_available -= 1

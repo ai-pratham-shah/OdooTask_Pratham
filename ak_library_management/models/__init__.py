@@ -11,6 +11,5 @@ from . import res_user
 from . import sale_order
 from . import sale_order_wizard
 from . import borrow_transaction_history
-from . import customer
-# from . import borrow_book_wizard
+from . import res_partner
 from . import borrow_books_warning_wizard

@@ -26,7 +26,7 @@
         'views/sale_order.xml',
         'views/sale_order_wizard.xml',
         'views/borrow_transaction_history.xml',
-        'views/customer.xml',
+        'views/res_partner.xml',
         'views/borrow_books_warning_wizard.xml',
         'data/ir_sequence.xml',
     ],

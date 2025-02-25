@@ -11,7 +11,7 @@
                 <button name="action_mark_available" string="Mark as Available" type="object"
                 invisible="status != 'borrowed'"/>
                 <button name="action_borrow_books" string="Borrow Book" type="object"/>
-                <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
+                <field name="status" widget="statusbar" statusbar_visible="available,borrowed,unavailable"
                         options="{'clickable': '1'}" tracking="True"/>
             </xpath>
             <xpath expr="//field[@name='standard_price']" position="attributes">
