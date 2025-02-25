@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields,api
+from datetime import date,timedelta
+from odoo.exceptions import ValidationError
 
 
 class ProductTemplate(models.Model):
@@ -34,12 +36,26 @@ class ProductTemplate(models.Model):
         print('This is default_code:',res.default_code)
         return res
 
+    @api.constrains('unavailable')
     def action_mark_borrowed(self):
         """
         This method is created for marked book as borrowed
         and this method is used in button in xml side
         """
-        self.status = 'borrowed'
+        # self.status = 'borrowed'
+        for record in self:
+            if record.status == 'unavailable':
+                raise ValidationError("The book is marked as 'Unavailable' and cannot be borrowed.")
+            record.status = 'borrowed'
+            record.available = False
+            record.message_post(
+                body=f"The book was borrowed by {self.env.user.name} on {fields.Datetime.now()}",
+                subject="Book Borrowed",
+            )
+        # date_deadline = date.today() + timedelta(days=10)
+        # return super().activity_schedule(date_deadline=date_deadline,
+        #                                  summary=f'book borrowed by {self.env.user.name} '
+        #                                          f'and return date {date_deadline}')
 
     def action_mark_available(self):
         """

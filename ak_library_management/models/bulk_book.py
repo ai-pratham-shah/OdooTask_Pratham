@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class BulkUploadBooks(models.TransientModel):
@@ -54,6 +55,12 @@ class BulkUploadBooks(models.TransientModel):
                         'author': self.author_id.name,
                     })
 
+                self.env['bus.bus']._sendone(
+                    self.env.user.partner_id, 'simple_notification', {
+                        'type': 'success',
+                        'message': f"{book_name} is created.",
+                    })
+
     def revert_changes(self):
         """
         Deletes the products created from the `book_names` field
@@ -64,6 +71,13 @@ class BulkUploadBooks(models.TransientModel):
         """
         single_book = self.book_names.split(',')
         self.env["product.template"].search([("name", "=", single_book)]).unlink()
+        for book_name in single_book:
+            book_name = book_name.strip()
+            self.env['bus.bus']._sendone(
+                self.env.user.partner_id, 'simple_notification', {
+                    'type': 'success',
+                    'message': f"{book_name} is deleted.",
+                })
 
     def get_product(self):
         """

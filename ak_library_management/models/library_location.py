@@ -16,7 +16,7 @@ class LibraryBookLocation(models.Model):
     name = fields.Char(string='Library Name', tracking=True)
     location = fields.Char(string='Location', tracking=True)
     capacity = fields.Integer(string='Capacity')
-    librarian = fields.Many2one('res.users',
+    librarian_id = fields.Many2one('res.users',
                                 string="Librarian",
                                 tracking=True)
     notes = fields.Char(string='Notes')
@@ -51,3 +51,13 @@ class LibraryBookLocation(models.Model):
             'domain': [('status', '=', 'borrowed'),('id','in',self.book_ids.ids)],
             'context': {'default_is_library_book': True},
         }
+
+    @api.constrains('book_ids')
+    def _check_book_ids(self):
+        """
+        send notification to librarian if books is add or delete in many2many field.
+        """
+        self.env['bus.bus']._sendone(self.librarian_id.partner_id, 'simple_notification', {
+            'type': 'success',
+            'message': f"In library[{self.name}] books list are updated.",
+        })
