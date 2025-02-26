@@ -55,9 +55,10 @@ class LibraryBookLocation(models.Model):
     @api.constrains('book_ids')
     def _check_book_ids(self):
         """
-        send notification to librarian if books is add or delete in many2many field.
+        This function send notification to librarian
+        whenever book is delete or add in M2M field
         """
         self.env['bus.bus']._sendone(self.librarian_id.partner_id, 'simple_notification', {
             'type': 'success',
-            'message': f"In library[{self.name}] books list are updated.",
+            'message': f"In library[{self.name}] books list updated.",
         })

@@ -9,6 +9,7 @@
                 <field name="location"/>
                 <field name="capacity"/>
                 <field name="notes"/>
+                <field name="librarian_id"/>
             </list>
         </field>
     </record>
@@ -30,6 +31,7 @@
                         <field name="location"/>
                         <field name="capacity"/>
                         <field name="notes"/>
+                        <field name="librarian_id"/>
                     </group>
                     <!-- Notebook tab for Books -->
                     <notebook>

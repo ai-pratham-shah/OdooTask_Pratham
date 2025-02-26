@@ -22,8 +22,9 @@ class ProductTemplate(models.Model):
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
         ('reserved', 'Reserved'),
-        ('unavailable','Unavailable')
-    ], 'Status', default='available', tracking=True)
+        ('unavailable','Unavailable'),
+        ('returned','Returned')
+    ], 'Status', tracking=True)
     reference = fields.Char(readonly=True)
 
     @api.model_create_multi
@@ -43,19 +44,17 @@ class ProductTemplate(models.Model):
         and this method is used in button in xml side
         """
         # self.status = 'borrowed'
-        for record in self:
+        for record in self.filtered(lambda r: r.status != 'borrowed'):
             if record.status == 'unavailable':
                 raise ValidationError("The book is marked as 'Unavailable' and cannot be borrowed.")
-            record.status = 'borrowed'
-            record.available = False
             record.message_post(
                 body=f"The book was borrowed by {self.env.user.name} on {fields.Datetime.now()}",
                 subject="Book Borrowed",
             )
-        # date_deadline = date.today() + timedelta(days=10)
-        # return super().activity_schedule(date_deadline=date_deadline,
-        #                                  summary=f'book borrowed by {self.env.user.name} '
-        #                                          f'and return date {date_deadline}')
+        date_deadline = date.today() + timedelta(days=10)
+        return super().activity_schedule(date_deadline=date_deadline,
+                                         summary=f'book borrowed by {self.env.user.name} '
+                                                 f'and return date {date_deadline}')
 
     def action_mark_available(self):
         """
@@ -76,7 +75,6 @@ class ProductTemplate(models.Model):
             else:
                 record.display_name = record.name
     @api.model
-    @api.readonly
     def name_search(self, name='', args=None, operator='ilike', limit=None):
         """Override name_search method to search book by author name."""
         # Ensure 'args' is a list if it is None
@@ -97,3 +95,24 @@ class ProductTemplate(models.Model):
             'target': 'new',
         }
 
+    def action_borrow_book_returned(self):
+        """
+        Using this method can change the state into returned.
+        """
+        self.write({'status': 'returned'})
+        self.message_post(
+            body=f'{self.env.user.name} returned the book. Date: {date.today()}',
+            subject="Book Returned",
+            message_type="comment"
+        )
+
+    @api.constrains('status')
+    def _check_return_book(self):
+        """
+        Using this function we can generate simple
+        notification when state of book is change.
+        """
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': 'warning',
+            'message': f"{self.name} book state is changed to {self.status}",
+        })
