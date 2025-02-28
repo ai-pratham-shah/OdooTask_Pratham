@@ -10,7 +10,7 @@ class LibraryBookLocation(models.Model):
     """
     _name = 'library.book.location'
     _description = 'Book Location'
-    _inherit = 'mail.thread'
+    _inherit = ['mail.thread']
 
     # field's name
     name = fields.Char(string='Library Name', tracking=True)

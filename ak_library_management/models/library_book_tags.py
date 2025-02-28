@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields
 
+
 class LibraryBookTags(models.Model):
     """
     The LibraryBookTags model is used to store detailed information

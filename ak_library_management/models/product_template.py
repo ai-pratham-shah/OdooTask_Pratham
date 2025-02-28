@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 from odoo import models, fields,api
 from datetime import date,timedelta
 from odoo.exceptions import ValidationError
@@ -24,7 +25,7 @@ class ProductTemplate(models.Model):
         ('reserved', 'Reserved'),
         ('unavailable','Unavailable'),
         ('returned','Returned')
-    ], 'Status', tracking=True)
+    ], 'Status', tracking=True, default='available')
     reference = fields.Char(readonly=True)
 
     @api.model_create_multi
@@ -114,5 +115,5 @@ class ProductTemplate(models.Model):
         """
         self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
             'type': 'warning',
-            'message': f"{self.name} book state is changed to {self.status}",
+            'message': f"{self.name} product state is changed to {self.status}",
         })

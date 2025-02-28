@@ -2,6 +2,7 @@
 
 from odoo import models, fields,api
 
+
 class LibraryMember(models.Model):
     """
     The LibraryMember model is used to store detailed information

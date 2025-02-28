@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields
+
+
 class LibraryBookCategory(models.Model):
     """
     The LibraryBookCategory model is used to store detailed

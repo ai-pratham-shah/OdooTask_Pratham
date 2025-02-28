@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields
+
+
 class SaleOrderApprovalWizard(models.TransientModel):
     """
     To show dynamic message to the user in wizard.

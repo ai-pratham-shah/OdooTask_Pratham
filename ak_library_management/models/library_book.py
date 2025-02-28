@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields
 
+
 class LibraryBook(models.Model):
     """
     The LibraryBook model is used to store detailed information about books in the library system.
