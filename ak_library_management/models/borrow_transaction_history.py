@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import timedelta
 
 
 class BorrowTransactionHistory(models.Model):
     _name = 'borrow.transaction.history'
     _description = 'Borrow Transaction History'
+    _inherit = ['mail.thread']
     _rec_name = 'customer_id'
 
     #fields
@@ -91,3 +93,63 @@ class BorrowTransactionHistory(models.Model):
         for record in self.books_ids:
             if record.qty_available:
                 record.qty_available -= 1
+
+    def send_book_return_reminders(self):
+        """
+        Scheduled action that runs daily and sends reminders for books
+        that are due in exactly 2 days.
+        """
+        # today = fields.Date.today()
+        # reminder_date = today + timedelta(days=2)  # Correct reminder date
+        #
+        # transactions = self.search([('borrow_end_date', '=', reminder_date)])
+        #
+        # for transaction in transactions:
+        #     customer = transaction.customer_id
+        #     book_names = ', '.join(transaction.books_ids.mapped('name'))
+        #
+        #     # Create Notification Message
+        #     message = (f"Reminder: Your borrowed books ({book_names}) are due "
+        #                f"for return on {transaction.borrow_end_date.strftime('%d-%m-%Y')}."
+        #                f"Please return them on time to avoid penalties.")
+        #
+        #     # Send In-App Notification
+        #     transaction.message_post(body=message, partner_ids=[customer.id])
+
+            # self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            #     'type': 'warning',
+            #     'message': f"{self.name} product state is changed to {self.status}",
+            # })
+
+        """
+            Scheduled action that runs daily and sends reminders for books
+            that are due in exactly 2 days.
+        """
+        today = fields.Date.today()
+        reminder_date = today + timedelta(days=2)  # Correct reminder date
+
+        transactions = self.search([('borrow_end_date', '=', reminder_date)])
+
+        for transaction in transactions:
+            customer = transaction.customer_id
+            book_names = ', '.join(transaction.books_ids.mapped('name'))
+
+            # Create Notification Message
+            message = (f"Reminder: Your borrowed books ({book_names}) are due "
+                        f"for return on {transaction.borrow_end_date.strftime('%d-%m-%Y')}."
+                        f" Please return them on time to avoid penalties.")
+
+            # Sending the notification as a list-formatted message
+            notification_data = {
+                'type': 'warning',
+                'message': message,
+                'title': "Book Return Reminder",
+                'partner_ids': [customer.id],
+            }
+
+            # Use the Odoo notification bus to send the formatted notification
+            self.env['bus.bus'].sendone(
+                customer.partner_id,  # Send to the customer's partner_id
+                'simple_notification',  # Message type
+                notification_data  # Notification content
+            )

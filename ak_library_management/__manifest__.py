@@ -29,6 +29,7 @@
         'wizard/sale_order_wizard.xml',
         'wizard/borrow_books_warning_wizard.xml',
         'data/ir_sequence.xml',
+        # 'data/ir_cron.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',
