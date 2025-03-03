@@ -117,3 +117,6 @@ class ProductTemplate(models.Model):
             'type': 'warning',
             'message': f"{self.name} product state is changed to {self.status}",
         })
+
+    def mark_as_returned(self):
+        self.write({'status': 'returned'})

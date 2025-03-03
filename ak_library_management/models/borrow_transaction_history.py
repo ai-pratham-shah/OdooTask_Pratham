@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from datetime import timedelta
+from datetime import timedelta, date
 
 
 class BorrowTransactionHistory(models.Model):
@@ -16,9 +16,9 @@ class BorrowTransactionHistory(models.Model):
     books_ids = fields.Many2many('product.template',
                         string="Books", required=True,
                         domain="[('is_library_book' ,'=', True)]")
-    borrow_start_date = fields.Datetime(string="Borrow Start Date",
+    borrow_start_date = fields.Date(string="Borrow Start Date",
                                         default=fields.Datetime.now, required=True)
-    borrow_end_date = fields.Datetime("Borrow End Date",
+    borrow_end_date = fields.Date("Borrow End Date",
                                       required=True)
     deposit_amount = fields.Float("Deposit Amount", required=True)
     is_member = fields.Boolean(related="customer_id.is_member")
@@ -100,56 +100,22 @@ class BorrowTransactionHistory(models.Model):
         that are due in exactly 2 days.
         """
         # today = fields.Date.today()
-        # reminder_date = today + timedelta(days=2)  # Correct reminder date
+        # reminder_date = today + timedelta(days=2)
         #
+        # # reminder_date = date.today() + timedelta(days=2)  # Correct reminder date
+        # print('reminder_date::::',reminder_date)
         # transactions = self.search([('borrow_end_date', '=', reminder_date)])
-        #
+        # print('transactions::::',transactions)
         # for transaction in transactions:
-        #     customer = transaction.customer_id
-        #     book_names = ', '.join(transaction.books_ids.mapped('name'))
-        #
-        #     # Create Notification Message
-        #     message = (f"Reminder: Your borrowed books ({book_names}) are due "
-        #                f"for return on {transaction.borrow_end_date.strftime('%d-%m-%Y')}."
-        #                f"Please return them on time to avoid penalties.")
-        #
-        #     # Send In-App Notification
-        #     transaction.message_post(body=message, partner_ids=[customer.id])
-
-            # self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
-            #     'type': 'warning',
-            #     'message': f"{self.name} product state is changed to {self.status}",
-            # })
-
-        """
-            Scheduled action that runs daily and sends reminders for books
-            that are due in exactly 2 days.
-        """
-        today = fields.Date.today()
-        reminder_date = today + timedelta(days=2)  # Correct reminder date
-
-        transactions = self.search([('borrow_end_date', '=', reminder_date)])
-
-        for transaction in transactions:
-            customer = transaction.customer_id
-            book_names = ', '.join(transaction.books_ids.mapped('name'))
-
-            # Create Notification Message
-            message = (f"Reminder: Your borrowed books ({book_names}) are due "
-                        f"for return on {transaction.borrow_end_date.strftime('%d-%m-%Y')}."
-                        f" Please return them on time to avoid penalties.")
-
-            # Sending the notification as a list-formatted message
-            notification_data = {
-                'type': 'warning',
-                'message': message,
-                'title': "Book Return Reminder",
-                'partner_ids': [customer.id],
-            }
-
-            # Use the Odoo notification bus to send the formatted notification
-            self.env['bus.bus'].sendone(
-                customer.partner_id,  # Send to the customer's partner_id
-                'simple_notification',  # Message type
-                notification_data  # Notification content
-            )
+        #     self.env['bus.bus']._sendone(transaction.customer_id, 'simple_notification', {
+        #         'type': 'warning',
+        #         'message': f"reminder: your book return date is {transaction.borrow_end_date}",
+        #     })
+        all_recd = self.search([])
+        for record in all_recd:
+            date_deadline = record.borrow_start_date + timedelta(days=2)
+            if record.borrow_end_date == date_deadline:
+                self.env['bus.bus']._sendone(record.customer_id, 'simple_notification', {
+                    'type': 'warning',
+                    'message': f"reminder: your book return date is {record.borrow_end_date}",
+                })
