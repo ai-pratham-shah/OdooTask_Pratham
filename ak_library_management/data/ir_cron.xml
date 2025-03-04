@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<!--    Schedule action for book return reminder-->
     <record id="ir_cron_book_return_reminder" model="ir.cron">
         <field name="name">Book Return Reminder</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="code">model.send_book_return_reminders()</field>
-<!--        <field name="user_id" ref="base.user_root"/>-->
         <field name="state">code</field>
         <field name="interval_number">1</field>
         <field name="interval_type">minutes</field>
-<!--        <field name="nextcall" eval="(context_today() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>-->
-
     </record>
-    <record id="ir_actions_borrow_transaction_history" model="ir.actions.server">
-        <field name="name">Change Book status</field>
+<!--    Action server for mark book as returned-->
+    <record id="action_mark_books_as_returned" model="ir.actions.server">
+        <field name="name">Mark Books as Returned</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="binding_model_id" ref="model_borrow_transaction_history"/>
         <field name="binding_view_types">list,form</field>
         <field name="state">code</field>
-        <field name="code">
-            for rec in records:
-                for book in rec.books_ids:
-                    env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
-                    'type': 'warning',
-                    'message': f"{rec.customer_id.name} your return book has been recorded.",
-                    })
-                    book.mark_as_returned()
-        </field>
+        <field name="code"><![CDATA[
+            records.mark_books_as_returned()
+        ]]></field>
     </record>
-
+<!--    Action server for prevent over borrowing -->
+    <record id="action_prevent_over_borrowing" model="ir.actions.server">
+        <field name="name">Prevent Over-Borrowing</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+            record.check_overdue_books_action()
+        ]]></field>
+    </record>
+<!--    Automation rule to prevent over borrowing and link above server action-->
+    <record id="automation_rule_prevent_over_borrowing" model="base.automation">
+        <field name="name">Prevent Over-Borrowing</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="action_server_ids" eval="[(4, ref('action_prevent_over_borrowing'))]"/>
+    </record>
 </odoo>
