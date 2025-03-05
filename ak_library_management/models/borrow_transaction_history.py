@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
-from datetime import timedelta, date
+from datetime import timedelta, date, datetime
 
 
 class BorrowTransactionHistory(models.Model):
@@ -71,7 +71,7 @@ class BorrowTransactionHistory(models.Model):
             )
 
         # Check 3: Maximum Books Borrowed
-        if len(self.books_ids) > 5:
+        if len(self.books_ids) >= 5:
             # Case A: Check for existing open borrow transactions
             open_borrow_transactions = self.env['borrow.transaction.history'].search([
                 ('customer_id', '=', self.customer_id.id),
@@ -174,3 +174,20 @@ class BorrowTransactionHistory(models.Model):
                         f"{rec.customer_id.name} has overdue books and cannot borrow new ones "
                         f"until all overdue items are returned."
                     )
+
+    def send_overdue_book_reminder(self):
+        """Function to check for overdue books and send reminder emails to customers"""
+        today = datetime.today().date()
+        overdue_books = self.search([
+            ('borrow_end_date', '<', today),  # Check if the borrow end date is in the past
+            ('is_returned', '=', False)  # Check if the book has not been returned
+        ])
+
+        for record in overdue_books:
+            # Prepare the email content
+            email_template = self.env.ref('ak_library_management.book_return_reminder_email_template')
+            if email_template:
+                # Send the email
+                email_template.send_mail(record.id, force_send=True)
+            else:
+                raise UserError("Email template for overdue book reminder is not defined!")

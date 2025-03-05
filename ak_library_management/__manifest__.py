@@ -30,7 +30,7 @@
         'wizard/borrow_books_warning_wizard.xml',
         'data/ir_sequence.xml',
         'data/ir_cron.xml',
-        'data/mail_template.xml',
+        'data/mail_template_data.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',

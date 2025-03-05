@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <!-- Email Template for Overdue Book Reminder -->
+        <record id="book_return_reminder_email_template" model="mail.template">
+            <field name="name">Overdue Book Reminder</field>
+            <field name="model_id" ref="model_borrow_transaction_history"/>
+            <field name="email_from">{{ (user.email) }}</field>
+            <field name="partner_to">{{ object.customer_id.id }}</field>
+            <field name="subject">Reminder: Please Return Your Overdue Book</field>
+            <field name="description">Reminder for customers about overdue books</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <t t-if="object.customer_id.parent_id">
+                            <t t-out="object.customer_id.name or ''"/> (<t t-out="object.customer_id.parent_id.name or ''"/>),
+                        </t>
+                        <t t-else="">
+                            <t t-out="object.customer_id.name or ''"/>,
+                        </t>
+                        <br /><br />
+                        This is a reminder that the following book(s) you borrowed from the library are overdue:
+                        <ul>
+                            <t t-foreach="object.books_ids" t-as="book">
+                                <li><t t-out="book.name"/></li>
+                            </t>
+                        </ul>
+                        <p>Borrowed on: <t t-out="object.borrow_start_date"/></p>
+                        <p>Due Date: <t t-out="object.borrow_end_date"/></p>
+                        <p>We kindly ask you to return the book(s) as soon as possible. Failure to do so may result in late fees.</p>
+                        <br />
+                        <p>Thank you for your understanding.</p>
+                        <p>Best regards,</p>
+                        <p>The Library Team</p>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

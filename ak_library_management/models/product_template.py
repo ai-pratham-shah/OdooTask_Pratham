@@ -44,7 +44,7 @@ class ProductTemplate(models.Model):
         This method is created for marked book as borrowed
         and this method is used in button in xml side
         """
-        # self.status = 'borrowed'
+        self.status = 'borrowed'
         for record in self.filtered(lambda r: r.status != 'borrowed'):
             if record.status == 'unavailable':
                 raise ValidationError("The book is marked as 'Unavailable' and cannot be borrowed.")
@@ -119,4 +119,13 @@ class ProductTemplate(models.Model):
         })
 
     def mark_as_returned(self):
+        """
+        Marks the book or transaction as 'returned' by updating the status field.
+
+        This method changes the status of the current record to 'returned',
+        indicating that the borrowed book has been returned to the library.
+
+        Returns:
+            bool: True if the status is successfully updated, otherwise False.
+        """
         self.write({'status': 'returned'})
