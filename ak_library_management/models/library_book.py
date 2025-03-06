@@ -23,4 +23,3 @@ class LibraryBook(models.Model):
                              string='Book Availability')
     description = fields.Text(string='BookSummary')
     library_id = fields.Many2one('library.book.location', string='Book Location')
-

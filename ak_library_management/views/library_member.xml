@@ -19,6 +19,10 @@
         <field name="model">library.member</field>
         <field name="arch" type="xml">
             <form string="Member">
+                <header>
+                    <!-- Send by Email button to trigger the wizard -->
+                    <button name="action_send_renewal_email" type="object" string="Send by Email" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <group name="col2">
                         <group>

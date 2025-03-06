@@ -10,4 +10,5 @@ class Users(models.Model):
     """
     _inherit = 'res.users'
 
-    is_manager = fields.Boolean(string="Is Manager")
+    is_manager = fields.Boolean("Is Manager")
+    is_librarian = fields.Boolean("Is Librarian")

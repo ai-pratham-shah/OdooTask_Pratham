@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.1.1',
+    'version': '18.0.0.0.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """

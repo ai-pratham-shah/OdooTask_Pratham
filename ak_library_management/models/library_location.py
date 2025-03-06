@@ -26,6 +26,7 @@ class LibraryBookLocation(models.Model):
     borrowed_books_count = fields.Integer("Borrowed Books Count",
                                           compute='_compute_borrowed_books',
                                           store=False)
+
     _sql_constraints = [('name_uniq', "unique(name)", "Library name already exists.")]
 
     @api.depends('book_ids')
@@ -37,7 +38,7 @@ class LibraryBookLocation(models.Model):
             record.borrowed_books_count = (
                 self.env['product.template'].search_count([('status', '=', 'borrowed'),
                                                            ('id', 'in', record.book_ids.ids)
-]))
+            ]))
 
     def action_view_borrowed_books(self):
         """

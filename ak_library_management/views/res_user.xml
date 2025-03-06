@@ -19,6 +19,7 @@
             <field name="arch" type="xml">
                     <xpath expr="//field[@name='company_id']" position="after">
                         <field name="is_manager"/>
+                        <field name="is_librarian"/>
                     </xpath>
             </field>
     </record>

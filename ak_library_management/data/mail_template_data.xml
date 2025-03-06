@@ -36,5 +36,24 @@
                 </div>
             </field>
         </record>
+        <!-- Email Template for membership renewal Reminder -->
+        <record id="library_membership_renewal_reminder_email_template" model="mail.template">
+            <field name="name">Membership renewal</field>
+            <field name="model_id" ref="model_library_member"/>
+            <field name="email_from">{{ user.company_id.email }}</field>
+            <field name="partner_to">{{ object.email }}</field>
+            <field name="subject">Reminder: Membership renewal</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="object.name"/>,
+                        <br/><br/>
+                        This is a reminder that your library membership is about to expire
+                        Please renew your membership to continue enjoying our services.
+                        <br /><br />
+                    </p>
+                </div>
+            </field>
+        </record>
     </data>
 </odoo>
