@@ -10,7 +10,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'product', 'web', 'sale_management'
+        'stock', 'web', 'sale_management'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -31,6 +31,8 @@
         'data/ir_sequence.xml',
         'data/ir_cron.xml',
         'data/mail_template_data.xml',
+        'reports/library_location_report.xml',
+        'reports/library_location_report_action.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',

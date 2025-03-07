@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields,api
+from datetime import datetime
 
 
 class LibraryBookLocation(models.Model):
@@ -63,3 +64,19 @@ class LibraryBookLocation(models.Model):
             'type': 'success',
             'message': f"In library[{self.name}] books list updated.",
         })
+
+    # def get_report_values(self):
+    #     """
+    #     Returns data required for the Library Report, including:
+    #     - Library Name
+    #     - Librarian Name
+    #     - Total Borrowed Books
+    #     - List of Books (with Price, Published Date, Author)
+    #     - Current Date in "DD/Mon/YYYY" format
+    #
+    #     :return: Dictionary with report values
+    #     """
+    #     return {
+    #         'docs': self,
+    #         'current_date': datetime.today().strftime('%d/%b/%Y'),
+    #     }

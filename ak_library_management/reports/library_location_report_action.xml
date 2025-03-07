@@ -1,0 +1,25 @@
+<!--<odoo>-->
+<!--    &lt;!&ndash;    Report action library&ndash;&gt;-->
+<!--    <record id="action_library_report" model="ir.actions.report">-->
+<!--        <field name="name">library Report</field>-->
+<!--        <field name="model">library.book.location</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">ak_library_management.library_location_report</field>-->
+<!--        <field name="report_file">ak_library_management.library_report_template</field>-->
+<!--        <field name="binding_model_id" ref="model_library.book.location"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
+<!--</odoo>-->
+
+<odoo>
+    <!--    Report Function in Expense -->
+    <record id="action_expense_request_report" model="ir.actions.report">
+        <field name="name">library Report</field>
+        <field name="model">library.book.location</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ak_library_management.library_location_report</field>
+        <field name="report_file">ak_library_management.library_location_report</field>
+        <field name="binding_model_id" ref="model_library_book_location"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
