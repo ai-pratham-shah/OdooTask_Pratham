@@ -10,3 +10,5 @@ from . import res_user
 from . import sale_order
 from . import borrow_transaction_history
 from . import res_partner
+from . import stock_warehouse
+from . import res_config_setting

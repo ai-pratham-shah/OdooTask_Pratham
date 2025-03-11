@@ -10,7 +10,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'stock', 'web', 'sale_management'
+        'stock', 'web', 'sale_management','base_automation','hr'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -25,6 +25,8 @@
         'views/sale_order.xml',
         'views/borrow_transaction_history.xml',
         'views/res_partner.xml',
+        'views/stock_warehouse.xml',
+        'views/res_config_setting.xml',
         'wizard/bulk_book.xml',
         'wizard/sale_order_wizard.xml',
         'wizard/borrow_books_warning_wizard.xml',
@@ -33,6 +35,7 @@
         'data/mail_template_data.xml',
         'reports/library_location_report.xml',
         'reports/library_location_report_action.xml',
+        'security/security.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',

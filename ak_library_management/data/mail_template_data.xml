@@ -54,6 +54,7 @@
                     </p>
                 </div>
             </field>
+            <field name="report_template_ids" eval="[(4, ref('ak_library_management.action_report_library_member'))]"/>
         </record>
     </data>
 </odoo>

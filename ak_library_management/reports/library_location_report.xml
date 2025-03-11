@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <!--    Report Template-->
+    <!--    Report Template for library location -->
     <template id="library_location_report">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
@@ -19,25 +19,17 @@
                                     <strong>Date:</strong>
                                     <p t-out="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
                                 </div>
-
-                                <!-- Library Name -->
-                                <div class="col-3">
-                                    <strong>Library Name:</strong>
-                                    <p t-field="doc.name"/>
-                                </div>
-
                                 <!-- Librarian Name -->
                                 <div class="col-3">
                                     <strong>Librarian Name:</strong>
                                     <p t-field="doc.librarian_id.name"/>
                                 </div>
-
                                 <!-- Total Borrowed Books Count -->
                                 <div class="col-3">
                                     <strong>Total Borrowed Books Count:</strong>
                                     <p t-field="doc.borrowed_books_count"/>
                                 </div>
-<!--                                Location -->
+                                <!-- Location -->
                                 <div class="col-3">
                                     <strong>Location:</strong>
                                     <p t-field="doc.location"/>
@@ -88,22 +80,70 @@
                     Email:
                     <span t-field="company.email"/>
                 </div>
+                <div t-if="company.phone">
+                    Phone:
+                    <span t-field="company.phone"/>
+                </div>
             </div>
         </xpath>
-        <!--        <xpath expr="//div['footer o_standard_footer o_company_#{company.id}_layout']" position="replace">-->
-        <!--            <div class="footer o_standard_footer o_company_#{company.id}_layout">-->
-        <!--                <div class="text-center" style="border-top: 1px solid black; padding: 10px;">-->
-        <!--                    <h5 style="color:black; margin: 0;">-->
-        <!--                        <b>-->
-        <!--                            <t t-out="company.website"/>-->
-        <!--                        </b>-->
-        <!--                    </h5>-->
-        <!--                    <div style="font-size: 14px; color: black;">-->
-        <!--                        Page:<span class="page"/>/-->
-        <!--                        <span class="topage"/>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </xpath>-->
+        <xpath expr="//div[@t-field='company.report_footer']" position="attributes">
+            <attribute name="t-if">not doc</attribute>
+        </xpath>
+        <xpath expr="//div[@t-field='company.report_footer']" position="after">
+            <div id="website_footer" class="flex-grow-1 text-start me-2" t-if="doc">
+                <span t-out="company.website"/>
+            </div>
+        </xpath>
+    </template>
+    <!--    Report Template for library member -->
+    <template id="custom_external_layout_library_member">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div t-attf-class="header o_company_#{company.id}_layout">
+            <div t-if="company" class="text-center">
+                <h3>
+                    <span t-out="company.partner_id.name"/>
+                </h3>
+            </div>
+        </div>
+        <center>
+        <div t-attf-class="article o_company_#{company.id}_layout">
+            <strong>Member's Details:-</strong>
+            <br/>
+            <br/>
+            <b>Name:</b> <t t-out="o.name or ''"/> <br/><br/>
+            <b>Email:</b> <t t-out="o.email or ''"/><br/><br/>
+            <b>Phone No:</b> <t t-out="o.phone or ''"/><br/><br/>
+            <b>Membership Start Date:</b> <t t-out="o.membership_date or ''"/>
+            <br/>
+        </div>
+        </center>
+
+        <div t-attf-class="footer o_company_#{company.id}_layout">
+            <div t-if="company" class="text-center">
+                <span t-out="company.partner_id.website"/>
+            </div>
+        </div>
+    </template>
+
+    <!--html container of custom library member report-->
+    <template id="report_library_member">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ak_library_management.custom_external_layout_library_member"/>
+            </t>
+        </t>
     </template>
 </odoo>
