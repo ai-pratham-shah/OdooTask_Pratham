@@ -40,7 +40,6 @@ class BorrowTransactionHistory(models.Model):
         - If any warning conditions are met, a warning wizard is shown.
         - If no warnings exist, it creates a borrow transaction and updates stock.
         """
-
         def show_warning_wizard(message):
             return {
                 'type': 'ir.actions.act_window',
@@ -54,6 +53,12 @@ class BorrowTransactionHistory(models.Model):
                 }
             }
 
+        # To decreased on hand qty.
+        for rec in self.books_ids.filtered(lambda book: book.qty_available):
+            loca = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
+            if loca:
+                self.env['stock.quant']._update_available_quantity(loca.product_id, loca.location_id, quantity=-1)
+
         # Check 1: Customer Trustworthiness
         if self.customer_id.not_trust_worthy:
             return show_warning_wizard(
@@ -65,45 +70,24 @@ class BorrowTransactionHistory(models.Model):
         out_of_stock_books = (
             self.books_ids.filtered(lambda book: book.qty_available <= 0))
         if out_of_stock_books:
-            out_of_stock_names = ', '.join(out_of_stock_books.mapped('name'))
             return show_warning_wizard(
-                f"The following books are out of stock: {out_of_stock_names}."
+                f"The following books are out of stock:{', '.join(out_of_stock_books.mapped('name'))}."
                 f"Are you sure you want to continue?"
             )
 
-            # If the customer is trying to borrow 5 or more books
+        # Check 3: when customer is trying to borrow 5 or more books
         if len(self.books_ids) >= 5:
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)],
-                                      order='id desc', offset=1)
-            books_name = []
-            [books_name.append(book.name) for rec in search_recd
-            for book in rec.books_ids if book.name not in books_name]
-
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
+            books_name = {book.name for rec in search_recd for book in rec.books_ids}
             if books_name:
                 return show_warning_wizard(
-                                        f"Customer already has [{len(search_recd)}] open borrow transactions "
+                                        f"Customer already has [{len(search_recd)}] "
+                                        f"open borrow transactions "
                                         f"with {books_name} books. "
                                         f"Are you sure you want to borrow more books?")
-
             return show_warning_wizard(
                                     "Are you sure you want to allow "
                                     "borrowing more than 5 books for this customer?")
-
-        # decrease a stock of product when borrowed
-        for rec in self.books_ids:
-            if rec.qty_available:
-                product_id = self.env['product.product'].search(
-                    [('name', '=', rec.name), ('default_code', '=', rec.default_code)])
-                loc = self.env['stock.quant'].search([
-                    ('product_id', '=', product_id.id),
-                    ('location_id.usage', '=', 'internal')
-                ], limit=1)
-                self.env['stock.quant']._update_available_quantity(
-                    product_id,
-                    loc.location_id,
-                    quantity=-1
-                )
-
 
     def send_book_return_reminders(self):
         """
@@ -127,7 +111,6 @@ class BorrowTransactionHistory(models.Model):
                         record.message_post(
                             body=f"Reminder sent to {record.customer_id.name} "
                                  f"for book return on {record.borrow_end_date}.")
-
 
     def mark_books_as_returned(self):
         """
@@ -184,7 +167,6 @@ class BorrowTransactionHistory(models.Model):
                         f"{rec.customer_id.name} has overdue books and cannot borrow new ones "
                         f"until all overdue items are returned."
                     )
-
 
     def send_overdue_book_reminder(self):
         """Function to check for overdue books and send reminder emails to customers"""
