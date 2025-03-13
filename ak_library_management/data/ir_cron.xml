@@ -8,7 +8,7 @@
             <field name="code">model.send_book_return_reminders()</field>
             <field name="state">code</field>
             <field name="interval_number">1</field>
-            <field name="interval_type">minutes</field>
+            <field name="interval_type">days</field>
         </record>
         <!-- Action server for mark book as returned-->
         <record id="action_mark_books_as_returned" model="ir.actions.server">

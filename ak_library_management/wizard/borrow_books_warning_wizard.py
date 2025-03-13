@@ -10,11 +10,8 @@ class BorrowBooksWarningWizard(models.TransientModel):
     message = fields.Text(string="Warning Message", readonly=True)
     next_action = fields.Text(string="Next Warning", readonly=True)
 
-    # message = fields.Text(string="Warning Message", readonly=True)
-
     def action_continue(self):
-        """
-        Handles the 'Continue' button:
+        """ Handles the 'Continue' button:
         - If there are more warnings, open the next warning wizard.
         - If no more warnings, continue the borrow transaction.
         """
@@ -28,8 +25,9 @@ class BorrowBooksWarningWizard(models.TransientModel):
                 'target': 'new',
                 'context': {
                     'default_borrow_wizard_id': self.borrow_wizard_id.id,
-                    'default_message': self.next_action[0],  # Show next warning message
+                    'default_message': self.next_action[0],  # Show the next warning message
                     'default_next_action': self.next_action[1:] if len(self.next_action) > 1 else None
+                    # Pass remaining warnings
                 }
             }
         else:

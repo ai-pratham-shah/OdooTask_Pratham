@@ -35,12 +35,7 @@ class BorrowTransactionHistory(models.Model):
                                   "than or equal to Borrow Start Date.")
 
     def action_confirm(self):
-        """
-        Confirms the book borrowing process after performing the necessary checks.
-        - If any warning conditions are met, warnings are collected and shown sequentially.
-        - If the user clicks "Continue" on one warning, the next warning appears.
-        - If no warnings exist, it creates a borrow transaction and updates stock.
-        """
+        """ Confirms the book borrowing process after performing the necessary checks. """
 
         def show_warning_wizard(message, next_action=None):
             """ Helper function to return a warning wizard action """
@@ -52,8 +47,8 @@ class BorrowTransactionHistory(models.Model):
                 'target': 'new',
                 'context': {
                     'default_borrow_wizard_id': self.id,
-                    'default_message': message,
-                    'default_next_action': next_action,  # Pass the next step in context
+                    'default_message': message,  # Show the current warning message
+                    'default_next_action': next_action,  # Pass the next warnings (remaining warnings)
                 }
             }
 
@@ -63,34 +58,35 @@ class BorrowTransactionHistory(models.Model):
         if self.customer_id.not_trust_worthy:
             warnings.append("Customer is not trustworthy. Are you sure you want to continue?")
 
-        # Check 2: Product Availability
+        # Check 2: Product Availability (books out of stock)
         out_of_stock_books = self.books_ids.filtered(lambda book: book.qty_available <= 0)
         if out_of_stock_books:
-            warnings.append(f"The following books are out of stock: {', '.join(out_of_stock_books.mapped('name'))}. "
-                            f"Are you sure you want to continue?")
+            warnings.extend(f"The following books are out of stock")
 
         # Check 3: Borrowing More Than 5 Books
         if len(self.books_ids) >= 5:
             search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
             books_name = {book.name for rec in search_recd for book in rec.books_ids}
             if books_name:
-                warnings.append(f"Customer already has [{len(search_recd)}] open borrow transactions with "
+                warnings.extend(f"Customer already has [{len(search_recd)}] open borrow transactions with "
                                 f"{books_name} books. Are you sure you want to borrow more books?")
             else:
-                warnings.append("Are you sure you want to allow borrowing more than 5 books for this customer?")
+                warnings.extend("Are you sure you want to allow borrowing more than 5 books for this customer?")
 
         # If there are warnings, open the first warning and queue the rest
         if warnings:
             return show_warning_wizard(warnings[0], next_action=warnings[1:] if len(warnings) > 1 else None)
-
-        # If no warnings, proceed with transaction logic
-
-        # To decrease on-hand quantity.
+        else:
+            # No warnings, proceed with the borrow transaction directly
+            return self._process_borrow_transaction()
+    # If no warnings, proceed with transaction logic
+    # To decrease on-hand quantity.
+    def _process_borrow_transaction(self):
+        """Finalizes the borrow transaction."""
         for rec in self.books_ids.filtered(lambda book: book.qty_available):
             loca = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
             if loca:
                 self.env['stock.quant']._update_available_quantity(loca.product_id, loca.location_id, quantity=-1)
-
         return True
 
     def send_book_return_reminders(self):
@@ -103,47 +99,48 @@ class BorrowTransactionHistory(models.Model):
             None
         """
         all_recd = self.search([])
-        for record in all_recd:
-            for rec in record.books_ids:
-                if rec.status == 'borrowed':
-                    date_deadline = record.borrow_start_date + timedelta(days=2)
-                    if record.borrow_end_date == date_deadline:
-                        self.env['bus.bus']._sendone(record.customer_id, 'simple_notification', {
-                            'type': 'warning',
-                            'message': f"reminder: your book return date is {record.borrow_end_date}",
-                        })
-                        record.message_post(
-                            body=f"Reminder sent to {record.customer_id.name} "
-                                 f"for book return on {record.borrow_end_date}.")
+        for records in all_recd:
+            date_deadline = records.borrow_end_date - timedelta(days=2)
+            check_status = [rec.status == 'borrowed' for rec in records.books_ids]
+            if (date.today() == date_deadline and
+                    any(check_status)):
+                template = self.env.ref('ak_library_management.book_return_reminder_email_template')
+                template.send_mail(records.id, force_send=True)
 
     def mark_books_as_returned(self):
         """
-        Marks books as returned and notifies the customer
+        Marks books as returned and notifies the customer.
+
         Args:
             None
+
         Returns:
             None
         """
         for rec in self:
-            if rec.is_returned:
-                raise UserError(f"Books for {rec.customer_id.name} "
-                                f"have already been marked as returned.")
-            rec.is_returned = True  # Mark transaction as returned
+            # Check if the books are already marked as returned
+            # if rec.is_returned:
+            #     # Instead of raising an error, we check if it's a duplicate, and we just log the situation
+            #     rec.message_post(body=f"Books for {rec.customer_id.name} were already marked as returned.")
+            #     return
+
+            # Mark transaction as returned
+            rec.is_returned = True
+
             # Send notification to the customer
             self.env['bus.bus']._sendone(
                 rec.customer_id, 'simple_notification', {
                     'type': 'success',
-                    'message': f"Dear {rec.customer_id.name},"
-                               f"your returned book(s) have been recorded.",
-                })
-            # Mark each book as returned
+                    'message': f"Dear {rec.customer_id.name}, your returned book(s) have been recorded.",
+                }
+            )
+
+            # Mark each book as returned (assuming books have a method to mark them as returned)
             for book in rec.books_ids:
                 book.mark_as_returned()
+
             # Log the action in chatter
-            rec.message_post(body=f"Books returned by {rec.customer_id.name}."
-                                  f"Transaction marked as completed.")
-
-
+            rec.message_post(body=f"Books returned by {rec.customer_id.name}. Transaction marked as completed.")
     def check_overdue_books_action(self):
         """
         Check if the customer has any overdue borrowed books

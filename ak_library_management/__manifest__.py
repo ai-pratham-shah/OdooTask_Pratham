@@ -14,6 +14,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'security/res_groups.xml',
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
         'views/library_book.xml',
@@ -35,7 +36,6 @@
         'data/ir_sequence.xml',
         'data/ir_cron.xml',
         'data/mail_template_data.xml',
-        # 'security/security.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',

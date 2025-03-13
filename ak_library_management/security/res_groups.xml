@@ -1,0 +1,23 @@
+<odoo>
+    <record id="module_category_stock_warehouse" model="ir.module.category">
+        <field name="name">Library management</field>
+       <field name="sequence">45</field>
+    </record>
+
+    <record id="group_library_worker" model="res.groups">
+        <field name="name">Library Worker</field>
+        <field name="category_id" ref="module_category_stock_warehouse"/>
+    </record>
+
+    <record id="group_library_assistant" model="res.groups">
+        <field name="name">Library Assistant</field>
+        <field name="category_id" ref="module_category_stock_warehouse"/>
+        <field name="implied_ids" eval="[(4, ref('group_library_worker'))]"/>
+    </record>
+
+    <record id="group_library_admin" model="res.groups">
+        <field name="name">Library Admin</field>
+        <field name="category_id" ref="module_category_stock_warehouse"/>
+        <field name="implied_ids" eval="[(4, ref('group_library_assistant'))]"/>
+    </record>
+</odoo>
