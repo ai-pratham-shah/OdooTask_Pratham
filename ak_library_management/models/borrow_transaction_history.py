@@ -37,10 +37,13 @@ class BorrowTransactionHistory(models.Model):
     def action_confirm(self):
         """
         Confirms the book borrowing process after performing the necessary checks.
-        - If any warning conditions are met, a warning wizard is shown.
+        - If any warning conditions are met, warnings are collected and shown sequentially.
+        - If the user clicks "Continue" on one warning, the next warning appears.
         - If no warnings exist, it creates a borrow transaction and updates stock.
         """
-        def show_warning_wizard(message):
+
+        def show_warning_wizard(message, next_action=None):
+            """ Helper function to return a warning wizard action """
             return {
                 'type': 'ir.actions.act_window',
                 'name': 'Warning',
@@ -50,44 +53,45 @@ class BorrowTransactionHistory(models.Model):
                 'context': {
                     'default_borrow_wizard_id': self.id,
                     'default_message': message,
+                    'default_next_action': next_action,  # Pass the next step in context
                 }
             }
 
-        # To decreased on hand qty.
+        warnings = []
+
+        # Check 1: Customer Trustworthiness
+        if self.customer_id.not_trust_worthy:
+            warnings.append("Customer is not trustworthy. Are you sure you want to continue?")
+
+        # Check 2: Product Availability
+        out_of_stock_books = self.books_ids.filtered(lambda book: book.qty_available <= 0)
+        if out_of_stock_books:
+            warnings.append(f"The following books are out of stock: {', '.join(out_of_stock_books.mapped('name'))}. "
+                            f"Are you sure you want to continue?")
+
+        # Check 3: Borrowing More Than 5 Books
+        if len(self.books_ids) >= 5:
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
+            books_name = {book.name for rec in search_recd for book in rec.books_ids}
+            if books_name:
+                warnings.append(f"Customer already has [{len(search_recd)}] open borrow transactions with "
+                                f"{books_name} books. Are you sure you want to borrow more books?")
+            else:
+                warnings.append("Are you sure you want to allow borrowing more than 5 books for this customer?")
+
+        # If there are warnings, open the first warning and queue the rest
+        if warnings:
+            return show_warning_wizard(warnings[0], next_action=warnings[1:] if len(warnings) > 1 else None)
+
+        # If no warnings, proceed with transaction logic
+
+        # To decrease on-hand quantity.
         for rec in self.books_ids.filtered(lambda book: book.qty_available):
             loca = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
             if loca:
                 self.env['stock.quant']._update_available_quantity(loca.product_id, loca.location_id, quantity=-1)
 
-        # Check 1: Customer Trustworthiness
-        if self.customer_id.not_trust_worthy:
-            return show_warning_wizard(
-                "Customer is not trustworthy. "
-                "Are you sure you want to continue?"
-            )
-
-        # Check 2: Product Availability
-        out_of_stock_books = (
-            self.books_ids.filtered(lambda book: book.qty_available <= 0))
-        if out_of_stock_books:
-            return show_warning_wizard(
-                f"The following books are out of stock:{', '.join(out_of_stock_books.mapped('name'))}."
-                f"Are you sure you want to continue?"
-            )
-
-        # Check 3: when customer is trying to borrow 5 or more books
-        if len(self.books_ids) >= 5:
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
-            books_name = {book.name for rec in search_recd for book in rec.books_ids}
-            if books_name:
-                return show_warning_wizard(
-                                        f"Customer already has [{len(search_recd)}] "
-                                        f"open borrow transactions "
-                                        f"with {books_name} books. "
-                                        f"Are you sure you want to borrow more books?")
-            return show_warning_wizard(
-                                    "Are you sure you want to allow "
-                                    "borrowing more than 5 books for this customer?")
+        return True
 
     def send_book_return_reminders(self):
         """

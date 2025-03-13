@@ -11,7 +11,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button string="Continue" class="btn-primary" special="save"/>
+                    <button string="Continue" type="object" class="btn-primary" name="action_continue"/>
                    <button string="Cancel" type="object" name="action_cancel"/>
                 </footer>
             </form>
