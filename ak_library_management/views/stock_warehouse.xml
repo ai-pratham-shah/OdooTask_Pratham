@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='code']" position="after">
                 <field name="library_assistant" groups="ak_library_management.group_library_admin"/>
-                <field name="workers_ids" widget="many2many_tags" groups="ak_library_management.group_library_assistant"/>
+                <field name="workers_ids" widget="many2many_tags" groups="ak_library_management.group_library_admin,ak_library_management.group_library_assistant"/>
             </xpath>
         </field>
     </record>

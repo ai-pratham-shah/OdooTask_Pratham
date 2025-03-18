@@ -12,11 +12,11 @@ class BorrowBooksWarningWizard(models.TransientModel):
 
     def action_continue(self):
         """ Handles the 'Continue' button:
-        - If there are more warnings, open the next warning wizard.
-        - If no more warnings, continue the borrow transaction.
+        - If more warnings exist, display them sequentially.
+        - If no more warnings, finalize the borrow transaction.
         """
-        if self.next_action:
-            # Open the next warning wizard
+        next_warnings = eval(self.next_action) if self.next_action else []
+        if next_warnings:
             return {
                 'type': 'ir.actions.act_window',
                 'name': 'Warning',
@@ -25,18 +25,15 @@ class BorrowBooksWarningWizard(models.TransientModel):
                 'target': 'new',
                 'context': {
                     'default_borrow_wizard_id': self.borrow_wizard_id.id,
-                    'default_message': self.next_action[0],  # Show the next warning message
-                    'default_next_action': self.next_action[1:] if len(self.next_action) > 1 else None
-                    # Pass remaining warnings
+                    'default_message': next_warnings[0],
+                    'default_next_action': repr(next_warnings[1:]) if len(next_warnings) > 1 else None
                 }
             }
         else:
-            # No more warnings, proceed with the borrow transaction
+            # No more warnings, proceed with the transaction
             return self.borrow_wizard_id._process_borrow_transaction()
 
     def action_cancel(self):
-        """
-        To delete current record
-        """
-        record_id = self.env.context.get('active_id')
-        self.env["borrow.transaction.history"].browse(record_id).unlink()
+        """ If 'Cancel' is clicked, delete the transaction. """
+        self.borrow_wizard_id.unlink()
+        return {'type': 'ir.actions.act_window_close'}

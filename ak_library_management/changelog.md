@@ -26,3 +26,10 @@
 - Optimise send book return reminders function from borrow transaction history python file which is schedule action.
 - Optimise mark books as returned function from borrow transaction history python file which is server action.
 - Optimise check overdue books action function from borrow transaction history python file which is automated action.
+
+## 2025-03-18
+## Borrow Books Requirement
+## changed
+- Add new function process borrow transaction.
+- Optimize action confirm method from borrow transaction history to display Display warnings sequentially.
+- Optimize action continue method from borrow books warning wizard to save transaction.

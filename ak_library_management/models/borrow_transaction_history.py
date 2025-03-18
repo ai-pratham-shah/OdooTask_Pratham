@@ -34,59 +34,62 @@ class BorrowTransactionHistory(models.Model):
             raise ValidationError("Borrow End Date must be greater "
                                   "than or equal to Borrow Start Date.")
 
+    def show_warning_wizard(self, message, next_action=None):
+        """
+        Helper function to return a warning wizard action.
+        This function is now defined as a separate method to improve code structure.
+        """
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Warning',
+            'res_model': 'borrow.books.warning.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_borrow_wizard_id': self.id,
+                'default_message': message,  # Show the current warning message
+                'default_next_action':  repr(next_action) if next_action else None,  # Pass the next warnings (remaining warnings)
+            }
+        }
+
     def action_confirm(self):
         """ Confirms the book borrowing process after performing the necessary checks. """
-
-        def show_warning_wizard(message, next_action=None):
-            """ Helper function to return a warning wizard action """
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Warning',
-                'res_model': 'borrow.books.warning.wizard',
-                'view_mode': 'form',
-                'target': 'new',
-                'context': {
-                    'default_borrow_wizard_id': self.id,
-                    'default_message': message,  # Show the current warning message
-                    'default_next_action': next_action,  # Pass the next warnings (remaining warnings)
-                }
-            }
-
         warnings = []
 
-        # Check 1: Customer Trustworthiness
+        # **Check 1: Customer Trustworthiness**
         if self.customer_id.not_trust_worthy:
             warnings.append("Customer is not trustworthy. Are you sure you want to continue?")
 
-        # Check 2: Product Availability (books out of stock)
+        # **Check 2: Product Availability (books out of stock)**
         out_of_stock_books = self.books_ids.filtered(lambda book: book.qty_available <= 0)
         if out_of_stock_books:
-            warnings.extend(f"The following books are out of stock")
+            book_names = ", ".join(out_of_stock_books.mapped('name'))  # Get book names
+            warnings.append(f"The following books are out of stock: {book_names}.")
 
-        # Check 3: Borrowing More Than 5 Books
+        # **Check 3: Borrowing More Than 5 Books**
         if len(self.books_ids) >= 5:
             search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
             books_name = {book.name for rec in search_recd for book in rec.books_ids}
             if books_name:
-                warnings.extend(f"Customer already has [{len(search_recd)}] open borrow transactions with "
-                                f"{books_name} books. Are you sure you want to borrow more books?")
+                warnings.append(f"Customer already has [{len(search_recd)}] open borrow transactions with "
+                                f"{', '.join(books_name)} books. Are you sure you want to borrow more books?")
             else:
-                warnings.extend("Are you sure you want to allow borrowing more than 5 books for this customer?")
+                warnings.append("Are you sure you want to allow borrowing more than 5 books for this customer?")
 
-        # If there are warnings, open the first warning and queue the rest
+        # **Display warnings sequentially**
         if warnings:
-            return show_warning_wizard(warnings[0], next_action=warnings[1:] if len(warnings) > 1 else None)
+            return self.show_warning_wizard(warnings[0], next_action=warnings[1:] if len(warnings) > 1 else None)
         else:
-            # No warnings, proceed with the borrow transaction directly
+            # No warnings, proceed with the borrow transaction
             return self._process_borrow_transaction()
-    # If no warnings, proceed with transaction logic
-    # To decrease on-hand quantity.
+
     def _process_borrow_transaction(self):
-        """Finalizes the borrow transaction."""
-        for rec in self.books_ids.filtered(lambda book: book.qty_available):
+        """Finalizes the borrow transaction and updates stock quantities."""
+        for rec in self.books_ids:
             loca = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
             if loca:
-                self.env['stock.quant']._update_available_quantity(loca.product_id, loca.location_id, quantity=-1)
+                new_qty = -1 if rec.qty_available <= 0 else -1
+                self.env['stock.quant']._update_available_quantity(loca.product_id, loca.location_id, quantity=new_qty)
         return True
 
     def send_book_return_reminders(self):
