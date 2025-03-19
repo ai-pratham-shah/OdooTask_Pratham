@@ -40,8 +40,7 @@
                                options="{'color_field': 'color'}" context="{'add_author':True}"/>
                         <field name="borrow_start_date"/>
                         <field name="borrow_end_date"/>
-                        <field name="deposit_amount" invisible="['|', ('user_has_group', '=', 'ak_library_management.group_library_assistant'), ('is_member', '=', True)]"
-                               groups="ak_library_management.group_library_admin"/>
+                        <field name="deposit_amount" invisible="is_member == True"/>
                     </group>
                 </sheet>
                 <chatter/>

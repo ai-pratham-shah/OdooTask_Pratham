@@ -56,15 +56,15 @@
      </record>
 
 
-    <record id="borrow_transaction_history_hide_deposit_amount" model="ir.rule">
-        <field name="name">Hide Deposit Amount for Assistants</field>
-        <field name="model_id" ref="model_borrow_transaction_history"/>
-        <field name="domain_force">[('customer_id', '=', user.partner_id.id)]</field>
-        <field name="groups" eval="[(4, ref('ak_library_management.group_library_assistant'))]"/>
-        <field name="perm_read" eval="0"/>
-        <field name="perm_write" eval="1"/>
-        <field name="perm_create" eval="0"/>
-        <field name="perm_unlink" eval="0"/>
-    </record>
+<!--    <record id="borrow_transaction_history_hide_deposit_amount" model="ir.rule">-->
+<!--        <field name="name">Hide Deposit Amount for Assistants</field>-->
+<!--        <field name="model_id" ref="model_borrow_transaction_history"/>-->
+<!--        <field name="domain_force">[('customer_id', '=', user.partner_id.id)]</field>-->
+<!--        <field name="groups" eval="[(4, ref('ak_library_management.group_library_assistant'))]"/>-->
+<!--        <field name="perm_read" eval="0"/>-->
+<!--        <field name="perm_write" eval="1"/>-->
+<!--        <field name="perm_create" eval="0"/>-->
+<!--        <field name="perm_unlink" eval="0"/>-->
+<!--    </record>-->
 
 </odoo>
