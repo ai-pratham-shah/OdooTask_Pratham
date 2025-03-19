@@ -181,5 +181,4 @@ class BorrowTransactionHistory(models.Model):
             if email_template:
                 # Send the email
                 email_template.send_mail(record.id, force_send=True)
-            else:
-                raise UserError("Email template for overdue book reminder is not defined!")
+            
