@@ -13,8 +13,9 @@
         'stock', 'web', 'sale_management','base_automation','hr'
     ],
     'data': [
-        'security/ir.model.access.csv',
         'security/res_groups.xml',
+        'security/ir.model.access.csv',
+
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
         'views/library_book.xml',

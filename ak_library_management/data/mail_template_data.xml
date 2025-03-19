@@ -29,9 +29,7 @@
                         <p>Due Date: <t t-out="object.borrow_end_date"/></p>
                         <p>We kindly ask you to return the book(s) as soon as possible. Failure to do so may result in late fees.</p>
                         <br />
-                        <p>Thank you for your understanding.</p>
-                        <p>Best regards,</p>
-                        <p>The Library Team</p>
+                        <p>Thank you</p>
                     </p>
                 </div>
             </field>
@@ -41,7 +39,7 @@
             <field name="name">Membership renewal</field>
             <field name="model_id" ref="model_library_member"/>
             <field name="email_from">{{ user.company_id.email }}</field>
-            <field name="partner_to">{{ object.email }}</field>
+            <field name="email_to">{{ object.email }}</field>
             <field name="subject">Reminder: Membership renewal</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">

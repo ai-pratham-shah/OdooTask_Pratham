@@ -1,13 +1,18 @@
 <odoo>
-    <record id="view_library_config_settings" model="ir.ui.view">
-        <field name="name">library.config.settings.view.form</field>
+    <record id="res_config_settings_view_form_add_custom_field" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.library</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='module_account_inter_company_rules']" position="after">
-                <group>
-                    <field name="borrowing_limit"/>
-                </group>
+            <xpath expr="//form" position="inside">
+                <app string="Library" data-string="Library" name="library_management"
+                     groups="ak_library_management.group_library_admin" icon="fa fa-book">
+                    <block title="Set Borrowing Limit" name="borrowing_book_setting_container">
+                        <setting id="library_book_borrowing_limit">
+                            <field name="borrowing_limit"/>
+                        </setting>
+                    </block>
+                </app>
             </xpath>
         </field>
     </record>

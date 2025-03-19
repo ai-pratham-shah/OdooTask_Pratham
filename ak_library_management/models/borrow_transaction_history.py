@@ -17,12 +17,23 @@ class BorrowTransactionHistory(models.Model):
                                  string="Books", required=True,
                                  domain="[('is_library_book' ,'=', True)]")
     borrow_start_date = fields.Date(string="Borrow Start Date",
-                                    default=fields.Datetime.now, required=True)
+                                      default=fields.Datetime.now, required=True)
     borrow_end_date = fields.Date(string="Borrow End Date",
                                   required=True)
     deposit_amount = fields.Float(string="Deposit Amount", required=True)
     is_member = fields.Boolean(related="customer_id.is_member")
     is_returned = fields.Boolean(string="Returned", default=False)
+    is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
+
+    @api.depends('borrow_end_date')
+    def _compute_active_transaction(self):
+        """
+        check the transaction is active or not and set true or false in boolean field
+        param: None
+        rtype: None
+        """
+        for rec in self.search([]):
+            rec.is_active = rec.borrow_end_date >= date.today()
 
     @api.constrains('borrow_end_date', 'borrow_start_date')
     def _check_borrow_end_date(self):
@@ -156,11 +167,13 @@ class BorrowTransactionHistory(models.Model):
                                   f"until all overdue items are returned.")
 
     def send_overdue_book_reminder(self):
-        """Function to check for overdue books and send reminder emails to customers"""
+        """
+        Function to check for overdue books and send reminder emails to customers
+        """
         today = datetime.today().date()
         overdue_books = self.search([
             ('borrow_end_date', '<', today),  # Check if the borrow end date is in the past
-            ('is_returned', '=', False)  # Check if the book has not been returned
+            ('books_ids.status', '=', 'borrowed')  # Check if the book has not been returned
         ])
         for record in overdue_books:
             # Prepare the email content

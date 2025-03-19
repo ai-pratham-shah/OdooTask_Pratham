@@ -19,14 +19,6 @@
         <field name="category_id" ref="module_category_stock_warehouse"/>
     </record>
 
-     <!-- Prevent Assistants and Workers from deleting borrowed books -->
-<!--    <record id="rule_no_delete_borrowed_books" model="ir.rule">-->
-<!--        <field name="name">No Deleting Borrowed Books</field>-->
-<!--        <field name="model_id" ref="model_product_template"/>-->
-<!--        <field name="domain_force">[('status', '=', 'borrowed')]</field>-->
-<!--        <field name="groups" eval="[(4, ref('group_library_assistant')), (4, ref('group_library_worker'))]"/>-->
-<!--        <field name="perm_unlink" eval="0"/>-->
-<!--    </record>-->
     <record id="record_rule_library_worker_unlink_borrowed" model="ir.rule">
         <field name="name">No Deleting Borrowed Books</field>
         <field name="model_id" ref="ak_library_management.model_product_template"/>
@@ -36,6 +28,43 @@
         <field name="perm_write" eval="0"/>
         <field name="perm_create" eval="0"/>
         <field name="perm_unlink" eval="1"/>
+    </record>
+
+<!--    <record id="rule_borrowing_limit" model="ir.rule">-->
+<!--        <field name="name">Enforce Borrowing Limit</field>-->
+<!--        <field name="model_id" ref="model_borrow_transaction_history"/>-->
+<!--        <field name="domain_force">-->
+<!--            <![CDATA[-->
+<!--                [-->
+<!--                    ('customer_id.is_member', '=', True),-->
+<!--                    ('customer_id.books_ids', '>=', (ref('library_config_settings').borrowing_limit))-->
+<!--                ]-->
+<!--            ]]>-->
+<!--        </field>-->
+<!--        <field name="perm_create" eval="False"/>-->
+<!--    </record>-->
+
+     <record id="worker_active_transaction" model="ir.rule">
+        <field name="name">Workers can only view active transactions</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="domain_force">[('is_active','=',True)]</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="groups" eval="[(4,ref('ak_library_management.group_library_worker'))]"/>
+     </record>
+
+
+    <record id="borrow_transaction_history_hide_deposit_amount" model="ir.rule">
+        <field name="name">Hide Deposit Amount for Assistants</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="domain_force">[('customer_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('ak_library_management.group_library_assistant'))]"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
     </record>
 
 </odoo>
