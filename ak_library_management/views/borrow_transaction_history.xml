@@ -22,7 +22,7 @@
                 <field name="customer_id"/>
                 <field name="borrow_start_date"/>
                 <field name="borrow_end_date"/>
-                <field name="deposit_amount"/>
+                <field name="deposit_amount" groups="!ak_library_management.group_library_assistant"/>
             </list>
         </field>
     </record>
@@ -40,7 +40,7 @@
                                options="{'color_field': 'color'}" context="{'add_author':True}"/>
                         <field name="borrow_start_date"/>
                         <field name="borrow_end_date"/>
-                        <field name="deposit_amount" invisible="is_member == True"/>
+                        <field name="deposit_amount" invisible="is_member == True" groups="!ak_library_management.group_library_assistant"/>
                     </group>
                 </sheet>
                 <chatter/>

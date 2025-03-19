@@ -5,8 +5,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="Library" data-string="Library" name="library_management"
-                     groups="ak_library_management.group_library_admin" icon="fa fa-book">
+                <app string="Library" data-string="Library" name="library_management" icon="fa fa-book">
                     <block title="Set Borrowing Limit" name="borrowing_book_setting_container">
                         <setting id="library_book_borrowing_limit">
                             <field name="borrowing_limit"/>

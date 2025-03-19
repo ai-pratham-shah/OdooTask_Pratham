@@ -7,7 +7,7 @@ from datetime import timedelta, date, datetime
 class BorrowTransactionHistory(models.Model):
     _name = 'borrow.transaction.history'
     _description = 'Borrow Transaction History'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread','res.config.settings']
     _rec_name = 'customer_id'
 
     # fields
@@ -24,6 +24,18 @@ class BorrowTransactionHistory(models.Model):
     is_member = fields.Boolean(related="customer_id.is_member")
     is_returned = fields.Boolean(string="Returned", default=False)
     is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
+    is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit', store=True)
+
+    @api.depends('books_ids')
+    def _compute_more_than_borrow_limit(self):
+        """Check if customer has exceeded the borrow limit."""
+        for rec in self:
+            # Count total books borrowed by the customer in open transactions
+            borrowed_books_count = sum(
+                len(record.books_ids) for record in self.search([('customer_id', '=', rec.customer_id.id)]))
+
+            # Compare borrowed books count with the borrowing limit
+            rec.is_higher_than_limit = borrowed_books_count > rec.borrowing_limit
 
     @api.depends('borrow_end_date')
     def _compute_active_transaction(self):
@@ -181,4 +193,3 @@ class BorrowTransactionHistory(models.Model):
             if email_template:
                 # Send the email
                 email_template.send_mail(record.id, force_send=True)
-            
