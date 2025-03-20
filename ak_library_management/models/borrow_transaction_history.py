@@ -123,25 +123,21 @@ class BorrowTransactionHistory(models.Model):
         reminder_date = date.today() + timedelta(days=2)
         records = self.search([
             ('borrow_end_date', '=', reminder_date),
-            ('is_returned', '=', False)
+            ('books_ids.status', '=', 'borrowed')
         ])
-
         template = self.env.ref('ak_library_management.book_return_reminder_email_template')
-        if not template:
-            raise UserError("Email template for book return reminder is not defined!")
-
         for record in records:
-            if any(book.status == 'borrowed' for book in record.books_ids):
+            borrowed_books = record.books_ids.search([
+                ('id', 'in', record.books_ids.ids),
+                ('status', '=', 'borrowed')
+            ])
+            if borrowed_books:
                 template.send_mail(record.id, force_send=True)
 
     def mark_books_as_returned(self):
         """
         server action:
         Marks books as returned and notifies the customer.
-        Args:
-            None
-        Returns:
-            None
         """
         for rec in self:
             # Mark transaction as returned
@@ -167,15 +163,15 @@ class BorrowTransactionHistory(models.Model):
         The customer will not be able to borrow new books
         until all overdue items are returned.
         """
-        # Fetch all previous borrow transactions for the customer excluding the latest one
-        overdue_books = self.search([('customer_id.id', '=', self.customer_id.id)],
-                                    order='id desc', offset=1).filtered(
-            lambda rec: rec.borrow_end_date < date.today() and
-                        any(book.status == "borrowed" for book in rec.books_ids)
-        )
+        overdue_books = self.search([
+            ('customer_id.id', '=', self.customer_id.id),  # Match customer
+            ('borrow_end_date', '<', date.today()),  # Overdue books
+            ('books_ids.status', '=', 'borrowed')  # Books still borrowed
+        ])
+
         # If any overdue book exists, raise a validation error
-        if overdue_books:
-            raise ValidationError(f"{overdue_books[0].customer_id.name} has overdue books and cannot borrow new ones "
+        for overdue_book in overdue_books:
+            raise ValidationError(f"{overdue_book[0].customer_id.name} has overdue books and cannot borrow new ones "
                                   f"until all overdue items are returned.")
 
     def send_overdue_book_reminder(self):

@@ -33,3 +33,9 @@
 - Add new function process borrow transaction.
 - Optimize action confirm method from borrow transaction history to display Display warnings sequentially.
 - Optimize action continue method from borrow books warning wizard to save transaction.
+
+## [18.0.1.1.0] - 2025-03-20 | Schedule Actions, Automated Actions and Server Actions
+## changed
+- Optimise server action of automated action.
+- Optimize send book return reminder function.
+- Optimise check overdue books action function.

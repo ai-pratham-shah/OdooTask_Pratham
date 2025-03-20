@@ -1,0 +1,41 @@
+<odoo>
+    <template id="res_partner_template" name="Contact us list">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <ul>
+                    <t t-foreach="partners" t-as="partner">
+                        <li>
+                            <h3>
+                                <a t-att-href="'/contactus/%d' % partner.id">
+                                    <t t-esc="partner.name"/>
+                                </a>
+                            </h3>
+                        </li>
+                    </t>
+                </ul>
+            </div>
+        </t>
+    </template>
+
+    <template id="res_partner_detail_template" name="Contact Detail">
+        <div class="container">
+            <h1>
+                <t t-esc="partner.name"/>
+            </h1>
+            <p>
+                <strong>Email:</strong>
+                <t t-esc="partner.email"/>
+            </p>
+            <p>
+                <strong>Phone:</strong>
+                <t t-esc="partner.phone"/>
+            </p>
+            <p>
+                <strong>Address:</strong>
+                <t t-esc="partner.street"/>
+                <t t-esc="partner.city"/>
+            </p>
+        </div>
+    </template>
+</odoo>

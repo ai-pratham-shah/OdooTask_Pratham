@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.1.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -15,9 +15,9 @@
     'data': [
         'security/res_groups.xml',
         'security/ir.model.access.csv',
-
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
+        'reports/sale_order_report.xml',
         'views/library_book.xml',
         'views/library_member.xml',
         'views/library_book_tag.xml',
@@ -29,6 +29,7 @@
         'views/sale_order.xml',
         'views/borrow_transaction_history.xml',
         'views/res_partner.xml',
+        'views/res_partner_template.xml',
         'views/stock_warehouse.xml',
         'views/res_config_setting.xml',
         'wizard/bulk_book.xml',
@@ -38,6 +39,11 @@
         'data/ir_cron.xml',
         'data/mail_template_data.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'ak_library_management/static/src/scss/contactus.scss',
+        ],
+    },
     'installable': True,
     'license': 'LGPL-3',
 }
