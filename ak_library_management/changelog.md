@@ -31,11 +31,15 @@
 ## Borrow Books Requirement
 ## changed
 - Add new function process borrow transaction.
-- Optimize action confirm method from borrow transaction history to display Display warnings sequentially.
-- Optimize action continue method from borrow books warning wizard to save transaction.
+- Optimise action confirm method from borrow transaction history to display Display warnings sequentially.
+- Optimise action continue method from borrow books warning wizard to save transaction.
 
 ## [18.0.1.1.0] - 2025-03-20 | Schedule Actions, Automated Actions and Server Actions
 ## changed
 - Optimise server action of automated action.
-- Optimize send book return reminder function.
+- Optimise send book return reminder function.
 - Optimise check overdue books action function.
+
+##  [18.0.1.2.0] - 2025-03-21 | Layout Design & custom report
+## changed
+- Optimise library location document from library location report file.
