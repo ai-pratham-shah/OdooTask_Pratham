@@ -1,38 +1,129 @@
 <odoo>
-<!--    <template id="report_saleorder_inherit" inherit_id="sale.report_saleorder_document" customize_show="True">-->
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
 
-<!--        &lt;!&ndash; HEADER ADJUSTMENTS &ndash;&gt;-->
-<!--        <xpath expr="//div[@class='row align-items-center']" position="inside">-->
-<!--            <div class="col-12 text-left">-->
-<!--                <strong t-field="doc.partner_id.name"/>-->
-<!--                <br/>-->
-<!--                <span t-field="doc.partner_id.street"/>-->
-<!--                <br/>-->
-<!--                <span t-field="doc.partner_id.city"/> - <span t-field="doc.partner_id.zip"/>-->
-<!--                <br/>-->
-<!--                <span t-field="doc.partner_id.country_id.name"/>-->
-<!--            </div>-->
-<!--        </xpath>-->
+<!--         Header Section: Align client name & address in bold and adjust the logo alignment -->
+        <xpath expr="//div[@class='header']" position="replace">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <p style="font-weight: bold;">Client Name</p>
+                    <p style="font-weight: bold;">Client Address</p>
+                </div>
+                <div>
+                    <img src="/your_company_logo.png" style="max-height: 50px;"/>
+                </div>
+            </div>
+        </xpath>
 
-<!--        &lt;!&ndash; INVOICE DETAILS FORMATTING &ndash;&gt;-->
-<!--        <xpath expr="//div[@class='row mt32 mb32']" position="inside">-->
-<!--            <div class="col-12">-->
-<!--                <strong>Invoice Reference:</strong> <span t-field="doc.invoice_ids[0].name"/>-->
-<!--                <br/>-->
-<!--                <strong>Invoice Date:</strong> <span t-field="doc.invoice_ids[0].invoice_date"/>-->
-<!--                <br/>-->
-<!--                <strong>Reference Period:</strong> <span t-field="doc.reference"/>-->
-<!--                <br/>-->
-<!--                <strong>Payment Term:</strong> <span t-field="doc.payment_term_id.name"/>-->
-<!--            </div>-->
-<!--        </xpath>-->
+        <!-- Invoice Details Section: Align and display necessary invoice details -->
+        <xpath expr="//div[@class='invoice_details']" position="replace">
+            <div class="invoice_details" style="text-align: left;">
+                <p>
+                    <strong>Invoice Reference:</strong>
+                    <t t-esc="o.name"/>
+                </p>
+                <p>
+                    <strong>Invoice Date:</strong>
+                    <t t-esc="o.invoice_date"/>
+                </p>
+<!--                <p>-->
+<!--                    <strong>Engagement Letter:</strong>-->
+<!--                    <t t-esc="o.engagement_letter"/>-->
+<!--                </p>-->
+                <p>
+                    <strong>Reference Period:</strong>
+                    <t t-esc="o.invoice_origin"/>
+                </p>
+                <p>
+                    <strong>Payment Term:</strong>
+                    <t t-esc="o.invoice_payment_term_id.name"/>
+                </p>
+            </div>
+        </xpath>
 
-<!--        &lt;!&ndash; FOOTER ADJUSTMENTS &ndash;&gt;-->
-<!--        <xpath expr="//div[@class='footer']" position="replace">-->
-<!--            <div class="footer text-center" style="font-size:10px; font-weight:bold; color:darkblue;">-->
-<!--                <t t-field="company_id.name"/> | <t t-field="company_id.street"/> | <t t-field="company_id.phone"/>-->
-<!--            </div>-->
-<!--        </xpath>-->
+        <!-- Footer Section: Ensure footer is repeated on every page, with spacing, small font, bold, and dark blue color -->
+        <xpath expr="//div[@class='footer']" position="replace">
+            <div class="footer"
+                 style="text-align: center; font-size: 10px; font-weight: bold; color: darkblue; position: fixed; bottom: 0; width: 100%; margin-top: 30px;">
+                <p>Company Footer Information | Contact Details | Legal Notes</p>
+            </div>
+        </xpath>
 
-<!--    </template>-->
+        <!-- Bank Account Details Section: Display only once after the total amount invoiced -->
+        <xpath expr="//div[@class='bank_details']" position="replace">
+            <t t-if="o.amount_total and o.state == 'posted'">
+                <div class="bank_details" style="margin-top: 20px;">
+                    <p>
+                        <strong>Bank Account Details:</strong>
+                    </p>
+                    <p>Bank Name:
+                        <t t-esc="o.company_id.bank_ids[0].bank_id.name if o.company_id.bank_ids else ''"/>
+                    </p>
+                    <p>Account Number:
+                        <t t-esc="o.company_id.bank_ids[0].acc_number if o.company_id.bank_ids else ''"/>
+                    </p>
+                </div>
+            </t>
+        </xpath>
+
+        <!-- Invoice Table Section: Ensure proper alignment and format for quantity, unit price, and amount -->
+        <xpath expr="//table[@class='invoice_table']" position="replace">
+            <table class="invoice_table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th style="text-align: right;">Quantity</th>
+                        <th style="text-align: right;">Unit Price</th>
+                        <th style="text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.invoice_line_ids" t-as="line">
+                        <tr>
+                            <td>
+                                <t t-esc="line.name"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <t t-esc="line.quantity"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <t t-esc="line.price_unit"/>
+                            </td>
+                            <td style="text-align: right;">
+                                <t t-esc="line.price_total"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <!-- Space for free text below invoice details -->
+            <div style="margin-top: 10px; min-height: 30px;"/>
+        </xpath>
+
+        <!-- Summary Section: Display untaxed amount, VAT (17%), total amount, and administrative expenses with right alignment -->
+        <xpath expr="//div[@class='summary_section']" position="replace">
+            <div class="summary_section" style="text-align: right; margin-top: 20px;">
+                <p>
+                    <strong>Administrative Expenses (3%):</strong>
+                    <t t-esc="o.administrative_expenses"/>
+                    €
+                </p>
+                <p>
+                    <strong>Untaxed Amount:</strong>
+                    <t t-esc="o.amount_untaxed"/>
+                    €
+                </p>
+                <p>
+                    <strong>VAT (17%):</strong>
+                    <t t-esc="o.amount_tax"/>
+                    €
+                </p>
+                <p>
+                    <strong>Total Amount:</strong>
+                    <t t-esc="o.amount_total"/>
+                    €
+                </p>
+            </div>
+        </xpath>
+    </template>
+
 </odoo>
