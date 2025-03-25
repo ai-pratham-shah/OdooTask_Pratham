@@ -19,3 +19,10 @@
 - Add new schedule action (data -> ir_cron -> ir_cron_send_overdue_reminders)
 - Add new function for renewal membership (models -> library_member -> action_send_renewal_email)
 - Add new mail template (mail_template_data -> library_membership_renewal_reminder_email_template)
+
+## 2025-03-17
+## Schedule Actions, Automated Actions and Server Actions
+## changed
+- Optimise send book return reminders function from borrow transaction history python file which is schedule action.
+- Optimise mark books as returned function from borrow transaction history python file which is server action.
+- Optimise check overdue books action function from borrow transaction history python file which is automated action.
