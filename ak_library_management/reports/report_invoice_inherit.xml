@@ -1,30 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="external_layout_standard_no_border" inherit_id="web.external_layout_standard">
-            <xpath expr="//div[contains(@t-attf-class, 'article')]" position="attributes">
-                <attribute name="t-attf-class">article o_report_layout_standard o_company_#{company.id}_layout o_snail_mail {{'o_report_layout_background' if company.layout_background != 'Blank' else ''}}</attribute>
-            </xpath>
-        </template>
+        <!--custom modified web external layout-->
         <template id="invoice_custom_header_inherit" inherit_id="web.external_layout_standard">
-            <xpath expr="//div[@name='company_address']" position="replace">
+            <!--Remove company address from header-->
+            <xpath expr="//div[@name='company_address']" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <!--Add fields in the header-->
+            <xpath expr="//div[@name='company_address']" position="after">
                 <div class="row">
-                    <div class="col-9" style="text-align: left;">
+                    <div class="col-9" style="text-align: left; margin-top: 10px; margin-left:10px; padding-bottom:20px;">
                         <div class="mb-1">
-                            <strong>Invoice Reference:</strong>
-                            <span t-field="o.name"/>
+                            <table style="width: 100%;" class="table-borderless">
+                                <tr>
+                                    <td style="width: 150px;">Invoice Reference:</td>
+                                    <td>
+                                        <span t-field="o.name"/>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="mb-1">
-                            <strong>Invoice Date:</strong>
-                            <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                            <table style="width: 100%;" class="table-borderless">
+                                <tr>
+                                    <td style="width: 150px;">Invoice Date:</td>
+                                    <td>
+                                        <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="mb-1">
-                            <strong>Reference Period:</strong>
-                            <span t-field="o.invoice_date_due" t-options='{"format": "dd/MM/yyyy"}'/>
+                             <table style="width: 100%;" class="table-borderless">
+                                <tr>
+                                    <td style="width: 150px;">Reference Period:</td>
+                                    <td>
+                                        <span t-field="o.invoice_date_due" t-options='{"format": "dd/MM/yyyy"}'/>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="mb-1">
-                            <strong>Payment Term:</strong>
-                            <span t-field="o.invoice_payment_term_id"/>
+                            <table style="width: 100%;" class="table-borderless">
+                                <tr>
+                                    <td style="width: 150px;">Payment Term:</td>
+                                    <td>
+                                        <span t-field="o.invoice_payment_term_id"/>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="col-6 text-right align-items-end justify-content-end">
@@ -40,7 +65,18 @@
                     </div>
                 </div>
             </xpath>
-            <xpath expr="//div[hasclass('o_footer_content')]" position="replace">
+            <!--Remove lines from table-->
+            <xpath expr="//div[contains(@t-attf-class, 'article')]" position="attributes">
+                <attribute name="t-attf-class">article o_report_layout_standard o_company_#{company.id}_layout
+                    o_snail_mail {{'o_report_layout_background' if company.layout_background != 'Blank' else ''}}
+                </attribute>
+            </xpath>
+            <!--Remove footer to add custom footer-->
+            <xpath expr="//div[hasclass('o_footer_content')]" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <!--Add custom footer in the footer-->
+            <xpath expr="//div[hasclass('o_footer_content')]" position="after">
                 <div class="o_footer_content d-flex justify-content-center pt-2"
                      style="color: darkblue; font-size: 15px; font-weight: bold; border-top: none; margin-top:80px;">
                     <div class="text-center">
@@ -50,103 +86,88 @@
                 </div>
             </xpath>
         </template>
-
-        <template id="custom_header" inherit_id="account.report_invoice_document">
-            <xpath expr="//div[@class='clearfix invoice_main']/div[@class='page mb-4']/t[@t-set='layout_document_title']"
-                   position="replace">
-                <div>
-                    <p style="font-weight: bold; font-size: 20px; margin-bottom: 80px;">INVOICE</p>
+        <!-- custom modified base invoice report-->
+        <template id="custom_report_invoice_document" inherit_id="account.report_invoice_document">
+            <!--To remove title to add custom name-->
+            <xpath expr="//t[@t-set='layout_document_title']" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <!--To add custom name -->
+            <xpath expr="//t[@t-set='layout_document_title']" position="after">
+                <div class="fw-bold" style="font-size: 20px; margin-left:10px; margin-bottom: 80px;">
+                    <span>INVOICE</span>
                 </div>
             </xpath>
-        </template>
-
-<!--        <template id="report_table_header_bold" inherit_id="account.report_invoice_document">-->
-<!--            <xpath expr="//table[@name='invoice_line_table']" position="before">-->
-<!--                <style>-->
-<!--                    th {-->
-<!--                        font-weight: bold;-->
-<!--                    }-->
-<!--                </style>-->
-<!--            </xpath>-->
-<!--        </template>-->
-
-        <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
-            <xpath expr="//div[@name='address_same_as_shipping']" position="replace">
-                <div/>
+            <!--To remove shipping address-->
+            <xpath expr="//div[@name='address_same_as_shipping']" position="attributes">
+                <attribute name="t-if">not o</attribute>
             </xpath>
-
-             <xpath expr="//table[@name='invoice_line_table']" position="before">
+            <!--To remove invoice date and due date-->
+            <xpath expr="//div[@id='informations']" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <!--To add invoice table-->
+            <xpath expr="//table[@name='invoice_line_table']" position="attributes">
+                <attribute name="style">margin-top:80px;</attribute>
+            </xpath>
+            <!--To add currency in price unit table data-->
+            <xpath expr="//td[@name='td_price_unit']" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <xpath expr="//td[@name='td_price_unit']" position="after">
+                <td name="td_price_unit"
+                    t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                    <span class="text-nowrap" t-field="line.price_unit"
+                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'>9.00
+                    </span>
+                </td>
+            </xpath>
+            <!--To bold the table header-->
+            <xpath expr="//table[@name='invoice_line_table']" position="before">
                 <style>
                     th {
-                        font-weight: bold;
+                    font-weight: bold;
                     }
                 </style>
             </xpath>
-
-            <xpath expr="//div[@id='informations']" position="replace">
-                <div/>
+            <!--To remove tax field from table header-->
+            <xpath expr="//th[@name='th_taxes']" position="attributes">
+                <attribute name="t-if">not o</attribute>
             </xpath>
-
-            <xpath expr="//table[@name='invoice_line_table']" position="replace">
-                <table class="o_has_total_table table o_main_table table-borderless"
-                       style="width: 100%; border: none; text-align: left;">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left; font-weight: bold;">Description</th>
-                            <th style="text-align: right; font-weight: bold;">Quantity</th>
-                            <th style="text-align: right; font-weight: bold;">Unit Price</th>
-                            <th style="text-align: right; font-weight: bold;">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="o.invoice_line_ids" t-as="line">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span t-field="line.name"/>
-                                </td>
-                                <td style="text-align: right;">
-                                    <span t-field="line.quantity"/>
-                                </td>
-                                <td style="text-align: right;">
-                                    <span t-field="line.price_unit"
-                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                </td>
-                                <td style="text-align: right;">
-                                    <span t-field="line.price_subtotal"
-                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                </td>
-                            </tr>
-                        </t>
-                    </tbody>
-                </table>
-            </xpath>
-
-            <xpath expr="//div[@id='right-elements']" position="attributes">
-                <attribute name="t-attf-class"/>
-            </xpath>
-
-            <xpath expr="//t[@t-call='account.document_tax_totals_company_currency_template']" position="attributes">
+            <!--To remove tax field from table data-->
+            <xpath expr="//td[@name='td_taxes']" position="attributes">
                 <attribute name="t-if">not o</attribute>
             </xpath>
 
+            <!--To add untaxted amount and tax-->
+            <xpath expr="//div[@id='right-elements']" position="attributes">
+                <attribute name="style">margin-top: 125px;</attribute>
+                <attribute name="t-attf-class"/>
+            </xpath>
+            <!--To remove USD Taxes table-->
+            <xpath expr="//t[@t-call='account.document_tax_totals_company_currency_template']" position="attributes">
+                <attribute name="t-if">not o</attribute>
+            </xpath>
+            <!--To add some margin-->
             <xpath expr="//div[@id='payment_term']" position="attributes">
                 <attribute name="style">
-                    margin-top: 100px;
+                    margin-top: 100px; margin-left: 5px;
                 </attribute>
             </xpath>
-
-<!--            <xpath expr="//tr[@class='o_subtotal']" position="attributes">-->
-<!--                <attribute name="style">-->
-<!--                    font-weight : bold;-->
-<!--                </attribute>-->
-<!--            </xpath>-->
-<!--            -->
+            <!--To remove payment terms from article -->
             <xpath expr="//span[@id='payment_terms_note_id']" position="attributes">
                 <attribute name="t-if">not o</attribute>
             </xpath>
         </template>
         <template id="document_tax_totals_template_inherit" inherit_id="account.document_tax_totals_template">
+            <!--To giving some style to untaxed amount-->
             <xpath expr="//tr[@class='o_subtotal']/td[1]" position="attributes">
+                <attribute name="style">
+                    font-weight: bold;
+                </attribute>
+            </xpath>
+            <!--To giving some style to VAT tax amount-->
+            <xpath expr="//tr[@class='o_taxes']/t/td" position="attributes">
                 <attribute name="style">
                     font-weight: bold;
                 </attribute>

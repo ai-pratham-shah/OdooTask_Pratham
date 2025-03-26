@@ -43,3 +43,7 @@
 ##  [18.0.1.2.0] - 2025-03-21 | Layout Design & custom report
 ## changed
 - Optimise library location document from library location report file.
+
+## [18.0.1.3.0] - 2025-03-26 | Modify Existing/Base Qweb reports
+- custom modified web external layout
+- custom modified base invoice report

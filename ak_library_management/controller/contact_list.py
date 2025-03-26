@@ -42,10 +42,6 @@ class ContactsController(http.Controller):
         """Display contact details using slug."""
         contact_id = slug.split('-')[-1]  # Extract the last part as ID
         contact = request.env['res.partner'].sudo().browse(int(contact_id))
-
         if not contact.exists():
             return request.not_found()
-
         return request.render("ak_library_management.contact_detail", {'contact': contact})
-
-

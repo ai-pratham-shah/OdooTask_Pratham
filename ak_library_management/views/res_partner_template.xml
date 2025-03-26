@@ -1,44 +1,44 @@
 <odoo>
-<!--    <template id="res_partner_template" name="Contact us list">-->
-<!--        <t t-call="website.layout">-->
-<!--            <div class="container">-->
-<!--                <h1>Contact Us</h1>-->
-<!--                <ul>-->
-<!--                    <t t-foreach="partners" t-as="partner">-->
-<!--                        <li>-->
-<!--                            <h3>-->
-<!--                                <a t-att-href="'/contactus/%d' % partner.id">-->
-<!--                                    <t t-esc="partner.name"/>-->
-<!--                                </a>-->
-<!--                            </h3>-->
-<!--                        </li>-->
-<!--                    </t>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </t>-->
-<!--    </template>-->
+    <!--    <template id="res_partner_template" name="Contact us list">-->
+    <!--        <t t-call="website.layout">-->
+    <!--            <div class="container">-->
+    <!--                <h1>Contact Us</h1>-->
+    <!--                <ul>-->
+    <!--                    <t t-foreach="partners" t-as="partner">-->
+    <!--                        <li>-->
+    <!--                            <h3>-->
+    <!--                                <a t-att-href="'/contactus/%d' % partner.id">-->
+    <!--                                    <t t-esc="partner.name"/>-->
+    <!--                                </a>-->
+    <!--                            </h3>-->
+    <!--                        </li>-->
+    <!--                    </t>-->
+    <!--                </ul>-->
+    <!--            </div>-->
+    <!--        </t>-->
+    <!--    </template>-->
 
-<!--    <template id="res_partner_detail_template" name="Contact Detail">-->
-<!--        <div class="container">-->
-<!--            <h1>-->
-<!--                <t t-esc="partner.name"/>-->
-<!--            </h1>-->
-<!--            <p>-->
-<!--                <strong>Email:</strong>-->
-<!--                <t t-esc="partner.email"/>-->
-<!--            </p>-->
-<!--            <p>-->
-<!--                <strong>Phone:</strong>-->
-<!--                <t t-esc="partner.phone"/>-->
-<!--            </p>-->
-<!--            <p>-->
-<!--                <strong>Address:</strong>-->
-<!--                <t t-esc="partner.street"/>-->
-<!--                <t t-esc="partner.city"/>-->
-<!--            </p>-->
-<!--        </div>-->
-<!--    </template>-->
-     <template id="contacts_page" name="Contacts Page">
+    <!--    <template id="res_partner_detail_template" name="Contact Detail">-->
+    <!--        <div class="container">-->
+    <!--            <h1>-->
+    <!--                <t t-esc="partner.name"/>-->
+    <!--            </h1>-->
+    <!--            <p>-->
+    <!--                <strong>Email:</strong>-->
+    <!--                <t t-esc="partner.email"/>-->
+    <!--            </p>-->
+    <!--            <p>-->
+    <!--                <strong>Phone:</strong>-->
+    <!--                <t t-esc="partner.phone"/>-->
+    <!--            </p>-->
+    <!--            <p>-->
+    <!--                <strong>Address:</strong>-->
+    <!--                <t t-esc="partner.street"/>-->
+    <!--                <t t-esc="partner.city"/>-->
+    <!--            </p>-->
+    <!--        </div>-->
+    <!--    </template>-->
+    <template id="contacts_page" name="Contacts Page">
         <t t-call="website.layout">
             <div class="container">
                 <h2>Contacts</h2>
@@ -49,10 +49,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <a t-att-href="'/contact/%s' % contact.slug">
-                                            <t t-esc="contact.name"/>
+                                            <t t-out="contact.name"/>
                                         </a>
                                     </h5>
-                                    <p class="card-text"><t t-esc="contact.email or 'No Email'"/></p>
+                                    <p class="card-text">
+                                        <t t-out="contact.email or 'No Email'"/>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +67,9 @@
     <template id="contact_detail" name="Contact Detail Page">
         <t t-call="website.layout">
             <div class="container">
-                <h2><t t-esc="contact.name"/></h2>
+                <h2>
+                    <t t-esc="contact.name"/>
+                </h2>
                 <form>
                     <div class="form-group">
                         <label>Email:</label>
@@ -80,6 +84,4 @@
             </div>
         </t>
     </template>
-
-
 </odoo>
