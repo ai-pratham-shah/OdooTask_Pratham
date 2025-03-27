@@ -1,0 +1,92 @@
+<odoo>
+    <!--Detail view of contact page-->
+    <template id="contact_detail" name="Contact Detail Page">
+        <t t-call="website.layout">
+            <div class="container mt-2 mb-2">
+                <div class="card border-dark rounded shadow-lg">
+                    <div class="d-flex align-items-center p-4">
+                        <!-- Contact Name and Avatar -->
+                        <div class="flex-grow-1">
+                            <h1 class="mb-3">
+                                <t t-esc="partner.name"/>
+                            </h1>
+                        </div>
+                        <div class="ms-3">
+                            <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_128?unique=1742977026000"
+                                 class="card-img-left"   style="height: 100px; width: 100px;"
+                                 loading="lazy" alt="partner image"/>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-lg-6">
+                            <p>
+                                <strong>Company:</strong>
+                                <t t-esc="partner.company_id.name"/>
+                            </p>
+                            <p>
+                                <strong>Tax ID:</strong>
+                                <t t-esc="partner.vat"/>
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p>
+                                <strong>Job Position:</strong>
+                                <t t-esc="partner.function"/>
+                            </p>
+                            <p>
+                                <strong>Phone:</strong>
+                                <t t-esc="partner.phone or 'N/A'"/>
+                            </p>
+                            <p>
+                                <strong>Mobile:</strong>
+                                <t t-esc="partner.mobile or 'N/A'"/>
+                            </p>
+                            <p>
+                                <strong>Email:</strong>
+                                <t t-esc="partner.email"/>
+                            </p>
+                            <p>
+                                <strong>Website:</strong>
+                                <t t-esc="partner.website"/>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-1 mb-2">
+                        <!-- Back Button -->
+                        <a href="/contacts" class="btn btn-secondary px-4 py-2">Back</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!-- List of contacts in Kanban view-->
+    <template id="contacts_page" name="Contacts Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Contacts</h2>
+                <div class="row mb-2 mt-2">
+                    <t t-foreach="contacts" t-as="contact">
+                        <div class="col-md-4 mt-1 mb-1">
+                            <a t-attf-href="/contacts/{{ slug(contact) }}"
+                               class="link-offset-2 link-underline link-underline-opacity-0">
+                                <div class="card flex-row pe-5">
+                                    <img t-attf-src='web/image/res.partner/#{contact.id}/avatar_128'
+                                         class="card-img-left" style="height:100px; width:100px;"
+                                         loading='lazy' alt="partner image"/>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-out="contact.name"/>
+                                        </h5>
+                                        <p class="card-text" style="font-size:12px">
+                                            <t t-out="contact.email"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

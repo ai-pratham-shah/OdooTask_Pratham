@@ -47,3 +47,8 @@
 ## [18.0.1.3.0] - 2025-03-26 | Modify Existing/Base Qweb reports
 - custom modified web external layout
 - custom modified base invoice report
+
+## [18.0.1.4.0] - 2025-03-26 | Dynamic Controller
+- Dynamic HTTP controller to create a Contacts webpage.
+- List of contacts in Kanban view in main xml file.
+- Detail view of contact page in main xml file.
