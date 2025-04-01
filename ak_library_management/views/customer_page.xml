@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="customer_fetch_page" name="Customer fetch Page">
+        <t t-call="website.layout">
+            <t t-set="title">Customer Lookup</t>
+            <div class="container mt-5 customers_page">
+                <h2>Fetch Customer Details</h2>
+                <div class="form-group">
+                    <label for="InputEmail">Email:</label>
+                    <input type="email" id="InputEmail" placeholder="Enter Customer Email" class="form-control mb-2" />
+                </div>
+                <button id="fetchCustomer" class="btn btn-primary">Submit</button>
+                <div class="mt-3">
+                    <div class="form-group">
+                        <label for="InputName">Name:</label>
+                        <input type="text" id="InputName" class="form-control mb-2"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPhone">Phone:</label>
+                        <input type="text" id="InputPhone" class="form-control mb-2"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

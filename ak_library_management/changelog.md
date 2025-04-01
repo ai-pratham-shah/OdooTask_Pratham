@@ -52,3 +52,9 @@
 - Dynamic HTTP controller to create a Contacts webpage.
 - List of contacts in Kanban view in main xml file.
 - Detail view of contact page in main xml file.
+
+## [18.0.1.5.0] - 2025-04-01 | JSON Controller
+- Add new controller class in main file in controller package.
+- Add customer fetch file in static folder
+- Add customer page xml file in views
+- The purpose of this assignment is to get customer details from email id.

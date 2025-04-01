@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.4.0',
+    'version': '18.0.1.5.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -10,14 +10,14 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'stock', 'web', 'sale_management','base_automation','hr','website','account'
+        'stock', 'web', 'sale_management','base_automation','hr','account'
     ],
     'data': [
         'security/res_groups.xml',
         'security/ir.model.access.csv',
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
-        'reports/report_invoice_inherit.xml',
+        # 'reports/report_invoice_inherit.xml',
         'views/library_book.xml',
         'views/library_member.xml',
         'views/library_book_tag.xml',
@@ -33,6 +33,7 @@
         'views/contact_form.xml',
         'views/stock_warehouse.xml',
         'views/res_config_setting.xml',
+        'views/customer_page.xml',
         'wizard/bulk_book.xml',
         'wizard/sale_order_wizard.xml',
         'wizard/borrow_books_warning_wizard.xml',
@@ -40,11 +41,15 @@
         'data/ir_cron.xml',
         'data/mail_template_data.xml',
     ],
-    # 'assets': {
-    #     'web.assets_frontend': [
-    #         'ak_library_management/static/src/scss/contactus.scss',
-    #     ],
-    # },
+    'assets': {
+        'web.assets_frontend': [
+            # 'ak_library_management/static/src/scss/contactus.scss',
+            'ak_library_management/static/src/js/customer_fetch.js',
+        ],
+        'web.assets_backend': [
+
+        ],
+    },
     'installable': True,
     'license': 'LGPL-3',
 }
