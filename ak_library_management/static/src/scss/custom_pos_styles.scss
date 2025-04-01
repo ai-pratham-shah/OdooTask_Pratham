@@ -1,0 +1,173 @@
+// Main product grid layout (Odoo 16 style)
+// .pos .v16-products-widget {
+//     .v16-product-list {
+//         display: grid;
+//         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+//         gap: 8px;
+//         padding: 8px;
+//
+//         @media screen and (max-width: 768px) {
+//             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+//         }
+//     }
+// }
+
+// Product card styling to match Odoo 16
+.pos .v16-product-card {
+    height: 158px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        border-color: #7c7bad;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+    }
+
+    .v16-product-img {
+        height: 100px;
+        width: 100%;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+
+        // Stock badge (out of stock)
+        .stock-tag {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255, 76, 76, 0.8);
+            color: white;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        // Quick add button (Odoo 16 style)
+        .v16-quick-add {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+            i {
+                font-size: 18px;
+                color: #7c7bad;
+            }
+
+            &:hover {
+                background: white;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+                i {
+                    color: #555b7e;
+                }
+            }
+        }
+    }
+
+    &:hover .v16-quick-add {
+        display: flex;
+    }
+
+    // Product info section
+    .v16-product-info {
+        height: 58px;
+        width: 100%;
+        padding: 5px 8px;
+        background: #f9f9f9;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .product-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .price-tag {
+            font-size: 12px;
+            color: #7c7bad;
+            margin-top: 2px;
+        }
+    }
+}
+
+// Category pill buttons (Odoo 16 style)
+.pos .category-simple-button {
+    &.v16-category-button {
+        display: inline-flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 12px;
+        margin: 0 4px 4px 0;
+        border-radius: 16px;
+        background: white;
+        border: 1px solid #ddd;
+        color: #333;
+        font-size: 13px;
+        cursor: pointer;
+
+        &.active {
+            background: #7c7bad;
+            color: white;
+            border-color: #7c7bad;
+        }
+
+        &:hover:not(.active) {
+            border-color: #bbb;
+            background: #f9f9f9;
+        }
+    }
+}
+
+// Quantity badge (Odoo 16 style)
+.pos .v16-product-card .qty-tag {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(124, 123, 173, 0.8);
+    color: white;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 12px;
+}
+
+// Price tags (Odoo 16 style)
+.pos .price-tag {
+    white-space: nowrap;
+
+    .price-tag-before {
+        font-size: 10px;
+        vertical-align: top;
+    }
+
+    .price-tag-cents {
+        font-size: 10px;
+        vertical-align: top;
+    }
+}

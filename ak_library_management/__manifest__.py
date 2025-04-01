@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.5.0',
+    'version': '18.0.1.6.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -10,7 +10,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'stock', 'web', 'sale_management','base_automation','hr','account'
+        'stock', 'web', 'sale_management','base_automation','hr','account','website','point_of_sale'
     ],
     'data': [
         'security/res_groups.xml',
@@ -48,6 +48,12 @@
         ],
         'web.assets_backend': [
 
+        ],
+        'point_of_sale._assets_pos': [
+            # 'ak_library_management/static/src/js/custom_pos.js',
+            # 'ak_library_management/static/src/scss/custom_pos_styles.scss',
+            'ak_library_management/static/src/xml/pos_product_template.xml',
+            'ak_library_management/static/src/xml/pos_product_productscreen.xml',
         ],
     },
     'installable': True,

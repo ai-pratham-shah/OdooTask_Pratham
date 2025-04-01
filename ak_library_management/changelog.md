@@ -58,3 +58,6 @@
 - Add customer fetch file in static folder
 - Add customer page xml file in views
 - The purpose of this assignment is to get customer details from email id.
+
+## [18.0.1.5.0] - 2025-04-01 | Replicating Odoo 16 POS Product Section Design
+- Add two new xml file in static folder.
