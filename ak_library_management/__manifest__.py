@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.6.0',
+    'version': '18.0.1.7.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -10,7 +10,7 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'stock', 'web', 'sale_management','base_automation','hr','account','website','point_of_sale'
+        'base','stock', 'web', 'sale_management','website_sale','product','base_automation','hr','mail','purchase','account','website','point_of_sale',
     ],
     'data': [
         'security/res_groups.xml',
@@ -34,6 +34,7 @@
         'views/stock_warehouse.xml',
         'views/res_config_setting.xml',
         'views/customer_page.xml',
+        'views/website_product_template.xml',
         'wizard/bulk_book.xml',
         'wizard/sale_order_wizard.xml',
         'wizard/borrow_books_warning_wizard.xml',

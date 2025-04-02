@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add one download button on website sale -->
+    <template id="website_sale_product_add_download_button" inherit_id="website_sale.product">
+       <xpath expr="//div[@id='o_product_terms_and_share']" position="after">
+            <t t-if="product.image_1920 or product.product_template_image_ids">
+                <a t-att-href="'/download_images/%s' % product.id" class="btn btn-primary mt-2">
+                    <i class="fa fa-download"></i> Download Images
+                </a>
+            </t>
+       </xpath>
+    </template>
+</odoo>

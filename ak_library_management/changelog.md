@@ -59,5 +59,9 @@
 - Add customer page xml file in views
 - The purpose of this assignment is to get customer details from email id.
 
-## [18.0.1.5.0] - 2025-04-01 | Replicating Odoo 16 POS Product Section Design
+## [18.0.1.6.0] - 2025-04-01 | Replicating Odoo 16 POS Product Section Design
 - Add two new xml file in static folder.
+
+## [18.0.1.7.0] - 2025-04-02 | Download Product Images in Odoo
+- Add one class in controller/main.py file called ProductImagesDownload for perform task functionality.
+- Add one (website product template) xml file for add download images button. 
