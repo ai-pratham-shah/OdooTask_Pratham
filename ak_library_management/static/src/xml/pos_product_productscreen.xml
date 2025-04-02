@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+    <t t-name="ak_library_management.ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <!-- Modify product list container to use grid layout with auto-fill columns -->
         <xpath expr="//div[contains(@t-attf-class,'product-list')]" position="attributes">
             <attribute name="t-attf-class">product-list d-grid overflow-y-auto</attribute>
             <attribute name="style">gap:3px; padding:3px; grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));</attribute>
