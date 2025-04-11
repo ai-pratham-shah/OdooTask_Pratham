@@ -17,7 +17,7 @@
         'security/ir.model.access.csv',
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
-        # 'reports/report_invoice_inherit.xml',
+        'reports/report_invoice_inherit.xml',
         'views/library_book.xml',
         'views/library_member.xml',
         'views/library_book_tag.xml',
