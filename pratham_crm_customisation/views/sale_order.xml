@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add job name field in sale order form -->
+    <record id="custom_view_order_form_job_name" model="ir.ui.view">
+        <field name="name">sale.order.form.job.name.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="job_name" readonly="job_name_readonly == True or state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Add job name field in sale order list -->
+    <record id="custom_view_order_list_job_name" model="ir.ui.view">
+        <field name="name">sale.order.list.job.name</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="job_name"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Make job_name searchable -->
+    <record id="view_order_filter_search_view" model="ir.ui.view">
+        <field name="name">sale.order.filter.job.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Job Name" name="job_name" domain="[('job_name', '!=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

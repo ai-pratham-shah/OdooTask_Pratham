@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Add job name field in project form -->
+    <record id="view_project_project_form_add_job_name" model="ir.ui.view">
+        <field name="name">view_project_project_form_add_job_name</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_start']" position="after">
+                 <field name="job_name" readonly="job_name_readonly == True"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
