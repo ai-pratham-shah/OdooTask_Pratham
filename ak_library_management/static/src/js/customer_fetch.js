@@ -8,7 +8,7 @@ publicWidget.registry.CustomerPage = publicWidget.Widget.extend({
     events: {
         'click #fetchCustomer': '_onFetchCustomer'
     },
-
+    // Function to handle customer data fetching when the button is clicked.
     _onFetchCustomer: function () {
         var email = $('#InputEmail').val().trim();
         if (!email) {

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.7.2',
+    'version': '18.0.1.8.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -38,6 +38,7 @@
         'views/product_template.xml',
         'views/product_variant_easy_edit_view_vendor_inherit.xml',
         'views/add_to_cart.xml',
+        'views/website_menu.xml',
         'wizard/bulk_book.xml',
         'wizard/sale_order_wizard.xml',
         'wizard/borrow_books_warning_wizard.xml',

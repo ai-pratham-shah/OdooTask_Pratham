@@ -28,6 +28,7 @@ class ContactsController(http.Controller):
         partner = request.env['res.partner'].sudo().browse(partner_id)
         if not partner.exists():
             return request.redirect('/contacts')
+
         return request.render("ak_library_management.contact_detail", {'partner': partner})
 
 class CustomerController(http.Controller):
@@ -41,7 +42,6 @@ class CustomerController(http.Controller):
         email = args.get('email')
         if not email:
             return {'error': 'Email is required'}
-
         customer = request.env['res.partner'].sudo().search([('email', '=', email)], limit=1)
         if customer:
             return {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!--Custom customer form to capture customer details based on email-->
     <template id="customer_fetch_page" name="Customer fetch Page">
         <t t-call="website.layout">
             <t t-set="title">Customer Lookup</t>

@@ -89,13 +89,4 @@
             </div>
         </t>
     </template>
-    <!-- Add menu in website page-->
-    <data noupdate="1">
-        <record id="contacts_kanban_page" model="website.menu">
-            <field name="name">Contact page</field>
-            <field name="url">/contacts</field>
-            <field name="parent_id" ref="website.main_menu"/>
-            <field name="sequence">110</field>
-        </record>
-    </data>
 </odoo>

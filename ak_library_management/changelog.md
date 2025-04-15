@@ -72,3 +72,6 @@
 
 ## [18.0.1.7.2] - 2025-04-15 | Modify Existing/Base Qweb reports
 - Merge multiple tables into a single table and add condition like label is printed only if the relevant data is available.
+
+## [18.0.1.8.0]- 2025-04-15 | JSON Controller
+- Add one xml file to handle website menu's.

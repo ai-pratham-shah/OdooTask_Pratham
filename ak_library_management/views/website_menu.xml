@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="contacts_kanban_page" model="website.menu">
+            <field name="name">Contact page</field>
+            <field name="url">/contacts</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">110</field>
+        </record>
+        <!-- Added one customer form menu-->
+        <record id="customer_detail_menu" model="website.menu">
+            <field name="name">Customer form</field>
+            <field name="url">/customer_page</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" eval="30"/>
+        </record>
+    </data>
+</odoo>
