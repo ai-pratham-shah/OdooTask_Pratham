@@ -6,6 +6,7 @@ import base64
 from odoo import http
 from odoo.http import request,route
 
+
 class ContactsController(http.Controller):
     """
     Dynamic HTTP controller to create a Contacts webpage
@@ -18,11 +19,13 @@ class ContactsController(http.Controller):
         contacts = request.env['res.partner'].sudo().search([])
         return request.render("ak_library_management.contacts_page", {'contacts': contacts})
 
-    @http.route('/contacts/<model("res.partner"):partner>', type='http', auth="public", website=True)
-    def contact_detail(self, partner):
+    @http.route('/contacts/<path:slug_url>', type='http', auth="public", website=True)
+    def contact_detail(self, slug_url, **kwargs):
         """
         Display contact details using slug.
         """
+        partner_id = int(slug_url.split('-')[-1])
+        partner = request.env['res.partner'].sudo().browse(partner_id)
         return request.render("ak_library_management.contact_detail", {'partner': partner})
 
 class CustomerController(http.Controller):
@@ -118,3 +121,4 @@ class ProductImagesDownload(http.Controller):
                 ('Content-Length', len(zip_data)),
             ]
         )
+

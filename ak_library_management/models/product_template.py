@@ -27,6 +27,67 @@ class ProductTemplate(models.Model):
         ('returned','Returned')
     ], 'Status', tracking=True, default='available')
     reference = fields.Char(readonly=True)
+    vendor_on_variants = fields.Boolean(
+        string="Vendor on Variants",
+        default=False,
+        help="If enabled, all product variants will inherit the vendor from the product template.\n"
+             "If disabled, you can assign different vendors to each product variant."
+    )
+
+    @api.onchange('vendor_on_variants')
+    def _onchange_vendor_on_variants(self):
+        """
+        When toggling 'vendor_on_variants', update vendor info for all related variants
+        """
+        if self.vendor_on_variants:
+            # When enabled, copy template's vendor info to all variants
+            for variant in self.product_variant_ids:
+                # First, remove any variant-specific vendors
+                variant.variant_seller_ids.unlink()
+
+                # Then copy template vendor info to all variants
+                for seller in self.seller_ids:
+                    self.env['product.supplierinfo'].create({
+                        'name': seller.name.id,
+                        'product_id': variant.id,
+                        'product_tmpl_id': False,  # Not linked to template
+                        'min_qty': seller.min_qty,
+                        'price': seller.price,
+                        'delay': seller.delay,
+                        'company_id': seller.company_id.id,
+                        'currency_id': seller.currency_id.id,
+                    })
+
+    def write(self, vals):
+        result = super(ProductTemplate, self).write(vals)
+
+        # If vendor_on_variants is being set to True, enforce the template vendors on all variants
+        if vals.get('vendor_on_variants'):
+            for template in self:
+                template_vendors = self.env['product.supplierinfo'].search([
+                    ('product_tmpl_id', '=', template.id),
+                    ('product_id', '=', False)  # Only get template-level vendors
+                ])
+
+                # For each variant, remove any variant-specific vendors
+                for variant in template.product_variant_ids:
+                    variant_vendors = self.env['product.supplierinfo'].search([
+                        ('product_id', '=', variant.id)
+                    ])
+                    if variant_vendors:
+                        variant_vendors.unlink()
+
+        return result
+    @api.onchange('vendor_on_variants')
+    def _onchange_vendor_on_variants(self):
+        if self.vendor_on_variants:
+            # Remove any variant-specific vendors when set to True
+            for variant in self.product_variant_ids:
+                variant_vendors = self.env['product.supplierinfo'].search([
+                    ('product_id', '=', variant.id)
+                ])
+                if variant_vendors:
+                    variant_vendors.unlink()
 
     @api.model_create_multi
     def create(self, vals):

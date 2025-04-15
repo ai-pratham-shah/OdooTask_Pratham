@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Modify Product Variant Form View -->
+    <record id="product_variant_easy_edit_view_vendor_inherit" model="ir.ui.view">
+        <field name="name">product.product.form.vendor.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <!-- Add vendors section after the packaging group -->
+            <xpath expr="//group[@name='packaging']" position="after">
+                <group name="variant_vendors_group" string="Vendors">
+                    <!-- The field definition is fine, but the subfields needed correction -->
+                    <field name="variant_seller_ids" nolabel="1">
+                        <list string="Vendor Prices" editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="partner_id"/>
+                            <field name="min_qty"/>
+                            <field name="price"/>
+                            <field name="delay"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </list>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

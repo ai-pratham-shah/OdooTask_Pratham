@@ -12,3 +12,7 @@ from . import borrow_transaction_history
 from . import res_partner
 from . import stock_warehouse
 from . import res_config_setting
+from . import product_product
+from . import purchase_order
+from . import product_supplierinfo
+

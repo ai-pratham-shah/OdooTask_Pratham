@@ -1,0 +1,86 @@
+<odoo>
+    <!-- Add on hand quantity in product information -->
+    <template id="product_on_hand_qty_view" inherit_id="website_sale.products_item">
+        <xpath expr="//div[contains(@class, 'o_wsale_product_information_text')]" position="inside">
+<!--            <div class="on_hand_quantity mt-2">-->
+<!--                <span>On Hand :-->
+<!--                    <t t-if="product.sudo().qty_available > 0">-->
+<!--                        <span style="color: green;" t-field="product.sudo().qty_available"/>-->
+<!--                    </t>-->
+<!--                    <t t-else="">Out of Stock</t>-->
+<!--                </span>-->
+<!--            </div>-->
+             <!-- Stock quantity display -->
+            <div class="product_stock_info mt-2">
+                <t t-if="product.qty_available &gt; 0">
+                    <span class="badge bg-success">In Stock: <t t-esc="int(product.sudo().qty_available)"/></span>
+                </t>
+                <t t-else="">
+                    <span class="badge bg-danger">Out of Stock</span>
+                </t>
+            </div>
+        </xpath>
+    </template>
+    <!-- add to cart button in product item view -->
+    <template id="add_to_cart_button_view" inherit_id="website_sale.products_item">
+        <xpath expr="//div[contains(@class, 'o_wsale_product_sub d-flex')]" position="after">
+<!--            <div id="add_to_cart_wrap" t-attf-class="d-inline-flex align-items-center mb-2 me-auto">-->
+<!--                <a role="button" id="add_to_cart"-->
+<!--                   t-attf-class="btn btn-primary js_check_product a-submit flex-grow-1 #{'btn-lg' if ctaSizeBig else ''}"-->
+<!--                   href="#">-->
+<!--                    <i class="fa fa-shopping-cart me-2"/>-->
+<!--                    <span>Add to cart</span>-->
+<!--                </a>-->
+<!--            </div>-->
+            <button t-if="product.qty_available &gt; 0"
+                    class="btn btn-primary btn-sm quick_add_to_cart"
+                    t-att-data-product-id="product.id">
+                <i class="fa fa-shopping-cart"/> Add to Cart
+            </button>
+            <button t-else=""
+                    class="btn btn-primary btn-sm"
+                    disabled="disabled">
+                <i class="fa fa-shopping-cart"/> Add to Cart
+            </button>
+        </xpath>
+    </template>
+</odoo>
+
+<!--<odoo>-->
+<!--    &lt;!&ndash; Extend products grid item template &ndash;&gt;-->
+<!--    <template id="products_item_extension" inherit_id="website_sale.products_item">-->
+<!--        <xpath expr="//div[hasclass('o_wsale_product_information')]" position="inside">-->
+<!--            &lt;!&ndash; Stock quantity display &ndash;&gt;-->
+<!--            <div class="product_stock_info mt-2">-->
+<!--                <t t-if="product.qty_available &gt; 0">-->
+<!--                    <span class="badge bg-success">In Stock: <t t-esc="int(product.qty_available)"/></span>-->
+<!--                </t>-->
+<!--                <t t-else="">-->
+<!--                    <span class="badge bg-danger">Out of Stock</span>-->
+<!--                </t>-->
+<!--            </div>-->
+<!--        </xpath>-->
+
+<!--        &lt;!&ndash; Add to cart button on hover &ndash;&gt;-->
+<!--        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">-->
+<!--            <button t-if="product.qty_available &gt; 0"-->
+<!--                    class="btn btn-primary btn-sm quick_add_to_cart"-->
+<!--                    t-att-data-product-id="product.id">-->
+<!--                <i class="fa fa-shopping-cart"/> Add to Cart-->
+<!--            </button>-->
+<!--            <button t-else=""-->
+<!--                    class="btn btn-primary btn-sm"-->
+<!--                    disabled="disabled">-->
+<!--                <i class="fa fa-shopping-cart"/> Out of Stock-->
+<!--            </button>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+<!--    &lt;!&ndash; Add necessary assets for JavaScript handling &ndash;&gt;-->
+<!--&lt;!&ndash;    <template id="assets_shop_extension" inherit_id="website.assets_frontend">&ndash;&gt;-->
+<!--&lt;!&ndash;        <xpath expr="." position="inside">&ndash;&gt;-->
+<!--&lt;!&ndash;            <script type="text/javascript" src="/website_sale_extensions/static/src/js/shop_add_to_cart.js"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <link rel="stylesheet" href="/website_sale_extensions/static/src/css/shop_stock.css"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
+<!--&lt;!&ndash;    </template>&ndash;&gt;-->
+<!--</odoo>-->

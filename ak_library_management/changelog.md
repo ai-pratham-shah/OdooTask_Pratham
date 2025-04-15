@@ -65,3 +65,10 @@
 ## [18.0.1.7.0] - 2025-04-02 | Download Product Images in Odoo
 - Add one class in controller/main.py file called ProductImagesDownload for perform task functionality.
 - Add one (website product template) xml file for add download images button. 
+
+## [18.0.1.7.1] - 2025-04-15 | Dynamic Controller
+- Change in main controller file regarding public user can see all data.
+- Change in main xml file regarding public user can see all data.
+
+## [18.0.1.7.2] - 2025-04-15 | Modify Existing/Base Qweb reports
+- Merge multiple tables into a single table and add condition like label is printed only if the relevant data is available.

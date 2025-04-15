@@ -12,7 +12,7 @@
                             </h1>
                         </div>
                         <div class="ms-3">
-                            <img t-attf-src="/web/image/res.partner/#{partner.id}/avatar_128?unique=1742977026000"
+                            <img t-if="partner.image_1920" t-att-src="image_data_uri(partner.image_1920)"
                                  class="card-img-left"   style="height: 100px; width: 100px;"
                                  loading="lazy" alt="partner image"/>
                         </div>
@@ -70,7 +70,7 @@
                             <a t-attf-href="/contacts/{{ slug(contact) }}"
                                class="link-offset-2 link-underline link-underline-opacity-0">
                                 <div class="card flex-row pe-5">
-                                    <img t-attf-src='web/image/res.partner/#{contact.id}/avatar_128'
+                                    <img t-if="contact.image_1920" t-att-src="image_data_uri(contact.image_1920)"
                                          class="card-img-left" style="height:100px; width:100px;"
                                          loading='lazy' alt="partner image"/>
                                     <div class="card-body">
@@ -89,4 +89,13 @@
             </div>
         </t>
     </template>
+    <!-- Add menu in website page-->
+    <data noupdate="1">
+        <record id="contacts_kanban_page" model="website.menu">
+            <field name="name">Contact page</field>
+            <field name="url">/contacts</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">110</field>
+        </record>
+    </data>
 </odoo>

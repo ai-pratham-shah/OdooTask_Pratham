@@ -5,12 +5,13 @@
         <template id="invoice_custom_header_inherit" inherit_id="web.external_layout_standard">
             <!--Remove company address from header-->
             <xpath expr="//div[@name='company_address']" position="attributes">
-                <attribute name="t-if">not o</attribute>
+                <attribute name="t-if">not o and o._name == 'account.move'</attribute>
             </xpath>
             <!--Add fields in the header-->
             <xpath expr="//div[@name='company_address']" position="after">
                 <div class="row">
-                    <div class="col-9" style="text-align: left; margin-top: 10px; margin-left:10px; padding-bottom:20px;">
+                    <div class="col-9"
+                         style="text-align: left; margin-top: 10px; margin-left:10px; padding-bottom:20px;">
                         <div class="mb-1">
                             <table style="width: 100%;" class="table-borderless">
                                 <tr>
@@ -19,36 +20,32 @@
                                         <span t-field="o.name"/>
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="mb-1">
-                            <table style="width: 100%;" class="table-borderless">
                                 <tr>
                                     <td style="width: 150px;">Invoice Date:</td>
                                     <td>
                                         <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="mb-1">
-                             <table style="width: 100%;" class="table-borderless">
                                 <tr>
                                     <td style="width: 150px;">Reference Period:</td>
                                     <td>
-                                        <span t-field="o.invoice_date_due" t-options='{"format": "dd/MM/yyyy"}'/>
+                                        <span>
+                                            <t t-esc="o.invoice_date"
+                                               t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                            To
+                                            <t t-esc="o.invoice_date_due"
+                                               t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                        </span>
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="mb-1">
-                            <table style="width: 100%;" class="table-borderless">
-                                <tr>
-                                    <td style="width: 150px;">Payment Term:</td>
-                                    <td>
-                                        <span t-field="o.invoice_payment_term_id"/>
-                                    </td>
-                                </tr>
+                                <t t-if="o.invoice_payment_term_id">
+                                    <tr>
+                                        <td style="width: 150px;">Payment Term:</td>
+                                        <td>
+                                            <span t-field="o.invoice_payment_term_id"/>
+                                        </td>
+                                    </tr>
+                                </t>
                             </table>
                         </div>
                     </div>
@@ -132,15 +129,24 @@
             </xpath>
             <!--To remove tax field from table header-->
             <xpath expr="//th[@name='th_taxes']" position="attributes">
-                <attribute name="t-if">not o</attribute>
+                <attribute name="t-if">show_taxes</attribute>
             </xpath>
             <!--To remove tax field from table data-->
             <xpath expr="//td[@name='td_taxes']" position="attributes">
-                <attribute name="t-if">not o</attribute>
+                <attribute name="t-if">show_taxes</attribute>
+            </xpath>
+
+            <xpath expr="//div" position="after">
+                <style>
+                    th{
+                    font-weight: bold;
+                    }
+                </style>
             </xpath>
 
             <!--To add untaxted amount and tax-->
             <xpath expr="//div[@id='right-elements']" position="attributes">
+                <attribute name="t-if">o</attribute>
                 <attribute name="style">margin-top: 125px;</attribute>
                 <attribute name="t-attf-class"/>
             </xpath>
@@ -156,7 +162,7 @@
             </xpath>
             <!--To remove payment terms from article -->
             <xpath expr="//span[@id='payment_terms_note_id']" position="attributes">
-                <attribute name="t-if">not o</attribute>
+                <attribute name="t-if">show_payment_terms</attribute>
             </xpath>
         </template>
         <template id="document_tax_totals_template_inherit" inherit_id="account.document_tax_totals_template">
@@ -167,7 +173,7 @@
                 </attribute>
             </xpath>
             <!--To giving some style to VAT tax amount-->
-            <xpath expr="//tr[@class='o_taxes']/t/td" position="attributes">
+            <xpath expr="//tr[@class='o_taxes']/t/td/span[@class='text-nowrap']" position="attributes">
                 <attribute name="style">
                     font-weight: bold;
                 </attribute>
