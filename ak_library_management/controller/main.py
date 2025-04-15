@@ -26,6 +26,8 @@ class ContactsController(http.Controller):
         """
         partner_id = int(slug_url.split('-')[-1])
         partner = request.env['res.partner'].sudo().browse(partner_id)
+        if not partner.exists():
+            return request.redirect('/contacts')
         return request.render("ak_library_management.contact_detail", {'partner': partner})
 
 class CustomerController(http.Controller):
