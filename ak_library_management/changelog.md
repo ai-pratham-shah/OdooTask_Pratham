@@ -75,3 +75,6 @@
 
 ## [18.0.1.8.0]- 2025-04-15 | JSON Controller
 - Add one xml file to handle website menu's.
+
+## [18.0.1.8.1] - 2025-04-16 | Modify Existing/Base Qweb reports
+- Add condition like label is printed only if the relevant data is available.
