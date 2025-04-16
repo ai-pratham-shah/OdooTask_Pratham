@@ -14,30 +14,36 @@
                          style="text-align: left; margin-top: 10px; margin-left:10px; padding-bottom:20px;">
                         <div class="mb-1">
                             <table style="width: 100%;" class="table-borderless">
-                                <tr>
-                                    <td style="width: 150px;">Invoice Reference:</td>
-                                    <td>
-                                        <span t-field="o.name"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 150px;">Invoice Date:</td>
-                                    <td>
-                                        <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 150px;">Reference Period:</td>
-                                    <td>
-                                        <span>
-                                            <t t-esc="o.invoice_date"
-                                               t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
-                                            To
-                                            <t t-esc="o.invoice_date_due"
-                                               t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
-                                        </span>
-                                    </td>
-                                </tr>
+                                <t t-if="o.name">
+                                    <tr>
+                                        <td style="width: 150px;">Invoice Reference:</td>
+                                        <td>
+                                            <span t-field="o.name"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-if="o.invoice_date">
+                                    <tr>
+                                        <td style="width: 150px;">Invoice Date:</td>
+                                        <td>
+                                            <span t-field="o.invoice_date" t-options='{"format": "dd/MM/yyyy"}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-if="o.invoice_date and o.invoice_date_due">
+                                    <tr>
+                                        <td style="width: 150px;">Reference Period:</td>
+                                        <td>
+                                            <span>
+                                                <t t-esc="o.invoice_date"
+                                                   t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                                To
+                                                <t t-esc="o.invoice_date_due"
+                                                   t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </t>
                                 <t t-if="o.invoice_payment_term_id">
                                     <tr>
                                         <td style="width: 150px;">Payment Term:</td>
