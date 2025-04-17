@@ -1,0 +1,35 @@
+<odoo>
+   <!-- Add on hand quantity in product information -->
+   <template id="product_on_hand_qty_view" inherit_id="website_sale.products_item">
+       <xpath expr="//div[contains(@class, 'o_wsale_product_information_text')]" position="inside">
+           <!-- Stock quantity display -->
+           <div class="product_stock_info mt-2">
+               <t t-if="product.sudo().qty_available &gt; 0">
+                   <span class="badge bg-success">On Hand Quantity:
+                       <t t-out="product.sudo().qty_available"/>
+                   </span>
+               </t>
+               <t t-else="">
+                   <span class="badge bg-danger">Out of Stock</span>
+               </t>
+           </div>
+       </xpath>
+   </template>
+   <!-- add to cart button in product item view -->
+   <template id="add_to_cart_button_view" inherit_id="website_sale.products_item">
+       <xpath expr="//div[contains(@class, 'o_wsale_product_sub d-flex')]" position="after">
+           <button t-if="product.sudo().qty_available &gt; 0"
+                   class="btn btn-primary btn-sm quick_add_to_cart o_wsale_product_btn position-relative me-2 d-inline-flex align-items-center justify-content-center gap-2"
+                   t-att-data-product-id="product.product_variant_id.id">
+               <i class="fa fa-shopping-cart"/>
+               Add to Cart
+           </button>
+           <button t-else=""
+                   class="btn btn-primary btn-sm o_wsale_product_btn position-relative me-2 d-inline-flex align-items-center justify-content-center gap-2"
+                   disabled="disabled">
+               <i class="fa fa-shopping-cart"/>
+               Add to Cart
+           </button>
+       </xpath>
+   </template>
+</odoo>
