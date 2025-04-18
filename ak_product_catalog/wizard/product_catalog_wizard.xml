@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_catalog_wizard_form" model="ir.ui.view">
+        <field name="name">product.catalog.wizard.form</field>
+        <field name="model">product.catalog.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Product Catalog Generator">
+                <sheet>
+                    <group>
+                        <field name="catalog_style" widget="radio"/>
+                        <field name="page_break_after"/>
+                        <field name="product_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_catalog" string="Generate" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_catalog_wizard" model="ir.actions.act_window">
+        <field name="name">Product Catalog Generator</field>
+        <field name="res_model">product.catalog.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

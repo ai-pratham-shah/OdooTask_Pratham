@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<odoo>-->
+<!--    <template id="report_product_catalog_style1_document">-->
+<!--        <t t-call="web.html_container">-->
+<!--            &lt;!&ndash; Custom header with only "Generated Product Catalog" &ndash;&gt;-->
+<!--            <div class="header" style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">-->
+<!--                <h2 style="text-align: center; color: #7c7bad; font-weight: bold;">Generated Product Catalog</h2>-->
+<!--            </div>-->
+
+<!--            <div class="page">-->
+<!--                <div class="container">-->
+<!--                    &lt;!&ndash; Loop through products &ndash;&gt;-->
+<!--                    <t t-set="product_count" t-value="0"/>-->
+<!--                    <t t-foreach="docs.product_ids" t-as="product">-->
+<!--                        &lt;!&ndash; Increment product counter &ndash;&gt;-->
+<!--                        <t t-set="product_count" t-value="product_count + 1"/>-->
+
+<!--                        <div class="row mb-4" style="border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9;">-->
+<!--                            &lt;!&ndash; Product Image - FIXED: removed to_text function &ndash;&gt;-->
+<!--                            <div class="col-4">-->
+<!--                                <img t-if="product.image_1920" t-att-src="'data:image/png;base64,%s' % product.image_1920" style="max-width: 100%; height: auto; border-radius: 5px;"/>-->
+<!--                                <img t-else="" src="/web/static/img/placeholder.png" style="max-width: 100%; height: auto; border-radius: 5px;"/>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Product Details &ndash;&gt;-->
+<!--                            <div class="col-8">-->
+<!--                                <h3 style="color: #7c7bad; margin-bottom: 10px;"><t t-esc="product.name"/></h3>-->
+
+<!--                                <div style="margin-bottom: 8px;">-->
+<!--                                    <strong>Price:</strong>-->
+<!--                                    <span style="font-size: 16px; color: #007bff;">-->
+<!--                                        <t t-esc="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>-->
+<!--                                    </span>-->
+<!--                                </div>-->
+
+<!--                                <div style="margin-bottom: 8px;">-->
+<!--                                    <strong>Internal Reference:</strong>-->
+<!--                                    <span><t t-esc="product.default_code or '—'"/></span>-->
+<!--                                </div>-->
+
+<!--                                <div style="margin-top: 10px;">-->
+<!--                                    <strong>Description:</strong>-->
+<!--                                    <div t-if="product.description_sale" t-esc="product.description_sale"/>-->
+<!--                                    <div t-elif="product.description" t-esc="product.description"/>-->
+<!--                                    <div t-else="">No description available</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Add page break based on page_break_after setting &ndash;&gt;-->
+<!--                        <t t-if="product_count % docs.page_break_after == 0 and product_count != len(docs.product_ids)">-->
+<!--                            <div style="page-break-after: always;"/>-->
+<!--                        </t>-->
+<!--                    </t>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->
+
+<!--<odoo>-->
+<!--    <template id="report_product_catalog_style1_document">-->
+<!--        <t t-call="web.html_container">-->
+<!--            &lt;!&ndash; Custom header with only "Generated Product Catalog" &ndash;&gt;-->
+<!--            <div class="header" style="border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 10px;">-->
+<!--                <h2 style="text-align: center; font-weight: bold;">Generated Product Catalog</h2>-->
+<!--            </div>-->
+
+<!--            <div class="page">-->
+<!--                <div class="container">-->
+<!--                    &lt;!&ndash; Loop through products &ndash;&gt;-->
+<!--                    <t t-set="product_count" t-value="0"/>-->
+<!--                    <t t-foreach="docs.product_ids" t-as="product">-->
+<!--                        &lt;!&ndash; Increment product counter &ndash;&gt;-->
+<!--                        <t t-set="product_count" t-value="product_count + 1"/>-->
+
+<!--                        <div class="row" style="margin-bottom: 15px;">-->
+<!--                            &lt;!&ndash; Product Image &ndash;&gt;-->
+<!--                            <div class="col-3" style="padding-right: 0;">-->
+<!--                                <img t-if="product.image_1920" t-att-src="'data:image/png;base64,%s' % product.image_1920" style="max-width: 100%; height: auto;"/>-->
+<!--                                <img t-else="" src="/web/static/img/placeholder.png" style="max-width: 100%; height: auto;"/>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Product Details &ndash;&gt;-->
+<!--                            <div class="col-9" style="padding-left: 10px;">-->
+<!--                                &lt;!&ndash; Product Name &ndash;&gt;-->
+<!--                                <div>-->
+<!--                                    <span style="font-weight: bold; font-size: 16px;"><t t-esc="product.name"/></span>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Internal Reference &ndash;&gt;-->
+<!--                                <div style="background-color: #e6e6e6; padding: 2px 5px; display: inline-block; margin-bottom: 5px;">-->
+<!--                                    <t t-esc="product.default_code or '—'"/>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Price &ndash;&gt;-->
+<!--                                <div style="margin-bottom: 5px;">-->
+<!--                                    <strong>Price:</strong>-->
+<!--                                    <t t-esc="product.list_price" t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Description &ndash;&gt;-->
+<!--                                <div style="font-size: 13px; color: #666;">-->
+<!--                                    <t t-if="product.description_sale" t-esc="product.description_sale"/>-->
+<!--                                    <t t-elif="product.description" t-esc="product.description"/>-->
+<!--                                    <t t-else="">No description available</t>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Separator line between products &ndash;&gt;-->
+<!--                        <t t-if="product_count != len(docs.product_ids)">-->
+<!--                            <hr style="border-top: 1px solid #ddd; margin: 0 -15px 15px -15px;"/>-->
+<!--                        </t>-->
+
+<!--                        &lt;!&ndash; Add page break based on page_break_after setting &ndash;&gt;-->
+<!--                        <t t-if="product_count % docs.page_break_after == 0 and product_count != len(docs.product_ids)">-->
+<!--                            <div style="page-break-after: always;"/>-->
+<!--                        </t>-->
+<!--                    </t>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->
+
+<!--<odoo>-->
+<!--    <template id="report_product_catalog_style1_document">-->
+<!--        <t t-call="web.html_container">-->
+<!--            &lt;!&ndash; Custom header &ndash;&gt;-->
+<!--            <div class="header">-->
+<!--                <h2 style="text-align: center; font-weight: bold; color: #330000;">Generated Product Catalog</h2>-->
+<!--            </div>-->
+
+<!--            <div class="page">-->
+<!--                <div class="container">-->
+<!--                    <t t-set="product_count" t-value="0"/>-->
+<!--                    <t t-foreach="docs.product_ids" t-as="product">-->
+<!--                        <t t-set="product_count" t-value="product_count + 1"/>-->
+
+<!--                        <div class="row" style="margin-bottom: 5px; display: flex; align-items: center;">-->
+<!--                            &lt;!&ndash; Product Image &ndash;&gt;-->
+<!--                            <div class="col-3" style="padding-right: 100px; max-width: 25%;">-->
+<!--                                <img t-if="product.image_1920" t-att-src="image_data_uri(product.image_1920)"-->
+<!--                                     style="width: 70%; height: auto; border-radius: 5px;"/>-->
+<!--                                <img t-else="" src="/web/static/img/placeholder.png"-->
+<!--                                     style="width: 100%; height: auto; border-radius: 5px;"/>-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Product Details &ndash;&gt;-->
+<!--                            <div style="padding-left: 170px; max-width: 75%;">-->
+<!--                                &lt;!&ndash; Product Name &ndash;&gt;-->
+<!--                                <div>-->
+<!--                                    <span style="font-weight: bold; font-size: 18px; color: #000;"><t t-esc="product.name"/></span>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Internal Reference &ndash;&gt;-->
+<!--                                <div style="background-color: #e6e6e6; color: #333; padding: 3px 8px;-->
+<!--                                            display: inline-block; margin: 5px 0; font-weight: bold;">-->
+<!--                                    <t t-esc="product.default_code or '—'"/>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Price &ndash;&gt;-->
+<!--                                <div style="margin-bottom: 5px; background-color: #e6e6e6; color: #333; padding: 3px 8px;-->
+<!--                                            display: inline-block; margin: 5px 0; font-weight: bold;">-->
+<!--                                    <strong style="color: #000;">Price :</strong>-->
+<!--                                        <t t-esc="product.list_price"-->
+<!--                                           t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Description &ndash;&gt;-->
+<!--                                <div style="font-size: 13px; color: #555;">-->
+<!--                                    <t t-if="product.description_sale" t-esc="product.description_sale"/>-->
+<!--                                    <t t-elif="product.description" t-esc="product.description"/>-->
+<!--                                    <t t-else="">No description available</t>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Separator Line &ndash;&gt;-->
+<!--                        <t t-if="product_count != len(docs.product_ids)">-->
+<!--                            <div style="border-top: 2px solid #800040; margin: 10px 0;"></div>-->
+<!--                        </t>-->
+
+<!--                        &lt;!&ndash; Page Break &ndash;&gt;-->
+<!--                        <t t-if="product_count % docs.page_break_after == 0 and product_count != len(docs.product_ids)">-->
+<!--                            <div style="page-break-after: always;"></div>-->
+<!--                        </t>-->
+<!--                    </t>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->
+
+<odoo>
+    <template id="report_product_catalog_style1_document">
+        <t t-call="web.html_container">
+            <!-- Custom header -->
+            <div class="header">
+                <h2 style="text-align: center; font-weight: bold; color: #330000;">Generated Product Catalog</h2>
+            </div>
+
+            <div class="page">
+                <div class="container">
+                    <t t-set="product_count" t-value="0"/>
+                    <t t-foreach="docs.product_ids" t-as="product">
+                        <t t-set="product_count" t-value="product_count + 1"/>
+
+                        <div class="row" style="margin-bottom: 5px;">
+                            <!-- Product Image -->
+                            <div class="col-3" style="padding-right: 100px; max-width: 25%;">
+                                <img t-if="product.image_1920" t-att-src="image_data_uri(product.image_1920)"
+                                     style="width: 70%; height: auto; border-radius: 5px;"/>
+                                <img t-else="" src="/web/static/img/placeholder.png"
+                                     style="width: 100%; height: auto; border-radius: 5px;"/>
+                                <!-- Product Details -->
+                                <div class="col-3" style="padding-left: 170px; max-width: 75%;">
+                                    <!-- Product Name -->
+                                    <div>
+                                        <span style="font-weight: bold; font-size: 18px; color: #000;">
+                                            <t t-esc="product.name"/>
+                                        </span>
+                                    </div>
+                                    <!-- Internal Reference -->
+                                    <div style="background-color: #e6e6e6; color: #333; padding: 3px 8px;
+                                                display: inline-block; margin: 5px 0; font-weight: bold;">
+                                        <t t-esc="product.default_code or '—'"/>
+                                    </div>
+                                    <!-- Price -->
+                                    <div style="margin-bottom: 5px; background-color: #e6e6e6; color: #333; padding: 3px 8px;
+                                                display: inline-block; margin: 5px 0; font-weight: bold;">
+                                        <span style="color: #000;">Price :
+                                            <t t-esc="product.list_price"
+                                               t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+                                        </span>
+                                    </div>
+                                    <!-- Description -->
+                                    <div style="font-size: 13px; color: #555;">
+                                        <t t-if="product.description_sale" t-esc="product.description_sale"/>
+                                        <t t-elif="product.description" t-esc="product.description"/>
+                                        <t t-else="">No description available</t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Separator Line -->
+                        <t t-if="product_count != len(docs.product_ids)">
+                            <div style="border-top: 2px solid #800040; margin: 10px 0;"></div>
+                        </t>
+                        <!-- Page Break -->
+                        <t t-if="product_count % docs.page_break_after == 0 and product_count != len(docs.product_ids)">
+                            <div style="page-break-after: always;"></div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+
+<!--<div class="row" style="margin-bottom: 15px; display: flex; align-items: flex-start;">-->
+<!--    &lt;!&ndash; Product Image &ndash;&gt;-->
+<!--    <div style="flex: 0 0 auto; width: 25%; padding-right: 20px;">-->
+<!--        <img t-if="product.image_1920"-->
+<!--             t-att-src="image_data_uri(product.image_1920)"-->
+<!--             style="width: 100%; height: auto; border-radius: 5px;"/>-->
+<!--        <img t-else=""-->
+<!--             src="/web/static/img/placeholder.png"-->
+<!--             style="width: 100%; height: auto; border-radius: 5px;"/>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Product Details &ndash;&gt;-->
+<!--    <div style="flex: 1;">-->
+<!--        &lt;!&ndash; Product Name &ndash;&gt;-->
+<!--        <div>-->
+<!--            <span style="font-weight: bold; font-size: 18px; color: #000;">-->
+<!--                <t t-esc="product.name"/>-->
+<!--            </span>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Internal Reference &ndash;&gt;-->
+<!--        <div style="background-color: #e6e6e6; color: #333; padding: 3px 8px;-->
+<!--                    display: inline-block; margin: 5px 0; font-weight: bold;">-->
+<!--            <t t-esc="product.default_code or '—'"/>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Price &ndash;&gt;-->
+<!--        <div style="margin-bottom: 5px; background-color: #e6e6e6; color: #333; padding: 3px 8px;-->
+<!--                    display: inline-block; margin: 5px 0; font-weight: bold;">-->
+<!--            <strong style="color: #000;">Price :</strong>-->
+<!--            <t t-esc="product.list_price"-->
+<!--               t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Description &ndash;&gt;-->
+<!--        <div style="font-size: 13px; color: #555;">-->
+<!--            <t t-if="product.description_sale" t-esc="product.description_sale"/>-->
+<!--            <t t-elif="product.description" t-esc="product.description"/>-->
+<!--            <t t-else="">No description available</t>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

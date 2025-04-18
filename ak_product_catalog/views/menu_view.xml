@@ -1,0 +1,9 @@
+<odoo>
+    <!-- Add menu item to Sales > Reporting -->
+    <menuitem id="menu_product_catalog_generator"
+              name="Product Catalog Generator"
+              parent="sale.menu_sale_report"
+              action="action_product_catalog_wizard"
+              groups="sales_team.group_sale_manager"
+              sequence="50"/>
+</odoo>
