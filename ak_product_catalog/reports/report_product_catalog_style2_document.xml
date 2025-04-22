@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_product_catalog_style2_template">
+        <t t-call="web.html_container">
+            <!-- Product Article/Body -->
+            <div class="article">
+                <t t-foreach="docs" t-as="doc">
+                    <div t-if="doc.catalog_style == 'style2'">
+                        <table class="o_has_total_table table o_main_table table-borderless">
+                            <tbody>
+                                <t t-set="i" t-value="0"/>
+                                <t t-set="total" t-value="len(doc.product_ids)"/>
+                                <t t-if="i &lt; total" t-foreach="total" t-as="t">
+                                    <tr>
+                                        <!-- Left product cell -->
+                                        <td style="width: 48%; padding: 10px;">
+                                            <div style="border: dashed purple; height: 100%;">
+                                                <div class="text-center mb-1" style="font-size:17px;">
+                                                    <b>
+                                                        <t t-out="doc.product_ids[i].name"/>
+                                                    </b>
+                                                </div>
+                                                <div class="text-center">
+                                                    <img t-if="doc.product_ids[i].image_1920"
+                                                         t-att-src="image_data_uri(doc.product_ids[i].image_1920)"
+                                                         style="height:130px; width:180px;"
+                                                         loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                                    <img t-else=""
+                                                         style="height:130px; width:180px;"
+                                                         loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                                </div>
+                                                <div class="text-center mb-2 mt-2 ms-1 me-1" style="background-color:#FFD700;">
+                                                    <t t-out="doc.product_ids[i].default_code"/>
+                                                </div>
+                                                <div class="ms-1 me-1"
+                                                     style="padding:30px; background-color:#FFD700; text-align:center;">
+                                                    <span>
+                                                        <t t-out="doc.product_ids[i].lst_price"
+                                                           t-options="{'widget':'monetary', 'display_currency':doc.product_ids[i].currency_id}"/>
+                                                    </span>
+                                                </div>
+                                                <div style="border: solid 1px purple;" class="m-2"></div>
+                                                <div class="ms-1 me-1" style="padding-bottom:250px; height: 200px;">
+                                                    <t t-if="doc.product_ids[i].description_sale" t-out="doc.product_ids[i].description_sale"/>
+                                                    <t t-elif="doc.product_ids[i].description" t-out="doc.product_ids[i].description"/>
+                                                    <t t-else="">No description available</t>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- Center spacing -->
+                                        <td style="width: 4%;"></td>
+                                        <!-- Right product cell -->
+                                        <td style="width: 48%; padding: 10px;">
+                                            <div t-if="i+1 &lt; total" style="border: dashed purple; height: 100%;">
+                                                <div class="text-center mb-1" style="font-size:17px;">
+                                                    <b>
+                                                        <t t-out="doc.product_ids[i+1].name"/>
+                                                    </b>
+                                                </div>
+                                                <div class="text-center">
+                                                    <img t-if="doc.product_ids[i+1].image_1920"
+                                                         t-att-src="image_data_uri(doc.product_ids[i+1].image_1920)"
+                                                         style="height:130px; width:180px;"
+                                                         loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                                    <img t-else=""
+                                                         style="height:130px; width:180px;"
+                                                         loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                                </div>
+                                                <div class="text-center mb-2 mt-2 ms-1 me-1" style="background-color:#FFD700;">
+                                                    <t t-out="doc.product_ids[i+1].default_code"/>
+                                                </div>
+                                                <div class="ms-1 me-1"
+                                                     style="padding:30px; background-color:#FFD700; text-align:center;">
+                                                    <span>
+                                                        <t t-out="doc.product_ids[i+1].lst_price"
+                                                           t-options="{'widget':'monetary', 'display_currency':doc.product_ids[i+1].currency_id}"/>
+                                                    </span>
+                                                </div>
+                                                <div style="border: solid 1px purple;" class="m-2"></div>
+                                                <div class="ms-1 me-1" style="padding-bottom:250px; height: 200px;">
+                                                    <t t-if="doc.product_ids[i+1].description_sale" t-out="doc.product_ids[i+1].description_sale"/>
+                                                    <t t-elif="doc.product_ids[i+1].description" t-out="doc.product_ids[i+1].description"/>
+                                                    <t t-else="">No description available</t>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <t t-set="i" t-value="i+2"/>
+                                    <!-- Add spacing between rows -->
+                                    <tr style="height: 40px;"></tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+    <record id="paperformat_product_catalog_style2" model="report.paperformat">
+        <field name="name">Product Catalog Style 2</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+</odoo>

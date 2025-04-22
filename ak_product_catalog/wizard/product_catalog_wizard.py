@@ -20,15 +20,15 @@ class ProductCatalogWizard(models.TransientModel):
     @api.constrains('page_break_after')
     def _check_page_break_after(self):
         for wizard in self:
-            if wizard.page_break_after <= 0:
-                raise UserError("Page Break After must be a positive number")
+            if not (0 < wizard.page_break_after <= 5):
+                raise UserError("Page Break After must be between 1 and 5")
 
     def action_generate_catalog(self):
         self.ensure_one()
         # Select the appropriate report based on the style
         if self.catalog_style == 'style1':
-            report_name = 'ak_product_catalog.report_product_catalog_style1'
-        else:  # style2
+            report_name = 'ak_product_catalog.report_product_catalog_style1_action'
+        else:
             report_name = 'ak_product_catalog.report_product_catalog_style2'
 
         # Return the PDF report action

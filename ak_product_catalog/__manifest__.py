@@ -13,11 +13,12 @@
     'depends': ['sale', 'product', 'stock','sale_management'],
     'data': [
         'security/ir.model.access.csv',
-        'views/menu_view.xml',
         'wizard/product_catalog_wizard.xml',
+        'views/menu_view.xml',
+        'reports/report_product_catalog_style1_document.xml',
+        'reports/report_product_catalog_style2_document.xml',
         'reports/report_product_catalog.xml',
-        'reports/report_style1.xml',
-        'reports/report_style2.xml',
+
     ],
     # 'images': ['static/description/icon.png'],
     'installable': True,

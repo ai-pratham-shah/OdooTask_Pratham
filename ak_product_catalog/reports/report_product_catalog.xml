@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Report declaration for Style 1 -->
-    <record id="report_product_catalog_style1" model="ir.actions.report">
-        <field name="name">Product Catalog (Style 1)</field>
+    <record id="report_product_catalog_style1_action" model="ir.actions.report">
+        <field name="name">Product Catalog Style 1</field>
         <field name="model">product.catalog.wizard</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">ak_product_catalog.report_product_catalog_style1_document</field>
-        <field name="report_file">ak_product_catalog.report_product_catalog_style1_document</field>
-        <field name="binding_model_id" ref="model_product_catalog_wizard"/>
+        <field name="report_name">ak_product_catalog.report_product_catalog_style1_template</field>
+        <field name="report_file">ak_product_catalog.report_product_catalog_style1_template</field>
+        <field name="binding_model_id" ref="ak_product_catalog.model_product_catalog_wizard"/>
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="base.paperformat_euro"/>
+        <field name="paperformat_id" ref="paperformat_product_catalog_style1"/>
     </record>
 
     <!-- Report declaration for Style 2 -->
@@ -17,10 +17,10 @@
         <field name="name">Product Catalog (Style 2)</field>
         <field name="model">product.catalog.wizard</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">ak_product_catalog.report_product_catalog_style2_document</field>
-        <field name="report_file">ak_product_catalog.report_product_catalog_style2_document</field>
+        <field name="report_name">ak_product_catalog.report_product_catalog_style2_template</field>
+        <field name="report_file">ak_product_catalog.report_product_catalog_style2_template</field>
         <field name="binding_model_id" ref="model_product_catalog_wizard"/>
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="base.paperformat_euro"/>
+        <field name="paperformat_id" ref="paperformat_product_catalog_style2"/>
     </record>
 </odoo>
