@@ -1,0 +1,69 @@
+<odoo>
+    <template id="report_product_catalog_style1_template">
+        <t t-call="web.html_container">
+            <!-- Custom Header -->
+            <div class="header">
+                <h5 class="text-center font-weight-bold">Generated Product Catalog</h5>
+            </div>
+            <!-- Product Article/Body -->
+            <div class="article">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="product_count" t-value="0"/>
+                    <t t-foreach="o.product_ids" t-as="product">
+                        <t t-set="product_count" t-value="product_count + 1"/>
+                        <!-- Product Card -->
+                        <div class="row pb-2 mb-2" style="border-bottom: 2px solid #800040;">
+                            <!-- Product Image -->
+                            <div class="col-3">
+                                <img t-if="product.image_1920" width="200px" height="200px"
+                                     t-att-src="image_data_uri(product.image_1920)"/>
+                            </div>
+                            <!-- Product Info -->
+                            <div class="col-9">
+                                <!-- Name -->
+                                <h4 class="font-weight-bold text-left">
+                                    <t t-out="product.name"/>
+                                </h4>
+                                <!-- Internal Ref -->
+                                <div class="col-3 text-center px-2 my-1 font-weight-bold"
+                                     style="background-color: LightGray;">
+                                    <t t-out="product.default_code or '—'"/>
+                                </div>
+                                <!-- Price -->
+                                <div class="col-3 px-2 my-1" style="background-color: LightGray;">
+                                    <strong>Price :</strong>
+                                    <t t-out="product.list_price"
+                                       t-options="{'widget': 'monetary', 'display_currency': product.currency_id}"/>
+                                </div>
+                                <!-- Description -->
+                                <div class="my-1" style="font-size: 13px; color: #555;">
+                                    <t t-if="product.description_sale" t-out="product.description_sale"/>
+                                    <t t-elif="product.description" t-out="product.description"/>
+                                    <t t-else="">No description available</t>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Page Break -->
+                        <t t-if="product_count % o.page_break_after == 0 and product_count != len(o.product_ids)">
+                            <div style="page-break-after: always;"></div>
+                        </t>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <record id="paperformat_product_catalog_style1" model="report.paperformat">
+        <field name="name">Product Catalog Style 1</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">4</field>
+        <field name="margin_right">4</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<odoo>
+    <record id="action_product_catalog_wizard" model="ir.actions.act_window">
+        <field name="name">Product Catalog Generator</field>
+        <field name="res_model">product.catalog.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Add menu item to Sales > Reporting -->
+    <menuitem id="menu_product_catalog_generator"
+              name="Product Catalog Generator"
+              parent="sale.menu_sale_report"
+              action="action_product_catalog_wizard"
+              sequence="50"/>
+</odoo>
