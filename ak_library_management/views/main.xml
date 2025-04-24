@@ -2,18 +2,23 @@
     <!--Detail view of contact page-->
     <template id="contact_detail" name="Contact Detail Page">
         <t t-call="website.layout">
-            <div class="container mt-2 mb-2">
+            <div class="container mt-2 mb-2 contact_page">
                 <div class="card border-dark rounded shadow-lg">
                     <div class="d-flex align-items-center p-4">
                         <!-- Contact Name and Avatar -->
                         <div class="flex-grow-1">
                             <h1 class="mb-3">
-                                <t t-esc="partner.name"/>
+                                <span t-esc="partner.name" id="contact-name-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="text" class="form-control" id="input-name"
+                                           t-att-value="partner.name" required="required"/>
+                                    <div class="invalid-feedback">Name is required</div>
+                                </div>
                             </h1>
                         </div>
                         <div class="ms-3">
                             <img t-if="partner.image_1920" t-att-src="image_data_uri(partner.image_1920)"
-                                 class="card-img-left"   style="height: 100px; width: 100px;"
+                                 class="card-img-left" style="height: 100px; width: 100px;"
                                  loading="lazy" alt="partner image"/>
                         </div>
                     </div>
@@ -21,39 +26,81 @@
                         <div class="col-lg-6">
                             <p>
                                 <strong>Company:</strong>
-                                <t t-esc="partner.company_id.name"/>
+                                <span t-esc="partner.company_id.name" id="company-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="text" class="form-control" id="input-company"
+                                           t-att-value="partner.company_id.name" readonly="readonly"/>
+                                </div>
                             </p>
                             <p>
                                 <strong>Tax ID:</strong>
-                                <t t-esc="partner.vat"/>
+                                <span t-esc="partner.vat or 'N/A'" id="vat-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="text" class="form-control" id="input-vat"
+                                           t-att-value="partner.vat or ''"/>
+                                </div>
                             </p>
                         </div>
                         <div class="col-lg-6">
                             <p>
                                 <strong>Job Position:</strong>
-                                <t t-esc="partner.function"/>
+                                <span t-esc="partner.function or 'N/A'" id="function-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="text" class="form-control" id="input-function"
+                                           t-att-value="partner.function or ''"/>
+                                </div>
                             </p>
                             <p>
                                 <strong>Phone:</strong>
-                                <t t-esc="partner.phone or 'N/A'"/>
+                                <span t-esc="partner.phone or 'N/A'" id="phone-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="tel" class="form-control" id="input-phone"
+                                           t-att-value="partner.phone or ''" required="required"/>
+                                    <div class="invalid-feedback">Invalid phone number format</div>
+                                </div>
                             </p>
                             <p>
                                 <strong>Mobile:</strong>
-                                <t t-esc="partner.mobile or 'N/A'"/>
+                                <span t-esc="partner.mobile or 'N/A'" id="mobile-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="tel" class="form-control" id="input-mobile"
+                                           t-att-value="partner.mobile or ''"/>
+                                    <div class="invalid-feedback">Invalid mobile number format</div>
+                                </div>
                             </p>
                             <p>
                                 <strong>Email:</strong>
-                                <t t-esc="partner.email"/>
+                                <span t-esc="partner.email or 'N/A'" id="email-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="email" class="form-control" id="input-email"
+                                           t-att-value="partner.email or ''" required="required"/>
+                                    <div class="invalid-feedback">Invalid email format</div>
+                                </div>
                             </p>
                             <p>
                                 <strong>Website:</strong>
-                                <t t-esc="partner.website"/>
+                                <span t-esc="partner.website or 'N/A'" id="website-display"/>
+                                <div class="edit-mode d-none">
+                                    <input type="url" class="form-control" id="input-website"
+                                           t-att-value="partner.website or ''"/>
+                                    <div class="invalid-feedback">Invalid website URL</div>
+                                </div>
                             </p>
                         </div>
                     </div>
-                    <div class="text-center mt-1 mb-2">
+                    <!-- Alert for messages -->
+                    <div class="alert alert-danger d-none" id="error-message" role="alert"></div>
+                    <div class="alert alert-success d-none" id="success-message" role="alert"></div>
+                    <div class="text-center mt-1 mb-2" id="action-buttons">
                         <!-- Back Button -->
                         <a href="/contacts" class="btn btn-secondary px-4 py-2">Back</a>
+                        <!-- Edit & Save Buttons (only shown if user has permission) -->
+                        <t t-if="can_edit">
+                            <button id="btn-edit" class="btn btn-primary px-4 py-2 ms-2">Edit</button>
+                            <button id="btn-save" class="btn btn-success px-4 py-2 ms-2 d-none">Save</button>
+                            <button id="btn-cancel" class="btn btn-danger px-4 py-2 ms-2 d-none">Cancel</button>
+                        </t>
+                        <input type="hidden" id="partner-id" t-att-value="partner.id"/>
                     </div>
                 </div>
             </div>

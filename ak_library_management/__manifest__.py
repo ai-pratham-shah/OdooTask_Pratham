@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'library management',
-    'version': '18.0.1.8.0',
+    'version': '18.0.1.9.0',
     'author' : 'Pratham shah',
     'summary': 'Library management module',
     'description': """
@@ -10,14 +10,14 @@
     'category': 'Library_management/Library_management',
     'website': 'https://www.aktivsoftware.com',
     'depends': [
-        'base','stock', 'web', 'sale_management','website_sale','product','purchase','base_automation','hr','mail','account','website','point_of_sale',
+            'base','stock', 'web', 'sale_management','website_sale','product','purchase','base_automation','hr','mail','account','website','point_of_sale','contacts'
     ],
     'data': [
         'security/res_groups.xml',
         'security/ir.model.access.csv',
         'reports/library_location_report_action.xml',
         'reports/library_location_report.xml',
-        'reports/report_invoice_inherit.xml',
+        # 'reports/report_invoice_inherit.xml',
         'views/library_book.xml',
         'views/library_member.xml',
         'views/library_book_tag.xml',
@@ -37,7 +37,7 @@
         'views/website_product_template.xml',
         'views/product_template.xml',
         'views/product_variant_easy_edit_view_vendor_inherit.xml',
-        'views/add_to_cart.xml',
+        # 'views/add_to_cart.xml',
         'data/website_menu_data.xml',
         'wizard/bulk_book.xml',
         'wizard/sale_order_wizard.xml',
@@ -49,7 +49,9 @@
     'assets': {
         'web.assets_frontend': [
             # 'ak_library_management/static/src/scss/contactus.scss',
+            'ak_library_management/static/src/js/contact_page.js',
             'ak_library_management/static/src/js/customer_fetch.js',
+            'ak_library_management/static/src/js/add_to_cart.js',
         ],
         'web.assets_backend': [
 

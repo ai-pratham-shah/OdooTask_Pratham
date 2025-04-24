@@ -3,8 +3,9 @@
 import zipfile
 import io
 import base64
+import re
 from odoo import http
-from odoo.http import request,route
+from odoo.http import request, route
 
 
 class ContactsController(http.Controller):
@@ -26,10 +27,82 @@ class ContactsController(http.Controller):
         """
         partner_id = int(slug_url.split('-')[-1])
         partner = request.env['res.partner'].sudo().browse(partner_id)
+
         if not partner.exists():
             return request.redirect('/contacts')
 
-        return request.render("ak_library_management.contact_detail", {'partner': partner})
+        can_edit = request.env.user.has_group('base.group_user')
+
+        return request.render("ak_library_management.contact_detail", {
+            'partner': partner,
+            'can_edit': can_edit
+        })
+
+    @http.route('/contacts/update', type='json', auth="user", website=True)
+    def update_contact(self, **kwargs):
+        """
+        Update contact information via AJAX.
+        """
+        partner_id = kwargs.get('partner_id')
+        if not partner_id:
+            return {'success': False, 'error': 'Partner ID is required'}
+
+        partner = request.env['res.partner'].sudo().browse(int(partner_id))
+        if not partner.exists():
+            return {'success': False, 'error': 'Contact not found'}
+
+        if not request.env.user.has_group('base.group_user'):
+            return {'success': False, 'error': 'You do not have permission to edit contacts'}
+
+        # Validation checks
+        name = kwargs.get('name')
+        email = kwargs.get('email')
+        phone = kwargs.get('phone')
+
+        if not name:
+            return {'success': False, 'error': 'Name is required'}
+        if not email:
+            return {'success': False, 'error': 'email is required'}
+        if not phone:
+            return {'success': False, 'error': 'phone is required'}
+        if email:
+            # Check for duplicate email
+            duplicate = request.env['res.partner'].sudo().search([
+                ('email', '=', email),
+                ('id', '!=', partner.id)
+            ], limit=1)
+
+            if duplicate:
+                return {'success': False, 'error': 'Email already exists'}
+
+        update_values = {
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'mobile': kwargs.get('mobile'),
+            'function': kwargs.get('function'),
+            'website': kwargs.get('website'),
+            'vat': kwargs.get('vat')
+        }
+        try:
+            partner.sudo().write(update_values)
+            return {
+                'success': True,
+                'message': 'Contact updated successfully',
+                'data': {
+                    'partner_id': partner.id,
+                    'name': partner.name,
+                    'email': partner.email,
+                    'phone': partner.phone,
+                    'mobile': partner.mobile,
+                    'function': partner.function,
+                    'website': partner.website,
+                    'vat': partner.vat,
+                    'company_name': partner.company_id.name
+                }
+            }
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
 
 class CustomerController(http.Controller):
 

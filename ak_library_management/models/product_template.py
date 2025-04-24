@@ -90,14 +90,13 @@ class ProductTemplate(models.Model):
                     variant_vendors.unlink()
 
     @api.model_create_multi
-    def create(self, vals):
+    def create(self, vals_list):
         """
         This method is overriding reference filed with sequence number
         """
-        res = super().create(vals)
-        res.default_code = self.env['ir.sequence'].next_by_code('product.template')
-        print('This is default_code:',res.default_code)
-        return res
+        for val in vals_list:
+            val['default_code'] = self.env["ir.sequence"].next_by_code('product.template')
+        return super().create(vals_list)
 
     @api.constrains('unavailable')
     def action_mark_borrowed(self):

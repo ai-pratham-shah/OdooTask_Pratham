@@ -6,7 +6,7 @@ from odoo import models, fields,api
 class ProductSupplierinfo(models.Model):
     _inherit = 'product.supplierinfo'
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         """
         Override create to enforce vendor assignment logic

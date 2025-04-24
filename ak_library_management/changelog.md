@@ -78,3 +78,7 @@
 
 ## [18.0.1.8.1] - 2025-04-16 | Modify Existing/Base Qweb reports
 - Add condition like label is printed only if the relevant data is available.
+
+## [18.0.1.9.0] - 2025-04-24 | Front-end - Practical Task (Contact Web Page with Editable Feature)
+- Add one js file for edit save cancel functionality.
+- Add one controller in main python file.

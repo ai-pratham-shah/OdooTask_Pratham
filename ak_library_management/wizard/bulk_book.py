@@ -34,6 +34,7 @@ class BulkUploadBooks(models.TransientModel):
         corresponding products in the system.
         """
         single_book = self.book_names.split(',')
+        print(single_book)
         self.product_count = sum(
             1 for book in single_book if self.env["product.template"].search([("name", "=", book)]))
 
@@ -45,6 +46,7 @@ class BulkUploadBooks(models.TransientModel):
         existing product matches the book name.
         """
         single_book = self.book_names.split(',')
+        print(single_book)
         existing_products = self.env['product.template'].search([('name', 'in', single_book)])
         for book_name in single_book:
             book_name = book_name.strip()
@@ -69,6 +71,7 @@ class BulkUploadBooks(models.TransientModel):
         `create_product` method, deleting the created products.
         """
         single_book = self.book_names.split(',')
+        print(single_book)
         self.env["product.template"].search([("name", "=", single_book)]).unlink()
         for book_name in single_book:
             book_name = book_name.strip()
