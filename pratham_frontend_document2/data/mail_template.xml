@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_onboarding_complete" model="mail.template">
+        <field name="name">User Onboarding Completed</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="subject">Welcome to Our Platform - Onboarding Complete</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px; background-color: #F0F2F4;">
+                <table style="width: 600px; margin: 0px auto; background-color: white; border: 1px solid #e1e1e1;">
+                    <tr>
+                        <td style="padding: 20px;">
+                            <div style="text-align: center; padding: 10px 0px 30px 0px;">
+                                <h2 style="color: #875A7B; font-weight: 900;">Welcome to Our Platform!</h2>
+                            </div>
+                            <div>
+                                <p>Dear <strong>${object.name}</strong>,
+                                </p>
+                                <p>Thank you for completing the onboarding process. Your account is now fully set up and
+                                    ready to use.
+                                </p>
+                                <p>Here's a summary of the information you provided:</p>
+                                <ul>
+                                    <li>
+                                        <strong>Name:</strong>
+                                        ${object.name}
+                                    </li>
+                                    <li>
+                                        <strong>Email:</strong>
+                                        ${object.email}
+                                    </li>
+                                    <li>
+                                        <strong>Mobile:</strong>
+                                        ${object.mobile_number or 'Not provided'}
+                                    </li>
+                                    <li>
+                                        <strong>Job Position:</strong>
+                                        ${object.job_position or 'Not provided'}
+                                    </li>
+                                </ul>
+                                <p>You can now access all features of our platform. If you have any questions or need
+                                    assistance, please don't hesitate to contact our support team.
+                                </p>
+                                <div style="text-align: center; margin-top: 30px;">
+                                    <a href="/web/login"
+                                       style="background-color: #875A7B; padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px;">
+                                        Access Your Account
+                                    </a>
+                                </div>
+                                <p style="margin-top: 30px;">
+                                    Best regards,
+                                    <br/>
+                                    The Team
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

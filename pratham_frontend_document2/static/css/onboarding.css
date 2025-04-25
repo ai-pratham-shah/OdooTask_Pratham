@@ -1,0 +1,53 @@
+
+.onboarding-container {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.onboarding-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.onboarding-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.onboarding-header {
+    background: linear-gradient(135deg, #7C5CBF, #3A50C0);
+    color: white;
+    padding: 1.5rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.onboarding-next-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.onboarding-next-btn:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.input-error {
+    border-color: #dc3545;
+}
+
+.input-valid {
+    border-color: #28a745;
+}

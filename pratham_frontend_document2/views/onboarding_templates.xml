@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Welcome Page Template -->
+    <template id="onboarding_welcome_template">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+                <style>
+                    .onboarding-container {
+                        max-width: 800px;
+                        margin: 2rem auto;
+                    }
+
+                    .onboarding-card {
+                        border-radius: 8px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        transition: all 0.3s ease;
+                    }
+
+                    .onboarding-card:hover {
+                        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                    }
+
+                    .onboarding-header {
+                        background: linear-gradient(135deg, #7C5CBF, #3A50C0);
+                        color: white;
+                        padding: 1.5rem;
+                        border-top-left-radius: 8px;
+                        border-top-right-radius: 8px;
+                    }
+
+                    .onboarding-next-btn {
+                        background-color: #4CAF50;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        font-size: 24px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                        transition: all 0.3s ease;
+                    }
+
+                    .onboarding-next-btn:hover {
+                        background-color: #45a049;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                        transform: scale(1.05);
+                    }
+
+                    .input-error {
+                        border-color: #dc3545;
+                    }
+
+                    .input-valid {
+                        border-color: #28a745;
+                    }
+                </style>
+            </t>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow">
+                            <div class="card-body text-center p-5">
+                                <img src="/yourname_25042025/static/src/img/welcome.png" alt="Welcome" class="img-fluid mb-4" style="max-height: 200px;"/>
+                                <h1 class="mb-4">Congratulations on signing up!</h1>
+                                <p class="lead">Welcome to our platform, <t t-esc="user.name"/>! We're excited to have you on board.</p>
+                                <p>Please complete the onboarding process to get started.</p>
+                                <a href="/onboarding/details" class="btn btn-primary btn-lg mt-4">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- User Details Form Template -->
+    <template id="onboarding_details_template">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+            </t>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow">
+                            <div class="card-header bg-primary text-white">
+                                <h2 class="mb-0">Complete Your Profile</h2>
+                            </div>
+                            <div class="card-body p-4">
+                                <form action="/onboarding/submit" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                                                   t-att-value="post.get('date_of_birth') if post else ''" required="required"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="place_of_birth" class="form-label">Place of Birth</label>
+                                            <input type="text" class="form-control" id="place_of_birth" name="place_of_birth"
+                                                   t-att-value="post.get('place_of_birth') if post else ''" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender" name="gender" required="required">
+                                            <option value="">Select Gender</option>
+                                            <option value="male" t-att-selected="'selected' if post and post.get('gender') == 'male' else None">Male</option>
+                                            <option value="female" t-att-selected="'selected' if post and post.get('gender') == 'female' else None">Female</option>
+                                            <option value="other" t-att-selected="'selected' if post and post.get('gender') == 'other' else None">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="mobile_number" class="form-label">Mobile Number (Indian, +91)</label>
+                                        <input type="tel" class="form-control" id="mobile_number" name="mobile_number"
+                                               t-att-value="post.get('mobile_number') if post else ''"
+                                               placeholder="+91XXXXXXXXXX" required="required"/>
+                                        <small t-if="errors and errors.get('mobile_number')" class="text-danger" t-esc="errors.get('mobile_number')"/>
+                                        <small class="text-muted">Format: +91 followed by 10 digits</small>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="passport_number" class="form-label">Passport Number (16-digit)</label>
+                                            <input type="text" class="form-control" id="passport_number" name="passport_number"
+                                                   t-att-value="post.get('passport_number') if post else ''" pattern="[0-9]{16}"
+                                                   placeholder="16-digit number" required="required"/>
+                                            <small t-if="errors and errors.get('passport_number')" class="text-danger" t-esc="errors.get('passport_number')"/>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="driving_license" class="form-label">Driving License</label>
+                                            <input type="text" class="form-control" id="driving_license" name="driving_license"
+                                                   t-att-value="post.get('driving_license') if post else ''" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label d-block">Speaking Language</label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="speaking_language" id="lang_gujarati" value="gujarati"
+                                                   t-att-checked="'checked' if post and post.get('speaking_language') == 'gujarati' else None" required="required"/>
+                                            <label class="form-check-label" for="lang_gujarati">Gujarati</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="speaking_language" id="lang_hindi" value="hindi"
+                                                   t-att-checked="'checked' if post and post.get('speaking_language') == 'hindi' else None"/>
+                                            <label class="form-check-label" for="lang_hindi">Hindi</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="speaking_language" id="lang_english" value="english"
+                                                   t-att-checked="'checked' if post and post.get('speaking_language') == 'english' else None"/>
+                                            <label class="form-check-label" for="lang_english">English</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="marital_status" class="form-label">Marital Status</label>
+                                            <select class="form-select" id="marital_status" name="marital_status" required="required">
+                                                <option value="">Select Status</option>
+                                                <option value="single" t-att-selected="'selected' if post and post.get('marital_status') == 'single' else None">Single</option>
+                                                <option value="married" t-att-selected="'selected' if post and post.get('marital_status') == 'married' else None">Married</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="job_position" class="form-label">Job Position</label>
+                                            <input type="text" class="form-control" id="job_position" name="job_position"
+                                                   t-att-value="post.get('job_position') if post else ''" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <textarea class="form-control" id="address" name="address" rows="3" required="required">
+                                            <t t-esc="post.get('address') if post else ''"/>
+                                        </textarea>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            Submit <i class="fa fa-check"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Success Page Template -->
+    <template id="onboarding_success_template">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+            </t>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow">
+                            <div class="card-body text-center p-5">
+                                <i class="fa fa-check-circle text-success fa-5x mb-4"></i>
+                                <h1 class="mb-4">Onboarding Completed!</h1>
+                                <p class="lead">Thank you for completing the onboarding process, <t t-esc="user.name"/>.</p>
+                                <p>Your information has been successfully saved. You can now continue to the main application.</p>
+                                <p>An email confirmation has been sent to your registered email address.</p>
+                                <a href="/web" class="btn btn-success btn-lg mt-4">
+                                    Go to Dashboard <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
