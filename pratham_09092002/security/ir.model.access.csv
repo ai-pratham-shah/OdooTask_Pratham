@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_review_public,product_review_public,model_product_review,base.group_public,1,0,0,0
+access_product_review_portal,product_review_portal,model_product_review,base.group_portal,1,0,1,0
+access_product_review_user,product_review_user,model_product_review,base.group_user,1,1,1,1

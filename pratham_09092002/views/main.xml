@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add review section to product page -->
+    <template id="product_review_section" inherit_id="website_sale.product" name="Product Reviews Section">
+        <xpath expr="//div[@id='product_details']" position="after">
+            <section class="mb32" id="product_reviews_section">
+                <div class="container">
+                    <h3 class="mb16">Customer Reviews</h3>
+
+                    <!-- User is logged in - Show review form -->
+                    <div t-if="user_id != request.website.user_id" class="review-form-container mb24">
+                        <form action="/shop/product/submit_review" method="post" class="review-form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="product_id" t-att-value="product.id"/>
+
+                            <div class="form-group">
+                                <label for="rating">Your Rating</label>
+                                <div class="star-rating-container" id="product_rating_stars">
+                                    <div class="rating-stars">
+                                        <input type="radio" name="rating" value="5" id="rating-5" required="required"/>
+                                        <label for="rating-5"><i class="fa fa-star"></i></label>
+
+                                        <input type="radio" name="rating" value="4" id="rating-4"/>
+                                        <label for="rating-4"><i class="fa fa-star"></i></label>
+
+                                        <input type="radio" name="rating" value="3" id="rating-3"/>
+                                        <label for="rating-3"><i class="fa fa-star"></i></label>
+
+                                        <input type="radio" name="rating" value="2" id="rating-2"/>
+                                        <label for="rating-2"><i class="fa fa-star"></i></label>
+
+                                        <input type="radio" name="rating" value="1" id="rating-1"/>
+                                        <label for="rating-1"><i class="fa fa-star"></i></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Your Review</label>
+                                <textarea name="description" id="description" class="form-control" rows="3" required="required"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt8">Submit Review</button>
+                        </form>
+                    </div>
+
+                    <!-- User is not logged in - Show login message -->
+                    <div t-else="" class="alert alert-info mb24">
+                        Please <a t-attf-href="/web/login?redirect=#{ request.httprequest.path }">log in</a> to submit the review.
+                    </div>
+
+                    <!-- Previous reviews section -->
+                    <div class="reviews-list mt32">
+                        <h4 class="mb16">Previous Reviews</h4>
+                        <t t-if="product.product_review_ids">
+                            <div class="review-items">
+                                <div t-foreach="product.product_review_ids" t-as="review" class="review-item mb16 pb16 border-bottom">
+                                    <div class="reviewer-info">
+                                        <strong t-field="review.reviewer_name" class="me-2"/>
+                                        <span class="review-date text-muted">
+                                            <t t-esc="review.create_date.strftime('%B %d, %Y')"/>
+                                        </span>
+                                    </div>
+                                    <div class="review-rating mt8">
+                                        <t t-foreach="range(5)" t-as="star">
+                                            <i t-attf-class="fa fa-star{{ '' if star &lt; int(review.rating) else '-o' }}"></i>
+                                        </t>
+                                    </div>
+                                    <div class="review-text mt8">
+                                        <t t-esc="review.description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <div t-else="" class="alert alert-light">
+                            No reviews yet. Be the first to review this product!
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+    <template id="review_success_template">
+        <t t-call="web.layout">
+             <t t-set="head">
+                <t t-call-assets="web.assets_common" t-js="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-css="false"/>
+            </t>
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow">
+                            <div class="card-body text-center p-5">
+                                <i class="fa fa-check-circle text-success fa-5x mb-4"></i>
+                                <h1 class="mb-4">Review Completed!</h1>
+                                <p class="lead">Thank you for completing the Review for product.</p>
+                                <p>Your review has been successfully saved. You can now continue to the main application.</p>
+                                <a href="/shop" class="btn btn-success btn-lg mt-4">
+                                    Go to Product <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
