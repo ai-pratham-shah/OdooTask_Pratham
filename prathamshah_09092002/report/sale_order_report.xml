@@ -1,0 +1,14 @@
+<odoo>
+    <template id="report_saleorder_document_inherit_approval" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='payment_term']" position="after">
+            <div class="col-auto mw-100 mb-2" t-if="doc.approval_state == 'approved'">
+                <strong>Approved By:</strong>
+                <p class="m-0" t-field="doc.approved_by_id.name"/>
+            </div>
+            <div class="col-auto mw-100 mb-2" t-if="doc.approval_state == 'approved'">
+                <strong>Approved Date:</strong>
+                <p class="m-0" t-field="doc.approved_date"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
