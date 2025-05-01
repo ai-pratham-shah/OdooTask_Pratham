@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template for out-of-stock product page -->
+    <template id="out_of_stock_page" name="Out of Stock Product">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="container pt-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        <span t-field="product.name"/>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <!-- Product Image -->
+                        <div class="col-lg-5 col-xl-5">
+                            <div class="product-image">
+                                <img t-att-src="image_data_uri(product.image_1920)" alt="Product Image" class="img-fluid"/>
+                            </div>
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="col-lg-7 col-xl-7">
+                            <h1 t-field="product.name" class="mb-3"/>
+
+                            <!-- Out of Stock Banner -->
+                            <div class="alert alert-danger mb-4">
+                                <strong>This product is currently out of stock</strong>
+                            </div>
+
+                            <!-- Product Price -->
+                            <div class="product_price mt-3">
+                                <h4 class="oe_price_h4 css_editable_mode_hidden">
+                                    <span t-field="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                </h4>
+                            </div>
+
+                            <!-- Custom Out of Stock Message -->
+                            <div class="mt-4 mb-4 out-of-stock-message">
+                                <div t-field="product.out_of_stock_message" class="oe_no_empty"/>
+
+                                <!-- Default message if no custom message is set -->
+                                <div t-if="not product.out_of_stock_message or product.out_of_stock_message == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;'" class="alert alert-info">
+                                    <p>We apologize for the inconvenience. This product is currently unavailable.</p>
+                                    <p>Please check back later or browse our other products.</p>
+                                </div>
+                            </div>
+
+                            <!-- Back to Shop Button -->
+                            <div class="mt-4">
+                                <a href="/shop" class="btn btn-primary">
+                                    <i class="fa fa-arrow-left mr-2"></i>
+                                    Continue Shopping
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>
